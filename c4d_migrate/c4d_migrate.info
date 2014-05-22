@@ -1,0 +1,10 @@
+name = C4D Content Migration
+description = Import data from Capacity4Dev
+core = 7.x
+package = capacity4more - Migrate
+version = 7.x-1.x-dev
+dependencies[] = migrate
+dependencies[] = migrate_extras
+
+; Classes to migrate the content.
+;files[] = includes/ImportArticles.inc
