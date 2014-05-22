@@ -37,7 +37,17 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
           'picture',
           'init',
           'data',
-          // TBA : profile fields
+          'field_description',
+          'field_firstname',
+          'field_lastname',
+          'field_organisation',
+          'field_organisation_type_of',
+          'field_picture',
+          'field_ref_topic',
+          'field_ref_topic_expertise',
+          'field_country',
+          'og_groups',
+          'roles',
         )
       );
     $this->source = new MigrateSourceSQL($query);
@@ -60,7 +70,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       $destination_handler->getKeySchema()
     );
 
-    $this->destination = new MigrateDestinationUser();
+    $this->destination = $destination_handler;
 
     $this->addFieldMapping('name', 'name')->dedupe('users', 'name');
     $this->addFieldMapping('pass', 'pass');
@@ -75,5 +85,20 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('picture', 'picture')->defaultValue(0);
     $this->addFieldMapping('init', 'init');
     $this->addFieldMapping('data', 'data');
+  }
+
+  /**
+   * Prepare the row data loaded from the CSV.
+   *
+   * @param object $row
+   *   The data from the CSV file.
+   *
+   * @return bool
+   *   Success.
+   */
+  public function prepareRow($row) {
+    parent::prepareRow($row);
+
+    $row->data = unserialize($row->data);
   }
 }
