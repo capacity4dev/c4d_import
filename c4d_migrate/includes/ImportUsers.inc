@@ -20,10 +20,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     $this->description = t('Import users from our Drupal 6 database.');
 
-    $query        = Database::getConnection('default', C4D_MIGRATE_DATABASE)
-                            ->select('c4d_export_user_profile')
-                            ->fields('c4d_export_user_profile',
-        array(
+    $query        = $this->createSelect('c4d_export_user_profile', 'u')
+                         ->fields('u', array(
           'uid',
           'name',
           'pass',
@@ -44,7 +42,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->source = new MigrateSourceSQL($query);
 
     // Create a map object for tracking the relationships between source rows.
-    $key                 = array(
+    $key = array(
       'uid' => array(
         'type'     => 'varchar',
         'length'   => 255,
@@ -55,7 +53,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     // Automatically convert drupal passwords to drupal7 hash.
     $destination_handler = new MigrateDestinationUser(array('md5_passwords' => TRUE));
 
-    $this->map           = new MigrateSQLMap(
+    $this->map = new MigrateSQLMap(
       $this->machineName,
       $key,
       $destination_handler->getKeySchema()
