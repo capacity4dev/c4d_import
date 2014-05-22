@@ -6,7 +6,8 @@ class C4dMigrateImportBase extends Migration {
     parent::__construct();
 
     $this->setUpConnection();
-    $this->testConnection();
+    // Test connection.
+    $this->getConnection();
   }
 
   /**
@@ -38,14 +39,16 @@ class C4dMigrateImportBase extends Migration {
   }
 
   /**
-   * Test if our second database connection actually works.
+   * Set the right database and return a selectQuery.
    *
-   * @return bool
-   *   Is the connection test successful or not.
+   * @param string name of the database table
+   * @param string alias to give the database table
+   *
+   * @return SelectQueryInterface
    */
-  public function testConnection() {
+  public function createSelect($tableName, $tableAlias) {
     try {
-      Database::getConnection('default', C4D_MIGRATE_DATABASE);
+      $this->getConnection()->select($tableName, $tableAlias);
     }
     catch (Exception $e) {
       drupal_set_message(
@@ -60,7 +63,30 @@ class C4dMigrateImportBase extends Migration {
 
       return FALSE;
     }
+  }
 
-    return TRUE;
+  /**
+   * Test if our second database connection actually works.
+   *
+   * @return bool|DatabaseConnection
+   *   Is the connection test successful or not.
+   */
+  public function getConnection() {
+    try {
+      return Database::getConnection('default', C4D_MIGRATE_DATABASE);
+    }
+    catch (Exception $e) {
+      drupal_set_message(
+        t('Unable to connect to the database, please check your settings at <a href="@c4d_migrate_settings_url">@c4d_migrate_settings_url_plain</a>',
+          array(
+            '@c4d_migrate_settings_url'       => url('admin/content/migrate/import'),
+            '@c4d_migrate_settings_url_plain' => 'admin/content/migrate/import'
+          )
+        ),
+        'error'
+      );
+
+      return FALSE;
+    }
   }
 }
