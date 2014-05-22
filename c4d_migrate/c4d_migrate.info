@@ -7,4 +7,4 @@ dependencies[] = migrate
 dependencies[] = migrate_extras
 
 ; Classes to migrate the content.
-;files[] = includes/ImportArticles.inc
+files[] = includes/ImportBase.inc

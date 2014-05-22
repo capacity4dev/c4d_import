@@ -11,6 +11,11 @@
 define('C4D_MIGRATE_MIGRATION_GROUP', 'c4d_migrate');
 
 /**
+ * Database name (connection name).
+ */
+define('C4D_MIGRATE_DATABASE', 'c4d_migrate_database');
+
+/**
  * Database variables (settings form and used in migrations)
  */
 define('C4D_MIGRATE_DB_HOST', 'c4d_migrate_db_hostname');
