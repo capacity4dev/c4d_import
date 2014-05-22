@@ -49,21 +49,8 @@ class C4dMigrateImportBase extends Migration {
    * @return bool|SelectQueryInterface
    */
   public function createSelect($tableName, $tableAlias) {
-    try {
-      return $this->getConnection()->select($tableName, $tableAlias);
-    }
-    catch (Exception $e) {
-      drupal_set_message(
-        t('Unable to connect to the database, please check your settings at <a href="@c4d_migrate_settings_url">@c4d_migrate_settings_url_plain</a>',
-          array(
-            '@c4d_migrate_settings_url'       => url('admin/content/migrate/import'),
-            '@c4d_migrate_settings_url_plain' => 'admin/content/migrate/import'
-          )
-        ),
-        'error'
-      );
-
-      return FALSE;
+    if ($conn = $this->getConnection()) {
+      return $conn->select($tableName, $tableAlias);
     }
   }
 
@@ -88,7 +75,7 @@ class C4dMigrateImportBase extends Migration {
         'error'
       );
 
-      return FALSE;
+      throw new Exception($e);
     }
   }
 }
