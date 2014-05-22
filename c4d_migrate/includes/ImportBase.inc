@@ -41,14 +41,16 @@ class C4dMigrateImportBase extends Migration {
   /**
    * Set the right database and return a selectQuery.
    *
-   * @param string name of the database table
-   * @param string alias to give the database table
+   * @param string $tableName
+   *   Name of the database table.
+   * @param string $tableAlias
+   *   Alias to give the database table.
    *
-   * @return SelectQueryInterface
+   * @return bool|SelectQueryInterface
    */
   public function createSelect($tableName, $tableAlias) {
     try {
-      $this->getConnection()->select($tableName, $tableAlias);
+      return $this->getConnection()->select($tableName, $tableAlias);
     }
     catch (Exception $e) {
       drupal_set_message(
