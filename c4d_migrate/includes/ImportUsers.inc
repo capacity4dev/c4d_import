@@ -32,6 +32,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
           'login',
           'status',
           'timezone',
+          'timezone_name',
           'language',
           'picture',
           'init',
@@ -73,5 +74,6 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('language', 'language')->defaultValue('');
     $this->addFieldMapping('picture', 'picture')->defaultValue(0);
     $this->addFieldMapping('init', 'init');
+    $this->addFieldMapping('data', 'data');
   }
 }
