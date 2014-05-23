@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Migrate class to import the geographical terms.
+ * Migrate class to import the Geographical terms.
  */
 
 /**
