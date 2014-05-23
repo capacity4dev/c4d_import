@@ -59,6 +59,17 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('picture', 'picture')->defaultValue(0);
     $this->addFieldMapping('init', 'init');
     $this->addFieldMapping('data', 'data');
+    $this->addFieldMapping('c4m_body', 'field_description');
+    $this->addFieldMapping('c4m_first_name', 'field_firstname');
+    $this->addFieldMapping('c4m_last_name', 'field_lastname');
+    $this->addFieldMapping('c4m_organisation', 'field_organisation');
+    $this->addFieldMapping('c4m_organisation_type', 'field_organisation_type_of');
+    // field_picture
+    // field_ref_topic
+    // field_ref_topic_expertise
+    $this->addFieldMapping('c4m_country', 'field_country');
+    // group memberships
+    // roles
   }
 
   /**
