@@ -21,7 +21,12 @@ class C4dMigrateImportVocabGeo extends C4dMigrateImportBase {
     // Define the source.
     $query = $this->createSelect('c4d_export_vocabulary_regions_countries', 'geo')
                   ->fields('geo');
-    $this->source = new MigrateSourceSQL($query);
+    $this->source = new MigrateSourceSQL(
+      $query,
+      array(),
+      NULL,
+      array('map_joinable' => FALSE)
+    );
 
     // Import into the c4m_vocab_geo table.
     $term_options['allow_duplicate_terms'] = TRUE;
