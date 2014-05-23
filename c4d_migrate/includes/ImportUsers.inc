@@ -20,37 +20,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     $this->description = t('Import users from our Drupal 6 database.');
 
-    $query        = $this->createSelect('c4d_export_user_profile', 'u')
-                         ->fields('u', array(
-          'uid',
-          'name',
-          'pass',
-          'mail',
-          'signature',
-          'created',
-          'access',
-          'login',
-          'status',
-          'timezone',
-          'timezone_name',
-          'language',
-          'picture',
-          'init',
-          'data',
-          'field_description',
-          'field_firstname',
-          'field_lastname',
-          'field_organisation',
-          'field_organisation_type_of',
-          'field_picture',
-          'field_ref_topic',
-          'field_ref_topic_expertise',
-          'field_country',
-          'og_groups',
-          'roles',
-        )
-      );
-    $this->source = new MigrateSourceSQL($query);
+    $query       = $this->createSelect('c4d_export_user_profile', 'u')
+                        ->orderBy('uid', 'ASC')
+                        ->fields('u');
+
+    $this->source = new MigrateSourceSQL($query, array(), NULL, array('map_joinable' => FALSE));
 
     // Create a map object for tracking the relationships between source rows.
     $key = array(
