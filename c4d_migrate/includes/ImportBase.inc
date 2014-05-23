@@ -6,7 +6,8 @@ class C4dMigrateImportBase extends Migration {
     parent::__construct();
 
     $this->setUpConnection();
-    $this->testConnection();
+    // Test connection.
+    $this->getConnection();
   }
 
   /**
@@ -38,14 +39,30 @@ class C4dMigrateImportBase extends Migration {
   }
 
   /**
+   * Set the right database and return a selectQuery.
+   *
+   * @param string $tableName
+   *   Name of the database table.
+   * @param string $tableAlias
+   *   Alias to give the database table.
+   *
+   * @return bool|SelectQueryInterface
+   */
+  public function createSelect($tableName, $tableAlias) {
+    if ($conn = $this->getConnection()) {
+      return $conn->select($tableName, $tableAlias);
+    }
+  }
+
+  /**
    * Test if our second database connection actually works.
    *
-   * @return bool
+   * @return bool|DatabaseConnection
    *   Is the connection test successful or not.
    */
-  public function testConnection() {
+  public function getConnection() {
     try {
-      Database::getConnection('default', C4D_MIGRATE_DATABASE);
+      return Database::getConnection('default', C4D_MIGRATE_DATABASE);
     }
     catch (Exception $e) {
       drupal_set_message(
@@ -58,9 +75,7 @@ class C4dMigrateImportBase extends Migration {
         'error'
       );
 
-      return FALSE;
+      throw new Exception($e);
     }
-
-    return TRUE;
   }
 }
