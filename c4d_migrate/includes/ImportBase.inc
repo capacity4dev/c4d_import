@@ -2,8 +2,8 @@
 
 class C4dMigrateImportBase extends Migration {
 
-  public function __construct() {
-    parent::__construct();
+  public function __construct($arguments) {
+    parent::__construct($arguments);
 
     $this->setUpConnection();
     // Test connection.
@@ -77,5 +77,12 @@ class C4dMigrateImportBase extends Migration {
 
       throw new Exception($e);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow($row) {
+    return parent::prepareRow($row);
   }
 }

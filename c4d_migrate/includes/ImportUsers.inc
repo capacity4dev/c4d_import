@@ -79,8 +79,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_country', 'field_country');
     // group memberships
     $this->addFieldMapping('roles', 'roles')
-         ->defaultValue(DRUPAL_AUTHENTICATED_RID)
-         ->sourceMigration('C4dMigrateImportRoles');
+         ->defaultValue(DRUPAL_AUTHENTICATED_RID);
   }
 
   /**
@@ -95,7 +94,14 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $row->data  = unserialize($row->data);
-    $row->roles = array_keys(unserialize($row->roles));
+    $row->data = unserialize($row->data);
+
+    $roles = array();
+    foreach (unserialize($row->roles) as $role) {
+      $roles[] = $this->handleSourceMigration('C4dMigrateImportRoles', $role['rid'], NULL, $this);
+    }
+    $row->roles = $roles;
+
+    return TRUE;
   }
 }
