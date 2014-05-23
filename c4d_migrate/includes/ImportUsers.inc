@@ -73,11 +73,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
     $this->addFieldMapping('c4m_organisation_type', 'field_organisation_type_of');
-    // field_picture
-    // field_ref_topic
-    // field_ref_topic_expertise
+    // field_picture -- Need Files first
+    // field_ref_topic -- Need Topic first
+    // field_ref_topic_expertise -- Need Topic first
     $this->addFieldMapping('c4m_country', 'field_country');
-    // group memberships
+    // group memberships -- Need Vocab_geo first
     $this->addFieldMapping('roles', 'roles')
          ->defaultValue(DRUPAL_AUTHENTICATED_RID);
   }
