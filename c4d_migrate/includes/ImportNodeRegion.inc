@@ -60,11 +60,20 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBase {
 
     // Map the fields.
     $this->addFieldMapping('title', 'title');
+    $this->addFieldMapping('status', 'status');
+    $this->addFieldMapping('created', 'created');
+    $this->addFieldMapping('changed', 'changed');
+    $this->addFieldMapping('comment', 'comment');
+    $this->addFieldMapping('promote', 'promote');
+    // TODO: add pathauto!
+
+    // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+      ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
-         ->sourceMigration('C4dMigrateImportVocabGeo')
-         ->arguments(array('source_type' => 'tid'));
+      ->sourceMigration('C4dMigrateImportVocabGeo')
+      ->arguments(array('source_type' => 'tid'));
+
 
     // Meta data!
     // TODO: migrate users needs to be done first!
