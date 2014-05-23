@@ -11,6 +11,15 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
   public $entityType = 'user';
 
   /**
+   * Content creations need to be run before this one.
+   *
+   * @var array
+   */
+  public $dependencies = array(
+    'C4dMigrateImportRoles',
+  );
+
+  /**
    * Configure the object during creation.
    */
   public function __construct() {
@@ -20,9 +29,9 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     $this->description = t('Import users from our Drupal 6 database.');
 
-    $query       = $this->createSelect('c4d_export_user_profile', 'u')
-                        ->orderBy('uid', 'ASC')
-                        ->fields('u');
+    $query = $this->createSelect('c4d_export_user_profile', 'u')
+                  ->orderBy('uid', 'ASC')
+                  ->fields('u');
 
     $this->source = new MigrateSourceSQL($query, array(), NULL, array('map_joinable' => FALSE));
 
@@ -69,7 +78,9 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     // field_ref_topic_expertise
     $this->addFieldMapping('c4m_country', 'field_country');
     // group memberships
-    // roles
+    $this->addFieldMapping('roles', 'roles')
+         ->defaultValue(DRUPAL_AUTHENTICATED_RID)
+         ->sourceMigration('C4dMigrateImportRoles');
   }
 
   /**
@@ -84,6 +95,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $row->data = unserialize($row->data);
+    $row->data  = unserialize($row->data);
+    $row->roles = array_keys(unserialize($row->roles));
   }
 }
