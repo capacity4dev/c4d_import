@@ -75,7 +75,7 @@ class C4dMigrateImportBase extends Migration {
         'error'
       );
 
-      drupal_goto('admin/content/migrate/import');
+      throw new Exception($e);
     }
   }
 }
