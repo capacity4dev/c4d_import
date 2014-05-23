@@ -10,3 +10,4 @@ dependencies[] = migrate_extras
 files[] = includes/ImportBase.inc
 
 files[] = includes/ImportVocabGeo.inc
+files[] = includes/ImportNodeRegion.inc
