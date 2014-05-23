@@ -1,12 +1,38 @@
 <?php
+/**
+ * @file
+ * Base class to import data into capacity4more.
+ */
 
-class C4dMigrateImportBase extends Migration {
+/**
+ * Base class to import data from capacity4dev into capacity4more.
+ */
+abstract class C4dMigrateImportBase extends Migration {
+  /**
+   * General initialization of a Migration object.
+   *
+   * This implements the common functionality to import nodes from a flat table.
+   *
+   * @param MigrateGroup $group
+   */
+  public function __construct($group = NULL) {
+    // TODO: find out why we get an array instead of the expected MigrateGroup
+    // object.
+    if ($group instanceof MigrateGroup) {
+      // OK : This is what the interface tells us what it should be!
+    }
+    elseif (!empty($group['group_name'])) {
+      // We get an array and the group name is part of it.
+      $group = MigrateGroup::getInstance($group['group_name']);
+    }
+    else {
+      // Fallback if there is no group provided.
+      $group = MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP);
+    }
+    parent::__construct($group);
 
-  public function __construct() {
-    parent::__construct();
-
+    // Setup the DB connection.
     $this->setUpConnection();
-    // Test connection.
     $this->getConnection();
   }
 
@@ -59,6 +85,8 @@ class C4dMigrateImportBase extends Migration {
    *
    * @return bool|DatabaseConnection
    *   Is the connection test successful or not.
+   *
+   * @throws Exception
    */
   public function getConnection() {
     try {
