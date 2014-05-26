@@ -142,11 +142,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
   /**
    * Review a data row after fetch, returning FALSE to skip it.
    *
-   * @param $row
+   * @param object $row
    *   The data row we are importing.
-   *
-   * @return void
-   *
    */
   public function prepare($user, $row) {
     if ($row->uid == 1) {
@@ -167,12 +164,12 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $itemlimit = $this->getItemLimit();
     $idlist    = $this->getOption('idlist');
     if ($idlist) {
-      // Make the IDs keys, to more easily identify them
+      // Make the IDs keys, to more easily identify them.
       $idlist = array_flip(explode(',', $idlist));
     }
 
     if (method_exists($this->destination, 'bulkRollback')) {
-      // Too many at once can lead to memory issues, so batch 'em up
+      // Too many at once can lead to memory issues, so batch 'em up.
       $destids     = array();
       $sourceids   = array();
       $batch_count = 0;
@@ -190,12 +187,12 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
         $current_source_key = $this->map->getCurrentKey();
 
-        // If there's an idlist, skip anything not in the list
+        // If there's an idlist, skip anything not in the list.
         if (($idlist && !isset($idlist[$current_source_key['sourceid1']])) || $current_source_key['sourceid1'] == 1) {
           continue;
         }
 
-        // Note that bulk rollback is only supported for single-column keys
+        // Note that bulk rollback is only supported for single-column keys.
         $sourceids[] = $current_source_key;
         if (!empty($destination_key->destid1)) {
           $map_row = $this->map->getRowByDestination((array) $destination_key);
@@ -214,7 +211,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
                 migrate_instrument_stop('destination bulkRollback');
               }
             }
-            // Keep track in case of interruption
+            // Keep track in case of interruption.
             migrate_instrument_start('rollback map/message update');
             $this->map->deleteBulk($sourceids);
             migrate_instrument_stop('rollback map/message update');
@@ -229,7 +226,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
           $destids   = array();
           $sourceids = array();
           // Will increment even if there was an exception... But we don't
-          // really have a way to know how many really were successfully rolled back
+          // really have a way to know how many really were successfully
+          // rolled back.
           $this->total_processed += $batch_count;
           $this->processed_since_feedback += $batch_count;
           $batch_count = 0;
@@ -265,15 +263,15 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         }
         $current_source_key = $this->map->getCurrentKey();
 
-        // If there's an idlist, skip anything not in the list
+        // If there's an idlist, skip anything not in the list.
         if ($idlist && !isset($idlist[$current_source_key['sourceid1']])) {
           continue;
         }
 
-        // Rollback one record
+        // Rollback one record.
         try {
           if ($this->systemOfRecord == Migration::SOURCE) {
-            // Skip when the destination key is null
+            // Skip when the destination key is null.
             $skip = FALSE;
             foreach ($destination_key as $key_value) {
               if (is_null($key_value)) {
@@ -298,7 +296,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
           $this->successes_since_feedback++;
         }
         catch (Exception $e) {
-          // TODO: At least count failures
+          // TODO: At least count failures.
           continue;
         }
         $this->total_processed++;
@@ -310,7 +308,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     $this->progressMessage($return);
 
-    // If we're using highwater marks, reset at completion of a full rollback
+    // If we're using highwater marks, reset at completion of a full rollback.
     // TODO: What about partial rollbacks? Probably little we can do to make
     // that work cleanly...
     if ($this->highwaterField) {
