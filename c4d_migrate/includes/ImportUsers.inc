@@ -79,9 +79,10 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_media:source_dir', 'field_picture_rootpath');
     $this->addFieldMapping('c4m_media:file_replace')
          ->defaultValue(FILE_EXISTS_REPLACE);
-
-    // field_ref_topic -- Need Topic first.
-    // field_ref_topic_expertise -- Need Topic first.
+    $this->addFieldMapping('c4m_related_topic', 'field_ref_topic')
+         ->sourceMigration('C4dMigrateImportNodeTopic');
+    $this->addFieldMapping('c4m_related_topic_expertise', 'field_ref_topic_expertise')
+         ->sourceMigration('C4dMigrateImportNodeTopic');
     $this->addFieldMapping('c4m_country', 'field_country');
     // geo_vocab was not added to the user profile in Drupal 6.
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
@@ -105,6 +106,17 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     parent::prepareRow($row);
 
     $row->data = unserialize($row->data);
+
+    // Extract field_ref_topic
+    $ref_topic            = !empty($row->field_ref_topic)
+      ? unserialize($row->field_ref_topic)
+      : NULL;
+    $row->field_ref_topic = $ref_topic;
+    // Extract field_ref_topic_expertise
+    $ref_topic_exp                  = !empty($row->field_ref_topic_expertise)
+      ? unserialize($row->field_ref_topic_expertise)
+      : NULL;
+    $row->field_ref_topic_expertise = $ref_topic_exp;
 
     if (!empty($row->field_picture)) {
       // Retrieve actual file from fid.

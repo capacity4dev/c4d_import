@@ -39,6 +39,7 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabGeo',
     'C4dMigrateImportRoles',
     'C4dMigrateImportUsers',
+    'C4dMigrateImportNodeTopic',
   );
 
   $group_name = 'c4d_migrate';
