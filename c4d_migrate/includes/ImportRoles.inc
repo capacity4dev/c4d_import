@@ -63,11 +63,15 @@ class C4dMigrateImportRoles extends C4dMigrateImportBase {
   }
 
   /**
-   * Review a data row after fetch, returning FALSE to skip it.
+   * Prepare the role and check the mappings (for existing roles).
    *
-   * @param $row
+   * @param object $role
+   *   The role object we are saving.
+   * @param object $row
+   *   The data from the CSV file.
    *
    * @return bool
+   *   Success.
    */
   public function prepare($role, $row) {
     if (isset($this->roleMappings[$role->name])) {
@@ -79,25 +83,32 @@ class C4dMigrateImportRoles extends C4dMigrateImportBase {
                           ->fetchField();
       if ($destination_rid) {
         $role->rid = $destination_rid;
-        // Make sure we don't change the destination name
+        // Make sure we don't change the destination name.
         $role->name = $destination_name;
       }
     }
+
+    return TRUE;
   }
 
   /**
+   * Make sure not to delete pre-existing (mapped) roles.
+   *
    * Override of Migration::rollback() - make sure we don't delete pre-existing
    * roles we've mapped to.
+   *
+   * @return int
+   *   Success
    */
   protected function rollback() {
     $return = MigrationBase::RESULT_COMPLETED;
     $idlist = $this->getOption('idlist');
     if ($idlist) {
-      // Make the IDs keys, to more easily identify them
+      // Make the IDs keys, to more easily identify them.
       $idlist = array_flip(explode(',', $idlist));
     }
 
-    // Easily lookup destination role names
+    // Easily lookup destination role names.
     $roles_to_skip = array_flip($this->roleMappings);
 
     foreach ($this->map as $destination_key) {
@@ -112,13 +123,13 @@ class C4dMigrateImportRoles extends C4dMigrateImportBase {
       }
       $this->currentSourceKey = $this->map->getCurrentKey();
 
-      // If there's an idlist, skip anything not in the list
+      // If there's an idlist, skip anything not in the list.
       if ($idlist && !isset($idlist[$this->currentSourceKey['sourceid1']])) {
         continue;
       }
 
       try {
-        // Skip when the destination key is null
+        // Skip when the destination key is null.
         $skip      = FALSE;
         $key_value = reset($destination_key);
         if (is_null($key_value)) {
@@ -146,7 +157,7 @@ class C4dMigrateImportRoles extends C4dMigrateImportBase {
         $this->successes_since_feedback++;
       }
       catch (Exception $e) {
-        // TODO: At least count failures
+        // TODO: At least count failures.
         continue;
       }
       $this->total_processed++;
