@@ -36,7 +36,8 @@ function c4d_migrate_migrate_api() {
   $migrations = array();
 
   $classes = array(
-    // 'C4dImportArticles',
+    'C4dMigrateImportRoles',
+    'C4dMigrateImportUsers',
     'C4dMigrateImportVocabGeo',
     'C4dMigrateImportNodeRegion',
   );
