@@ -73,7 +73,13 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
     $this->addFieldMapping('c4m_organisation_type', 'field_organisation_type_of');
-    // field_picture -- Need Files first
+    $this->addFieldMapping('field_picture', 'field_picture')
+         ->defaultValue(NULL);
+    $this->addFieldMapping('c4m_media', 'field_picture_file');
+    $this->addFieldMapping('c4m_media:source_dir', 'field_picture_rootpath');
+    $this->addFieldMapping('c4m_media:file_replace')
+         ->defaultValue(FILE_EXISTS_REPLACE);
+
     // field_ref_topic -- Need Topic first
     // field_ref_topic_expertise -- Need Topic first
     $this->addFieldMapping('c4m_country', 'field_country');
@@ -95,6 +101,30 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     parent::prepareRow($row);
 
     $row->data = unserialize($row->data);
+
+    if (!empty($row->field_picture)) {
+      // Retrieve actual file from fid.
+      $f_select = $this->getConnection()->select('c4d_export_other_files', 'f');
+      $f_select->fields('f');
+      $f_select->condition('f.fid', $row->field_picture, '=');
+      $res    = $f_select->execute();
+      $result = $res->fetchObject();
+
+      $row->field_picture_file = $result->filename;
+
+      // All other keys combined are the relative path from the root dir.
+      $rel_path = substr($result->filepath, 0, -strlen($result->filename));
+
+      $row->field_picture_rootpath = variable_get(C4D_MIGRATE_FILES_ROOT, '/') . DIRECTORY_SEPARATOR . $rel_path;
+//
+//      $current_image_data = array(
+//        'path'  => variable_get(C4D_MIGRATE_FILES_ROOT, '/') . DIRECTORY_SEPARATOR . $result->filepath,
+//        'alt'   => '',
+//        'title' => '',
+//      );
+
+//      $row->c4m_media = drupal_json_encode($current_image_data);
+    }
 
     $roles = array();
     foreach (unserialize($row->roles) as $role) {
