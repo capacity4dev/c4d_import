@@ -14,8 +14,8 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
    * @var array
    */
   public $dependencies = array(
+    'C4dMigrateImportUsers',
     'C4dMigrateImportVocabGeo',
-    // 'C4dMigrateImportUsers',
   );
 
 
