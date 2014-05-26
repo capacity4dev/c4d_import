@@ -14,6 +14,7 @@ abstract class C4dMigrateImportBase extends Migration {
    * This implements the common functionality to import nodes from a flat table.
    *
    * @param MigrateGroup $group
+   *   The migrate Group object.
    */
   public function __construct($group = NULL) {
     // TODO: find out why we get an array instead of the expected MigrateGroup
@@ -72,7 +73,7 @@ abstract class C4dMigrateImportBase extends Migration {
       drupal_set_message(
         t('Unable to connect to the database, <a href="@url">please check your settings</a>.',
           array(
-            '@url'       => url('admin/content/migrate/import'),
+            '@url' => url('admin/content/migrate/import'),
           )
         ),
         'error'
@@ -86,16 +87,17 @@ abstract class C4dMigrateImportBase extends Migration {
   /**
    * Set the right database and return a selectQuery.
    *
-   * @param string $tableName
+   * @param string $name
    *   Name of the database table.
-   * @param string $tableAlias
+   * @param string $alias
    *   Alias to give the database table.
    *
    * @return bool|SelectQueryInterface
+   *   The select object.
    */
-  public function createSelect($tableName, $tableAlias) {
+  public function createSelect($name, $alias) {
     if ($conn = $this->getConnection()) {
-      return $conn->select($tableName, $tableAlias);
+      return $conn->select($name, $alias);
     }
   }
 }

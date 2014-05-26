@@ -15,7 +15,7 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
    */
   public $dependencies = array(
     'C4dMigrateImportVocabGeo',
-    //'C4dMigrateImportUsers',
+    // 'C4dMigrateImportUsers',
   );
 
 
@@ -23,6 +23,7 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
    * Configure the object during creation.
    *
    * @param MigrateGroup $group
+   *   The migrate Group object.
    */
   public function __construct($group = NULL) {
     $this->description = t('Import Region nodes.');
@@ -56,7 +57,7 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    // Unserialize data
+    // Unserialize data.
     $row->field_links = unserialize($row->field_links);
     $row->field_documents = unserialize($row->field_documents);
     $row->field_group_suggestions = unserialize($row->field_group_suggestions);

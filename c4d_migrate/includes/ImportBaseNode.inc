@@ -29,6 +29,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * This implements the common functionality to import nodes from a flat table.
    *
    * @param MigrateGroup $group
+   *   The migrate Group object.
    */
   public function __construct($group = NULL) {
     parent::__construct($group);
@@ -87,16 +88,18 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // TODO: add user mapping!
 
-
     // TODO: add pathauto!
+
   }
 
   /**
    * Set the source table name.
    *
    * @param string $table
+   *   The source table name.
    *
    * @return C4dMigrateImportBaseNode
+   *   Support for fluent interface.
    */
   public function setSourceTable($table) {
     $this->sourceTable = $table;
@@ -107,6 +110,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * Get the source table name.
    *
    * @return string
+   *   The name of the source table.
    */
   public function getSourceTable() {
     return $this->sourceTable;
@@ -116,8 +120,10 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * Set the bundle we want to import to.
    *
    * @param string $bundle
+   *   The target node bundle name.
    *
    * @return C4dMigrateImportBaseNode
+   *   Support for fluent interface.
    */
   public function setTargetBundle($bundle) {
     $this->targetBundle = $bundle;
@@ -128,6 +134,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * Get the bundle we want to import to.
    *
    * @return string
+   *   The name of the target node bundle.
    */
   public function getTargetBundle() {
     return $this->targetBundle;
