@@ -142,4 +142,182 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     return TRUE;
   }
+
+  /**
+   * Review a data row after fetch, returning FALSE to skip it.
+   *
+   * @param $row
+   *
+   * @return bool
+   */
+  public function prepare($user, $row) {
+    if ($row->uid == 1) {
+      $destination_name = 'admin';
+      $destination_uid  = 1;
+      if ($destination_uid) {
+        $user->uid = $destination_uid;
+        $user->name = $destination_name;
+      }
+    }
+  }
+
+  /**
+   * Perform a rollback operation - remove migrated items from the destination.
+   */
+  protected function rollback() {
+    $return = MigrationBase::RESULT_COMPLETED;
+    $itemlimit = $this->getItemLimit();
+    $idlist = $this->getOption('idlist');
+    if ($idlist) {
+      // Make the IDs keys, to more easily identify them
+      $idlist = array_flip(explode(',', $idlist));
+    }
+
+    if (method_exists($this->destination, 'bulkRollback')) {
+      // Too many at once can lead to memory issues, so batch 'em up
+      $destids = array();
+      $sourceids = array();
+      $batch_count = 0;
+      foreach ($this->map as $destination_key) {
+        if ($this->timeOptionExceeded()) {
+          break;
+        }
+        if (($return = $this->checkStatus()) != MigrationBase::RESULT_COMPLETED) {
+          break;
+        }
+
+        if ($itemlimit && ($this->total_processed + $batch_count >= $itemlimit)) {
+          break;
+        }
+
+        $current_source_key = $this->map->getCurrentKey();
+
+        // If there's an idlist, skip anything not in the list
+        if (($idlist && !isset($idlist[$current_source_key['sourceid1']])) || $current_source_key['sourceid1'] == 1) {
+          continue;
+        }
+
+        // Note that bulk rollback is only supported for single-column keys
+        $sourceids[] = $current_source_key;
+        if (!empty($destination_key->destid1)) {
+          $map_row = $this->map->getRowByDestination((array)$destination_key);
+          if ($map_row['rollback_action'] == MigrateMap::ROLLBACK_DELETE && $destination_key->sourceid !== 1) {
+            $destids[] = $destination_key->destid1;
+          }
+        }
+
+        $batch_count++;
+        if ($batch_count >= $this->rollbackBatchSize) {
+          try {
+            if ($this->systemOfRecord == Migration::SOURCE) {
+              if (!empty($destids)) {
+                migrate_instrument_start('destination bulkRollback');
+                $this->destination->bulkRollback($destids);
+                migrate_instrument_stop('destination bulkRollback');
+              }
+            }
+            // Keep track in case of interruption
+            migrate_instrument_start('rollback map/message update');
+            $this->map->deleteBulk($sourceids);
+            migrate_instrument_stop('rollback map/message update');
+            $this->total_successes += $batch_count;
+            $this->successes_since_feedback += $batch_count;
+          }
+          catch (Exception $e) {
+            $this->handleException($e, FALSE);
+            migrate_instrument_stop('bulkRollback');
+            migrate_instrument_stop('rollback map/message update');
+          }
+          $destids = array();
+          $sourceids = array();
+          // Will increment even if there was an exception... But we don't
+          // really have a way to know how many really were successfully rolled back
+          $this->total_processed += $batch_count;
+          $this->processed_since_feedback += $batch_count;
+          $batch_count = 0;
+        }
+      }
+      if ($batch_count > 0) {
+        if ($this->systemOfRecord == Migration::SOURCE) {
+          if (!empty($destids)) {
+            migrate_instrument_start('destination bulkRollback');
+            $this->destination->bulkRollback($destids);
+            migrate_instrument_stop('destination bulkRollback');
+          }
+          $this->total_processed += $batch_count;
+          $this->total_successes += $batch_count;
+          $this->processed_since_feedback += $batch_count;
+          $this->successes_since_feedback += $batch_count;
+        }
+        migrate_instrument_start('rollback map/message update');
+        $this->map->deleteBulk($sourceids);
+        migrate_instrument_stop('rollback map/message update');
+      }
+    }
+    else {
+      foreach ($this->map as $destination_key) {
+        if ($this->timeOptionExceeded()) {
+          break;
+        }
+        if (($return = $this->checkStatus()) != MigrationBase::RESULT_COMPLETED) {
+          break;
+        }
+        if ($this->itemOptionExceeded()) {
+          break;
+        }
+        $current_source_key = $this->map->getCurrentKey();
+
+        // If there's an idlist, skip anything not in the list
+        if ($idlist && !isset($idlist[$current_source_key['sourceid1']])) {
+          continue;
+        }
+
+        // Rollback one record
+        try {
+          if ($this->systemOfRecord == Migration::SOURCE) {
+            // Skip when the destination key is null
+            $skip = FALSE;
+            foreach ($destination_key as $key_value) {
+              if (is_null($key_value)) {
+                $skip = TRUE;
+                break;
+              }
+            }
+            if (!$skip) {
+              $map_row = $this->map->getRowByDestination((array)$destination_key);
+              if ($map_row['rollback_action'] == MigrateMap::ROLLBACK_DELETE) {
+                migrate_instrument_start('destination rollback');
+                $this->destination->rollback((array)$destination_key);
+                migrate_instrument_stop('destination rollback');
+              }
+            }
+          }
+
+          migrate_instrument_start('rollback map/message update');
+          $this->map->delete($current_source_key);
+          migrate_instrument_stop('rollback map/message update');
+          $this->total_successes++;
+          $this->successes_since_feedback++;
+        }
+        catch (Exception $e) {
+          // TODO: At least count failures
+          continue;
+        }
+        $this->total_processed++;
+        $this->processed_since_feedback++;
+      }
+    }
+
+    $this->map->clearMessages();
+
+    $this->progressMessage($return);
+
+    // If we're using highwater marks, reset at completion of a full rollback
+    // TODO: What about partial rollbacks? Probably little we can do to make
+    // that work cleanly...
+    if ($this->highwaterField) {
+      $this->saveHighwater('', TRUE);
+    }
+    return $return;
+  }
 }
