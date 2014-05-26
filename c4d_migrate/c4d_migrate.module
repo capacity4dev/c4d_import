@@ -37,7 +37,7 @@ function c4d_migrate_migrate_api() {
 
   $classes = array(
 //    'C4dImportArticles',
-    //'C4dMigrateImportVocabGeo',
+    'C4dMigrateImportVocabGeo',
   );
 
   $group_name = 'c4d_migrate';
