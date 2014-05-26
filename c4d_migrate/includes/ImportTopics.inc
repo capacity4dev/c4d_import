@@ -20,6 +20,9 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBase {
     'C4dMigrateImportUsers',
   );
 
+  /**
+   * Configure the object during creation.
+   */
   public function __construct() {
     parent::__construct(
           MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)

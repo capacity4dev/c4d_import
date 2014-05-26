@@ -108,14 +108,10 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $row->data = unserialize($row->data);
 
     // Extract field_ref_topic
-    $ref_topic            = !empty($row->field_ref_topic)
-      ? unserialize($row->field_ref_topic)
-      : NULL;
+    $ref_topic            = !empty($row->field_ref_topic) ? unserialize($row->field_ref_topic) : NULL;
     $row->field_ref_topic = $ref_topic;
     // Extract field_ref_topic_expertise
-    $ref_topic_exp                  = !empty($row->field_ref_topic_expertise)
-      ? unserialize($row->field_ref_topic_expertise)
-      : NULL;
+    $ref_topic_exp                  = !empty($row->field_ref_topic_expertise) ? unserialize($row->field_ref_topic_expertise) : NULL;
     $row->field_ref_topic_expertise = $ref_topic_exp;
 
     if (!empty($row->field_picture)) {
@@ -147,15 +143,17 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
    * Review a data row after fetch, returning FALSE to skip it.
    *
    * @param $row
+   *   The data row we are importing.
    *
-   * @return bool
+   * @return void
+   *
    */
   public function prepare($user, $row) {
     if ($row->uid == 1) {
       $destination_name = 'admin';
       $destination_uid  = 1;
       if ($destination_uid) {
-        $user->uid = $destination_uid;
+        $user->uid  = $destination_uid;
         $user->name = $destination_name;
       }
     }
@@ -165,9 +163,9 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
    * Perform a rollback operation - remove migrated items from the destination.
    */
   protected function rollback() {
-    $return = MigrationBase::RESULT_COMPLETED;
+    $return    = MigrationBase::RESULT_COMPLETED;
     $itemlimit = $this->getItemLimit();
-    $idlist = $this->getOption('idlist');
+    $idlist    = $this->getOption('idlist');
     if ($idlist) {
       // Make the IDs keys, to more easily identify them
       $idlist = array_flip(explode(',', $idlist));
@@ -175,8 +173,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     if (method_exists($this->destination, 'bulkRollback')) {
       // Too many at once can lead to memory issues, so batch 'em up
-      $destids = array();
-      $sourceids = array();
+      $destids     = array();
+      $sourceids   = array();
       $batch_count = 0;
       foreach ($this->map as $destination_key) {
         if ($this->timeOptionExceeded()) {
@@ -200,7 +198,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         // Note that bulk rollback is only supported for single-column keys
         $sourceids[] = $current_source_key;
         if (!empty($destination_key->destid1)) {
-          $map_row = $this->map->getRowByDestination((array)$destination_key);
+          $map_row = $this->map->getRowByDestination((array) $destination_key);
           if ($map_row['rollback_action'] == MigrateMap::ROLLBACK_DELETE && $destination_key->sourceid !== 1) {
             $destids[] = $destination_key->destid1;
           }
@@ -228,7 +226,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
             migrate_instrument_stop('bulkRollback');
             migrate_instrument_stop('rollback map/message update');
           }
-          $destids = array();
+          $destids   = array();
           $sourceids = array();
           // Will increment even if there was an exception... But we don't
           // really have a way to know how many really were successfully rolled back
@@ -284,10 +282,10 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
               }
             }
             if (!$skip) {
-              $map_row = $this->map->getRowByDestination((array)$destination_key);
+              $map_row = $this->map->getRowByDestination((array) $destination_key);
               if ($map_row['rollback_action'] == MigrateMap::ROLLBACK_DELETE) {
                 migrate_instrument_start('destination rollback');
-                $this->destination->rollback((array)$destination_key);
+                $this->destination->rollback((array) $destination_key);
                 migrate_instrument_stop('destination rollback');
               }
             }
@@ -318,6 +316,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     if ($this->highwaterField) {
       $this->saveHighwater('', TRUE);
     }
+
     return $return;
   }
 }
