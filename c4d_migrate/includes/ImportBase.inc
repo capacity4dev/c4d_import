@@ -9,6 +9,15 @@
  */
 abstract class C4dMigrateImportBase extends Migration {
   /**
+   * Variable prefix to use to pass files from the row to the migration.
+   *
+   * @var string
+   */
+  const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
+  const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
+
+
+  /**
    * General initialization of a Migration object.
    *
    * This implements the common functionality to import nodes from a flat table.
@@ -99,5 +108,71 @@ abstract class C4dMigrateImportBase extends Migration {
     if ($conn = $this->getConnection()) {
       return $conn->select($name, $alias);
     }
+  }
+
+  /**
+   * Helper to add mapping for a file.
+   *
+   * @param string $target
+   *   The name of the field were the file needs to be stored.
+   * @param string $source
+   *   The name of the field that holds the file ID (fid) in the data row from
+   *   the source table.
+   */
+  public function addFileFieldMapping($target, $source) {
+    // File info is passed trough temporary variables.
+    $file = self::FILE_PREFIX_FILE . $source;
+    $path = self::FILE_PREFIX_PATH . $source;
+
+    $this->addFieldMapping($target, $file);
+    $this->addFieldMapping($target . ':source_dir', $path);
+    $this->addFieldMapping($target . ':file_replace')
+      ->defaultValue(FILE_EXISTS_REPLACE);
+  }
+
+  /**
+   * Helper to prepare the field for a file field.
+   *
+   * This will query the file table from the D6 environment to retrieve the file
+   * details and add it to the row. The mapping will use this data to fill the
+   * file field on the new platform.
+   *
+   * @param object $row
+   *   The data row.
+   * @param string $source
+   *   The name of the file source field.
+   *   This field should contain a file id (fid).
+   * @param string $table
+   *   The table to use to lookup the file data.
+   */
+  public function prepareFileInRow($row, $source, $table = 'c4d_export_other_files') {
+    // File info is passed trough temporary variables.
+    $file = self::FILE_PREFIX_FILE . $source;
+    $path = self::FILE_PREFIX_PATH . $source;
+
+    // Prepare with empty values.
+    $row->{$file} = NULL;
+    $row->{$path} = NULL;
+
+    // Check if any file data in the platform.
+    if (empty($row->{$source})) {
+      return;
+    }
+
+    // Retrieve actual file record from fid.
+    $f_select = $this->getConnection()->select($table, 'f');
+    $f_select->fields('f');
+    $f_select->condition('f.fid', (int) $row->{$source});
+    $res    = $f_select->execute();
+    $result = $res->fetchObject();
+
+    // Pass the filename.
+    $row->{$file} = $result->filename;
+
+    // All other keys combined are the relative path from the root dir.
+    $rel_path = substr($result->filepath, 0, -strlen($result->filename));
+    $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
+      . DIRECTORY_SEPARATOR
+      . $rel_path;
   }
 }
