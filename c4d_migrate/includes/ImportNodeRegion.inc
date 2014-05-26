@@ -43,6 +43,9 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
       ->sourceMigration('C4dMigrateImportVocabGeo')
       ->arguments(array('source_type' => 'tid'));
+
+    // Map the picture field.
+    $this->addFileFieldMapping('c4m_media', 'field_picture_region');
   }
 
   /**
@@ -63,9 +66,8 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     $row->field_group_suggestions = unserialize($row->field_group_suggestions);
     $row->taxonomy = unserialize($row->taxonomy);
 
-    // Prepare the file information (retrieve info from the files table).
-    // TODO: extract the file info so migrate can move it and add it to the
-    // new platform.
+    // Prepare the picture data.
+    $this->prepareFileInRow($row, 'field_picture_region', 'files');
 
     return TRUE;
   }
