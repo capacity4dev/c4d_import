@@ -80,16 +80,20 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_media:file_replace')
          ->defaultValue(FILE_EXISTS_REPLACE);
 
-    // field_ref_topic -- Need Topic first
-    // field_ref_topic_expertise -- Need Topic first
+    // field_ref_topic -- Need Topic first.
+    // field_ref_topic_expertise -- Need Topic first.
     $this->addFieldMapping('c4m_country', 'field_country');
-    // group memberships -- Need Vocab_geo first
+    // geo_vocab was not added to the user profile in Drupal 6.
+    $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
+         ->sourceMigration('C4dMigrateImportVocabGeo')
+         ->arguments(array('source_type' => 'tid'));
+
     $this->addFieldMapping('roles', 'roles')
          ->defaultValue(DRUPAL_AUTHENTICATED_RID);
   }
 
   /**
-   * Prepare the row data loaded from the CSV.
+   * Prepare the row data loaded from the Drupal 6 database.
    *
    * @param object $row
    *   The data from the CSV file.
@@ -116,14 +120,6 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       $rel_path = substr($result->filepath, 0, -strlen($result->filename));
 
       $row->field_picture_rootpath = variable_get(C4D_MIGRATE_FILES_ROOT, '/') . DIRECTORY_SEPARATOR . $rel_path;
-//
-//      $current_image_data = array(
-//        'path'  => variable_get(C4D_MIGRATE_FILES_ROOT, '/') . DIRECTORY_SEPARATOR . $result->filepath,
-//        'alt'   => '',
-//        'title' => '',
-//      );
-
-//      $row->c4m_media = drupal_json_encode($current_image_data);
     }
 
     $roles = array();
