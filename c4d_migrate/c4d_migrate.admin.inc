@@ -71,7 +71,8 @@ function c4d_migrate_admin_overview_form() {
 
   $form['files'][C4D_MIGRATE_FILES_ROOT] = array(
     '#type'          => 'textfield',
-    '#title'         => t('Files Root location'),
+    '#title'         => t('capacity4dev Root location'),
+    '#description'   => t('Provide the full path to the root of the old capacity4dev platform.'),
     '#default_value' => variable_get(C4D_MIGRATE_FILES_ROOT, '/'),
     '#size'          => 60,
     '#maxlength'     => 128,
