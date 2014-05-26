@@ -43,7 +43,7 @@ function c4d_migrate_admin_overview_form() {
     '#required'    => FALSE,
   );
   if (variable_get(C4D_MIGRATE_DB_PASS, NULL)) {
-    $form['database'][C4D_MIGRATE_DB_PASS] = t(
+    $form['database'][C4D_MIGRATE_DB_PASS]['#description'] = t(
       'A password has been entered yet (not displayed), enter it again if you want to save changes to any of the settings on this page.'
     );
   }
