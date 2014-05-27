@@ -36,10 +36,12 @@ function c4d_migrate_migrate_api() {
   $migrations = array();
 
   $classes = array(
+    'C4dMigrateImportVocabGeo',
     'C4dMigrateImportRoles',
     'C4dMigrateImportUsers',
     'C4dMigrateImportVocabGeo',
     'C4dMigrateImportNodeRegion',
+    'C4dMigrateImportNodeTopic',
   );
 
   $group_name = 'c4d_migrate';
