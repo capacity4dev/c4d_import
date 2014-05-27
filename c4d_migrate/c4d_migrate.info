@@ -16,3 +16,4 @@ files[] = includes/ImportRoles.inc
 files[] = includes/ImportUsers.inc
 files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportTopics.inc
+files[] = includes/ImportArticle.inc
