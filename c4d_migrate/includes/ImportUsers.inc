@@ -54,15 +54,16 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     );
 
     $this->destination = $destination_handler;
+
+    // Pass mapping does not work when in the addCustomFieldMapping() method.
+    $this->addFieldMapping('pass', 'pass');
   }
 
   /**
    * {@inheritdoc}
    */
   public function addCustomFieldMapping() {
-
     $this->addFieldMapping('name', 'name')->dedupe('users', 'name');
-    $this->addFieldMapping('pass', 'pass');
     $this->addFieldMapping('mail', 'mail')->dedupe('users', 'mail');
     $this->addFieldMapping('signature', 'signature')->defaultValue('');
     $this->addFieldMapping('created', 'created');
