@@ -89,6 +89,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
          ->sourceMigration('C4dMigrateImportVocabGeo')
          ->arguments(array('source_type' => 'tid'));
 
+    // @TODO Group memberships and roles.
+
     $this->addFieldMapping('roles', 'roles')
          ->defaultValue(DRUPAL_AUTHENTICATED_RID);
   }
