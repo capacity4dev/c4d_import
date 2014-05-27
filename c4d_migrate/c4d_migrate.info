@@ -8,8 +8,11 @@ dependencies[] = migrate_extras
 
 ; Classes to migrate the content.
 files[] = includes/ImportBase.inc
+files[] = includes/ImportBaseNode.inc
 
+files[] = includes/ImportNodeRegion.inc
 files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportRoles.inc
 files[] = includes/ImportUsers.inc
+files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportTopics.inc

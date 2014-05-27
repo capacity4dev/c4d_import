@@ -39,6 +39,8 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabGeo',
     'C4dMigrateImportRoles',
     'C4dMigrateImportUsers',
+    'C4dMigrateImportVocabGeo',
+    'C4dMigrateImportNodeRegion',
     'C4dMigrateImportNodeTopic',
   );
 
@@ -76,6 +78,8 @@ function c4d_migrate_menu() {
     'access arguments' => array('administer c4d import'),
     'file'             => 'c4d_migrate.admin.inc',
     'file path'        => drupal_get_path('module', 'c4d_migrate'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 20,
   );
 
   return $items;
