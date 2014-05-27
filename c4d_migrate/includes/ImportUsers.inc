@@ -81,13 +81,6 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
     $this->addFieldMapping('c4m_organisation_type', 'field_organisation_type_of');
-
-    $this->addFieldMapping('field_picture', 'field_picture')
-         ->defaultValue(NULL);
-    $this->addFieldMapping('c4m_media', 'field_picture_file');
-    $this->addFieldMapping('c4m_media:source_dir', 'field_picture_rootpath');
-    $this->addFieldMapping('c4m_media:file_replace')
-         ->defaultValue(FILE_EXISTS_REPLACE);
     $this->addFieldMapping('c4m_related_topic', 'field_ref_topic')
          ->sourceMigration('C4dMigrateImportNodeTopic');
     $this->addFieldMapping('c4m_related_topic_expertise', 'field_ref_topic_expertise')
@@ -97,6 +90,9 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
          ->sourceMigration('C4dMigrateImportVocabGeo')
          ->arguments(array('source_type' => 'tid'));
+
+    // Special field mapping for files.
+    $this->addFileFieldMapping('c4m_media', 'field_picture');
 
     // @TODO Group memberships and roles.
 
@@ -125,22 +121,10 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $ref_topic_exp                  = !empty($row->field_ref_topic_expertise) ? unserialize($row->field_ref_topic_expertise) : NULL;
     $row->field_ref_topic_expertise = $ref_topic_exp;
 
-    if (!empty($row->field_picture)) {
-      // Retrieve actual file from fid.
-      $f_select = $this->getConnection()->select('c4d_export_other_files', 'f');
-      $f_select->fields('f');
-      $f_select->condition('f.fid', $row->field_picture, '=');
-      $res    = $f_select->execute();
-      $result = $res->fetchObject();
+    // Add the picture file data.
+    $this->prepareFileInRow($row, 'field_picture');
 
-      $row->field_picture_file = $result->filename;
-
-      // All other keys combined are the relative path from the root dir.
-      $rel_path = substr($result->filepath, 0, -strlen($result->filename));
-
-      $row->field_picture_rootpath = variable_get(C4D_MIGRATE_FILES_ROOT, '/') . DIRECTORY_SEPARATOR . $rel_path;
-    }
-
+    // Add the roles.
     $roles = array();
     foreach (unserialize($row->roles) as $role) {
       $roles[] = $this->handleSourceMigration('C4dMigrateImportRoles', $role['rid'], NULL, $this);
