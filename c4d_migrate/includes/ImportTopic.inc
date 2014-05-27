@@ -7,7 +7,7 @@
 /**
  * Class to import the Topic nodes from the Drupal 6 platform.
  */
-class C4dMigrateImportNodeTopic extends C4dMigrateImportBase {
+class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
   public $entityType = 'node';
   public $bundle = 'topic';
 
@@ -55,6 +55,38 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBase {
     );
 
     $this->destination = $destination_handler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addCustomFieldMapping() {
+    // Map the custom fields.
+    $this->addFieldMapping('c4m_body', 'body')
+         ->arguments(array('format' => 'full_html'));
+
+    // Map the picture field.
+    $this->addFileFieldMapping('c4m_media', 'field_picture');
+
+    // Other fields are not described yet for the Drupal 7 Content Type.
+  }
+
+  /**
+   * Prepare the row data loaded from the table.
+   *
+   * @param object $row
+   *   The data from the table.
+   *
+   * @return bool
+   *   Success.
+   */
+  public function prepareRow($row) {
+    parent::prepareRow($row);
+
+    // Prepare the picture data.
+    $this->prepareFileInRow($row, 'field_picture');
+
+    return TRUE;
   }
 
   /**
