@@ -1,12 +1,11 @@
 <?php
 /**
- * @file Administration screens and forms for c4d_export.
+ * @file
+ * Administration screens and forms for c4d_export.
  */
 
 /**
- * Form callback for admin/content/migrate/import
- *
- * @param array $form_state
+ * Form callback for admin/content/migrate/import.
  */
 function c4d_migrate_admin_overview_form() {
   $form = array();
@@ -38,13 +37,16 @@ function c4d_migrate_admin_overview_form() {
   $form['database'][C4D_MIGRATE_DB_PASS] = array(
     '#type'        => 'password',
     '#title'       => t('Database password'),
-    '#description' => variable_get(C4D_MIGRATE_DB_PASS, NULL)
-        ? t('A password has been entered yet (not displayed), enter it again if you want to save changes to any of the settings on this page.')
-        : t('No password has been set yet. Leave empty for unrestricted access.'),
+    '#description' => t('No password has been set yet. Leave empty for unrestricted access.'),
     '#size'        => 60,
     '#maxlength'   => 128,
     '#required'    => FALSE,
   );
+  if (variable_get(C4D_MIGRATE_DB_PASS, NULL)) {
+    $form['database'][C4D_MIGRATE_DB_PASS]['#description'] = t(
+      'A password has been entered yet (not displayed), enter it again if you want to save changes to any of the settings on this page.'
+    );
+  }
 
   $form['database']['c4d_migrate_pw_reset'] = array(
     '#type'        => 'checkbox',
@@ -69,7 +71,8 @@ function c4d_migrate_admin_overview_form() {
 
   $form['files'][C4D_MIGRATE_FILES_ROOT] = array(
     '#type'          => 'textfield',
-    '#title'         => t('Files Root location'),
+    '#title'         => t('capacity4dev Root location'),
+    '#description'   => t('Provide the full path to the root of the old capacity4dev platform.'),
     '#default_value' => variable_get(C4D_MIGRATE_FILES_ROOT, '/'),
     '#size'          => 60,
     '#maxlength'     => 128,
@@ -80,10 +83,12 @@ function c4d_migrate_admin_overview_form() {
 }
 
 /**
- * Validate handler for c4d_migrate_admin_overview_form
+ * Validate handler for c4d_migrate_admin_overview_form.
  *
- * @param $form
- * @param $form_state
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
  */
 function c4d_migrate_admin_overview_form_validate($form, &$form_state) {
   if (empty($form_state['values'][C4D_MIGRATE_DB_PASS])
