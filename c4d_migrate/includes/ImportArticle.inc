@@ -14,7 +14,8 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
    * @var array
    */
   public $dependencies = array(
-    'C4dMigrateImportUsers'
+    'C4dMigrateImportUsers',
+    'C4dMigrateImportNodeTopic',
   );
 
   /**
@@ -35,8 +36,10 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('c4m_has_video', 'has_video')
+         ->defaultValue(0);
     $this->addFieldMapping('c4m_related_topic', 'topics')
-         ->sourceMigration('C4dMigrateImportTopic');
+         ->sourceMigration('C4dMigrateImportNodeTopic');
     $this->addFieldMapping('c4m_vocab_geo', 'geo')
          ->sourceMigration('C4dMigrateImportVocabGeo')
          ->arguments(array('source_type' => 'tid'));
