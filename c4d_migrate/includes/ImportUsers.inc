@@ -54,6 +54,12 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     );
 
     $this->destination = $destination_handler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addCustomFieldMapping() {
 
     $this->addFieldMapping('name', 'name')->dedupe('users', 'name');
     $this->addFieldMapping('pass', 'pass');
@@ -68,7 +74,8 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('picture', 'picture')->defaultValue(0);
     $this->addFieldMapping('init', 'init');
     $this->addFieldMapping('data', 'data');
-    $this->addFieldMapping('c4m_body', 'field_description');
+    $this->addFieldMapping('c4m_body', 'field_description')
+         ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_first_name', 'field_firstname');
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
