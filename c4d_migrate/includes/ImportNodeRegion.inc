@@ -39,10 +39,12 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-      ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
-      ->sourceMigration('C4dMigrateImportVocabGeo')
-      ->arguments(array('source_type' => 'tid'));
+         ->sourceMigration('C4dMigrateImportVocabGeo')
+         ->arguments(array('source_type' => 'tid'));
+    $this->addFieldMapping('weight_weight', 'weight')
+         ->defaultValue(0);
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_picture_region');
@@ -67,7 +69,7 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     $row->taxonomy = unserialize($row->taxonomy);
 
     // Prepare the picture data.
-    $this->prepareFileInRow($row, 'field_picture_region', 'files');
+    $this->prepareFileInRow($row, 'field_picture_region');
 
     return TRUE;
   }
