@@ -15,5 +15,5 @@ files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportRoles.inc
 files[] = includes/ImportUsers.inc
 files[] = includes/ImportVocabGeo.inc
-files[] = includes/ImportTopic.inc
-files[] = includes/ImportArticle.inc
+files[] = includes/ImportNodeTopic.inc
+files[] = includes/ImportNodeArticle.inc
