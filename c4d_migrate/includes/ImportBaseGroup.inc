@@ -33,8 +33,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_og_image');
-
-    // Hide EC Field not mapped.
+    // @TODO Hide EC Field not mapped (field_hide_ec_disclaimer).
   }
 
   /**
@@ -49,8 +48,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-
-    $row->taxonomy = unserialize($row->taxonomy);
+    $row->taxonomy        = unserialize($row->taxonomy);
     $row->field_ref_topic = unserialize($row->field_ref_topic);
 
     // Prepare the picture data.

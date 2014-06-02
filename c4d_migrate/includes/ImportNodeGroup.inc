@@ -32,5 +32,8 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
          ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_body:summary', 'og_description');
 
+    // @TODO field_article_suggestion_type
+    // @TODO field_article_suggestions
+    // @TODO field_og_reference
   }
 }
