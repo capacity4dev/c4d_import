@@ -36,4 +36,13 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     // @TODO field_article_suggestions
     // @TODO field_og_reference
   }
+
+  /**
+   * Code to execute after the last row has been imported.
+   */
+  public function postImport() {
+    parent::postImport();
+
+    drupal_flush_all_caches();
+  }
 }
