@@ -124,6 +124,8 @@ abstract class C4dMigrateImportBase extends Migration {
     $file = self::FILE_PREFIX_FILE . $source;
     $path = self::FILE_PREFIX_PATH . $source;
 
+    $this->addFieldMapping($file, $file);
+    $this->addFieldMapping($path, $path);
     $this->addFieldMapping($target, $file);
     $this->addFieldMapping($target . ':source_dir', $path);
     $this->addFieldMapping($target . ':file_replace')
