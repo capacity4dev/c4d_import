@@ -83,6 +83,9 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
    *   The data row we are importing.
    */
   public function complete($node, $row) {
+    if ($row->field_project_group_budget_amount == 0.00 || empty($row->field_project_group_budget_amount)) {
+      return;
+    }
     $node->c4m_money = array(
       LANGUAGE_NONE => array(
         array(
