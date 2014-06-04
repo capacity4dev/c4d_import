@@ -80,6 +80,8 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBase {
    *   The data row we are importing.
    */
   public function prepareRow($row) {
+    parent::prepareRow($row);
+
     switch ($row->type) {
       case 'project_group':
         $gid = $this->handleSourceMigration('C4dMigrateImportNodeProject', $row->gid, NULL, $this);
