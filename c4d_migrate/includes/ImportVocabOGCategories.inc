@@ -7,17 +7,7 @@
 /**
  * Class C4dMigrateImportVocabOGCategories
  */
-class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBase {
-  /**
-   * Content creations need to be run before this one.
-   *
-   * @var array
-   */
-  public $dependencies = array(
-    'C4dMigrateImportNodeGroup',
-    'C4dMigrateImportNodeProject',
-  );
-
+class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
   /**
    * Configure the object during creation.
    */
@@ -82,17 +72,7 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBase {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    switch ($row->type) {
-      case 'project_group':
-        $gid = $this->handleSourceMigration('C4dMigrateImportNodeProject', $row->gid, NULL, $this);
-        break;
-      case 'group':
-      default:
-        $gid = $this->handleSourceMigration('C4dMigrateImportNodeGroup', $row->gid, NULL, $this);
-        break;
-    }
-
-    $vocab_name = 'c4m_vocab_category_' . $gid;
+    $vocab_name = 'c4m_vocab_category_' . $this->getMappedGroupGid($row->type, $row->gid);
 
     $row->vocabulary_name_mapped = $vocab_name;
   }
