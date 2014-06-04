@@ -222,4 +222,25 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   public function getPathManual() {
     return $this->pathManual;
   }
+
+  /**
+   * Reset the $node->changed timestamp.
+   *
+   * @param object $node
+   *   Node object we want to reset the changed date for.
+   * @param int    $changed
+   *   Timestamp.
+   */
+  public function node_save($node, $changed = NULL) {
+    node_save($node);
+    if ($changed) {
+      db_update('node')->fields(array('changed' => $changed))
+      ->condition('nid', $node->nid, '=')
+      ->execute();
+      db_update('node_revision')->fields(array('timestamp' => $changed))
+      ->condition('nid', $node->nid, '=')
+      ->condition('vid', $node->vid, '=')
+      ->execute();
+    }
+  }
 }
