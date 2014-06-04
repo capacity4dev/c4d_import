@@ -94,7 +94,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
         )
       )
     );
-    node_save($node);
+    $this->node_save($node, $row->changed);
   }
 
   /**
@@ -125,6 +125,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
     $node->uid                                         = 1;
     $node->{OG_GROUP_FIELD}[LANGUAGE_NONE][0]['value'] = 1;
     $node->status                                      = 0;
+    $node->revision                                    = FALSE;
     node_save($node);
     if (isset($node->nid)) {
       return array($node->nid);

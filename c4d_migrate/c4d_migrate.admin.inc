@@ -49,8 +49,8 @@ function c4d_migrate_admin_overview_form() {
   }
 
   $form['database']['c4d_migrate_pw_reset'] = array(
-    '#type'        => 'checkbox',
-    '#title'       => t('Remove password (make empty)'),
+    '#type'  => 'checkbox',
+    '#title' => t('Remove password (make empty)'),
 
   );
 

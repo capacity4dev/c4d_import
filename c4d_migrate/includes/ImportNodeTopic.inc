@@ -67,7 +67,6 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_picture');
-
     // Other fields are not described yet for the Drupal 7 Content Type.
   }
 
@@ -94,19 +93,20 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
    *
    * @param Migration $migration
    *   The migration that is being done to create this stub.
-   * @param array $source_id
+   * @param array     $source_id
    *   Array of strings with the source id(s).
    *
    * @return array|bool
    *   Array with topic node id if term created, else FALSE.
    */
   public function createStub(Migration $migration, array $source_id) {
-    $node = new stdClass();
-    $node->title = t('Stub for @id', array('@id' => $source_id[0]));
+    $node                         = new stdClass();
+    $node->title                  = t('Stub for @id', array('@id' => $source_id[0]));
     $node->body[LANGUAGE_NONE][0] = t('Stub topic');
-    $node->type = $this->destination->getBundle();
-    $node->uid = 1;
-    $node->status = 0;
+    $node->type                   = $this->destination->getBundle();
+    $node->uid                    = 1;
+    $node->status                 = 0;
+    $node->revision               = FALSE;
     node_save($node);
     if (isset($node->nid)) {
       return array($node->nid);
