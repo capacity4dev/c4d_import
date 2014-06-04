@@ -46,6 +46,7 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportNodeHelpPage',
     'C4dMigrateImportNodeArticle',
     'C4dMigrateImportNodeGroup',
+    'C4dMigrateImportNodeProject',
   );
 
   $group_name = 'c4d_migrate';
