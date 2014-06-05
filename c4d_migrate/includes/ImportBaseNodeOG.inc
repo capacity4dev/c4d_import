@@ -76,6 +76,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
 
     $row->{OG_AUDIENCE_FIELD} = $og_groups;
 
+    // @TODO: og_public?
+
     if ($this->hasCategories()) {
       $row->categories = unserialize($row->categories);
       $row->categories = $this->handleSourceMigration(
