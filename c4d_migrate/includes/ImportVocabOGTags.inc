@@ -7,7 +7,17 @@
 /**
  * Class C4dMigrateImportVocabOGTags
  */
-class C4dMigrateImportVocabOGTags extends C4dMigrateImportBaseVocabOG {
+class C4dMigrateImportVocabOGTags extends C4dMigrateImportBase {
+  /**
+   * Content creations need to be run before this one.
+   *
+   * @var array
+   */
+  public $dependencies = array(
+    'C4dMigrateImportNodeGroup',
+    'C4dMigrateImportNodeProject',
+  );
+
   /**
    * Configure the object during creation.
    */

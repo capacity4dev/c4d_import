@@ -16,6 +16,12 @@ abstract class C4dMigrateImportBase extends Migration {
   const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
   const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
 
+  /**
+   * Static mapping of groups (source to destination).
+   *
+   * @var array
+   */
+  static private $group_mapping;
 
   /**
    * General initialization of a Migration object.
@@ -76,6 +82,7 @@ abstract class C4dMigrateImportBase extends Migration {
   public function getConnection() {
     try {
       $this->setUpConnection();
+
       return Database::getConnection('default', C4D_MIGRATE_DATABASE);
     }
     catch (Exception $e) {
@@ -129,7 +136,7 @@ abstract class C4dMigrateImportBase extends Migration {
     $this->addFieldMapping($target, $file);
     $this->addFieldMapping($target . ':source_dir', $path);
     $this->addFieldMapping($target . ':file_replace')
-      ->defaultValue(FILE_EXISTS_REPLACE);
+         ->defaultValue(FILE_EXISTS_REPLACE);
   }
 
   /**
@@ -172,9 +179,66 @@ abstract class C4dMigrateImportBase extends Migration {
     $row->{$file} = $result->filename;
 
     // All other keys combined are the relative path from the root dir.
-    $rel_path = dirname($result->filepath);
+    $rel_path     = dirname($result->filepath);
     $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
       . DIRECTORY_SEPARATOR
       . $rel_path;
+  }
+
+  /**
+   * Retrieve the destination nid of the gid.
+   *
+   * @param string $type
+   *   String containing the group type (machine name).
+   * @param int    $gid
+   *   The nid of the term's group we are importing.
+   *
+   * @return int
+   *   The destination nid of the group.
+   */
+  protected function getMappedGroupGid($type, $gid) {
+    if (empty(self::$group_mapping)) {
+      $cache = cache_get('c4d_migrate_og_group_mappings', 'cache');
+
+      if (empty($cache->data)) {
+        $mapped_ids = array();
+      }
+      else {
+        $mapped_ids = $cache->data;
+      }
+    }
+    else {
+      $mapped_ids = self::$group_mapping;
+    }
+
+    $cache_changed = FALSE;
+
+    if (!empty($mapped_ids[$gid])) {
+      $dest_id = $mapped_ids[$gid];
+    }
+    else {
+      switch ($type) {
+        case 'project_group':
+          $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeProject', $gid, NULL, $this);
+          break;
+        case 'group':
+        default:
+          $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeGroup', $gid, NULL, $this);
+          break;
+      }
+      $mapped_ids[$gid] = $dest_id;
+
+      $cache_changed = TRUE;
+    }
+
+    if ($cache_changed) {
+      // Set temporary cache. If we do a rollback and import again, we have
+      // new mappings.
+      cache_set('c4d_migrate_og_group_mappings', $mapped_ids, 'cache', CACHE_TEMPORARY);
+    }
+
+    self::$group_mapping = $mapped_ids;
+
+    return $dest_id;
   }
 }
