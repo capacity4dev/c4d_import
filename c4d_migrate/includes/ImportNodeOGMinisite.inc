@@ -84,7 +84,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
 
         $node->book = $book;
 
-        node_save($node);
+        $this->node_save($node, $row->changed);
       }
       else {
         // This is an update, so we retrieve the existing book.
@@ -93,7 +93,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
         if ($book['weight'] != $row->weight) {
           $book['weight'] = $row->weight;
           $node->book     = $book;
-          node_save($node);
+          $this->node_save($node, $row->changed);
         }
       }
     }
@@ -119,7 +119,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
       $node->book = $book;
 
       _book_update_outline($node);
-      node_save($node);
+      $this->node_save($node, $row->changed);
     }
   }
 

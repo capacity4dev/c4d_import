@@ -72,7 +72,6 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    */
   private $pathManual = FALSE;
 
-
   /**
    * General initialization of a Migration object.
    *
@@ -85,8 +84,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     parent::__construct($group);
 
     // Define the source table to import the data from.
-    $query = $this->createSelect($this->getSourceTable(), 'node')
-      ->fields('node');
+    $query        = $this->createSelect($this->getSourceTable(), 'node')
+                         ->fields('node');
     $this->source = new MigrateSourceSQL(
       $query,
       array(),
@@ -98,14 +97,14 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $destination_handler = new MigrateDestinationNode($this->getTargetBundle());
 
     // Add map to track relationships between source & destination rows.
-    $key = array(
+    $key               = array(
       'nid' => array(
         'type'     => 'int',
         'not null' => TRUE,
         'unsigned' => TRUE,
       ),
     );
-    $this->map = new MigrateSQLMap(
+    $this->map         = new MigrateSQLMap(
       $this->machineName,
       $key,
       $destination_handler->getKeySchema()
@@ -117,12 +116,10 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $this->addCustomFieldMapping();
   }
 
-
   /**
    * Add field mapping for the non-common node fields.
    */
   public function addCustomFieldMapping() {
-
   }
 
   /**
@@ -158,6 +155,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    */
   public function setSourceTable($table) {
     $this->sourceTable = $table;
+
     return $this;
   }
 
@@ -182,6 +180,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    */
   public function setTargetBundle($bundle) {
     $this->targetBundle = $bundle;
+
     return $this;
   }
 
@@ -210,6 +209,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    */
   public function setPathManual($state) {
     $this->pathManual = (bool) $state;
+
     return $this;
   }
 
@@ -221,5 +221,26 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    */
   public function getPathManual() {
     return $this->pathManual;
+  }
+
+  /**
+   * Reset the $node->changed timestamp.
+   *
+   * @param object $node
+   *   Node object we want to reset the changed date for.
+   * @param int    $changed
+   *   Timestamp.
+   */
+  public function node_save($node, $changed = NULL) {
+    node_save($node);
+    if ($changed) {
+      db_update('node')->fields(array('changed' => $changed))
+      ->condition('nid', $node->nid, '=')
+      ->execute();
+      db_update('node_revision')->fields(array('timestamp' => $changed))
+      ->condition('nid', $node->nid, '=')
+      ->condition('vid', $node->vid, '=')
+      ->execute();
+    }
   }
 }

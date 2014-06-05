@@ -4,7 +4,6 @@
  * Module to import d6 -> d7 content using the Migrate module.
  */
 
-
 /**
  * Name used to group the migration classes.
  */
@@ -27,7 +26,6 @@ define('C4D_MIGRATE_DB_NAME', 'c4d_migrate_db_database');
  * Files variables (settings form and used in migrations)
  */
 define('C4D_MIGRATE_FILES_ROOT', 'c4d_migrate_files_root');
-
 
 /**
  * Implements hook_migrate_api().
@@ -88,8 +86,8 @@ function c4d_migrate_menu() {
     'access arguments' => array('administer c4d import'),
     'file'             => 'c4d_migrate.admin.inc',
     'file path'        => drupal_get_path('module', 'c4d_migrate'),
-    'type' => MENU_LOCAL_TASK,
-    'weight' => 20,
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 20,
   );
 
   return $items;

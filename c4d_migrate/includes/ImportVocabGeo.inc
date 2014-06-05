@@ -13,14 +13,14 @@ class C4dMigrateImportVocabGeo extends C4dMigrateImportBase {
    */
   public function __construct() {
     parent::__construct(
-      MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
+          MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
     );
 
     $this->description = t('Import Geographical vocabulary terms.');
 
     // Define the source.
-    $query = $this->createSelect('c4d_export_vocabulary_regions_countries', 'geo')
-                  ->fields('geo');
+    $query        = $this->createSelect('c4d_export_vocabulary_regions_countries', 'geo')
+                         ->fields('geo');
     $this->source = new MigrateSourceSQL(
       $query,
       array(),
@@ -30,21 +30,21 @@ class C4dMigrateImportVocabGeo extends C4dMigrateImportBase {
 
     // Import into the c4m_vocab_geo table.
     $term_options['allow_duplicate_terms'] = TRUE;
-    $destination_handler = new MigrateDestinationTerm(
+    $destination_handler                   = new MigrateDestinationTerm(
       'c4m_vocab_geo',
       $term_options
     );
 
     // Create a map object for tracking the
     // relationships between source & destination rows.
-    $key = array(
+    $key               = array(
       'tid' => array(
         'type'     => 'int',
         'not null' => TRUE,
         'unsigned' => TRUE,
       ),
     );
-    $this->map = new MigrateSQLMap(
+    $this->map         = new MigrateSQLMap(
       $this->machineName,
       $key,
       $destination_handler->getKeySchema()
