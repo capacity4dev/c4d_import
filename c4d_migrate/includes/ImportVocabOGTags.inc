@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Migrate class to import the OG Categories terms.
+ * Migrate class to import the OG Tags.
  */
 
 /**
- * Class C4dMigrateImportVocabOGCategories
+ * Class C4dMigrateImportVocabOGTags
  */
-class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
+class C4dMigrateImportVocabOGTags extends C4dMigrateImportBaseVocabOG {
   /**
    * Configure the object during creation.
    */
@@ -16,12 +16,12 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
           MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
     );
 
-    $this->description = t('Import OG Categories vocabulary terms.');
+    $this->description = t('Import OG Tags.');
 
     // Define the source.
-    $query        = $this->createSelect('c4d_export_vocabulary_og_categories', 'og_cats')
-                         ->fields('og_cats')
-                         ->orderBy('parent, tid');
+    $query        = $this->createSelect('c4d_export_vocabulary_og_tags', 'og_tags')
+                         ->fields('og_tags')
+                         ->orderBy('tid');
     $this->source = new MigrateSourceSQL(
       $query,
       array(),
@@ -29,10 +29,10 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
       array('map_joinable' => FALSE)
     );
 
-    // Import into the og vocabularies table {c4m_vocab_category_<GID>}.
+    // Import into the og vocabularies table {c4m_vocab_tag_<GID>}.
     $term_options['allow_duplicate_terms'] = TRUE;
     $destination_handler                   = new MigrateDestinationTerm(
-      'c4m_vocab_category',
+      'c4m_vocab_tag',
       $term_options
     );
 
@@ -58,9 +58,6 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
     $this->addFieldMapping('name', 'name');
     $this->addFieldMapping('description', 'description');
     $this->addFieldMapping('weight', 'weight');
-    // Use the migration mapping to link child with parent.
-    $this->addFieldMapping('parent', 'parent')
-         ->sourceMigration($this->machineName);
   }
 
   /**
@@ -72,7 +69,7 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $vocab_name = 'c4m_vocab_category_' . $this->getMappedGroupGid($row->type, $row->gid);
+    $vocab_name = 'c4m_vocab_tag_' . $this->getMappedGroupGid($row->type, $row->gid);
 
     $row->vocabulary_name_mapped = $vocab_name;
   }
