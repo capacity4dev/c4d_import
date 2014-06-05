@@ -9,6 +9,7 @@ dependencies[] = migrate_extras
 ; Classes to migrate the content.
 files[] = includes/ImportBase.inc
 files[] = includes/ImportBaseNode.inc
+files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
 
 files[] = includes/ImportNodeRegion.inc
@@ -24,3 +25,4 @@ files[] = includes/ImportNodeGroup.inc
 files[] = includes/ImportNodeProject.inc
 files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
+files[] = includes/ImportNodeOGDocument.inc
