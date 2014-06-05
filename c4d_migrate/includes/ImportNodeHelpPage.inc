@@ -11,8 +11,6 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
   public $entityType = 'node';
   public $bundle = 'book';
 
-//  static private $parent_page = NULL;
-
   /**
    * Content creations that should run before this one.
    *
@@ -110,8 +108,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
           'weight'             => $row->weight,
           'nid'                => $node->nid,
         );
-        node_save($node);
-//        self::$parent_page = $node->nid;
+        $this->node_save($node, $row->changed);
       }
       else {
         // This is an update, so we retrieve the existing book.
@@ -120,7 +117,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
         if ($book['weight'] != $row->weight) {
           $book['weight'] = $row->weight;
           $node->book     = $book;
-          node_save($node);
+          $this->node_save($node, $row->changed);
         }
       }
     }
@@ -146,7 +143,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
       $node->book = $book;
 
       _book_update_outline($node);
-      node_save($node);
+      $this->node_save($node, $row->changed);
     }
   }
 
@@ -160,10 +157,6 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
    *   Parent id or NULL.
    */
   private function getParentNid($nid) {
-//    if (!empty(self::$parent_page)) {
-//      return self::$parent_page;
-//    }
-
     $parent = $this->handleSourceMigration(
                    'C4dMigrateImportNodeHelpPage',
                      $nid,
@@ -171,8 +164,6 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
                      $this
     );
     if (!empty($parent)) {
-//      self::$parent_page = $parent;
-
       return $parent;
     }
 
