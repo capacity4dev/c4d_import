@@ -18,7 +18,6 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     'C4dMigrateImportVocabGeo',
   );
 
-
   /**
    * Configure the object during creation.
    *
@@ -63,10 +62,10 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     // Unserialize data.
-    $row->field_links = unserialize($row->field_links);
-    $row->field_documents = unserialize($row->field_documents);
+    $row->field_links             = unserialize($row->field_links);
+    $row->field_documents         = unserialize($row->field_documents);
     $row->field_group_suggestions = unserialize($row->field_group_suggestions);
-    $row->taxonomy = unserialize($row->taxonomy);
+    $row->taxonomy                = unserialize($row->taxonomy);
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_picture_region');

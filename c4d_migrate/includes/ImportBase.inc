@@ -16,7 +16,6 @@ abstract class C4dMigrateImportBase extends Migration {
   const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
   const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
 
-
   /**
    * General initialization of a Migration object.
    *
@@ -76,6 +75,7 @@ abstract class C4dMigrateImportBase extends Migration {
   public function getConnection() {
     try {
       $this->setUpConnection();
+
       return Database::getConnection('default', C4D_MIGRATE_DATABASE);
     }
     catch (Exception $e) {
@@ -129,7 +129,7 @@ abstract class C4dMigrateImportBase extends Migration {
     $this->addFieldMapping($target, $file);
     $this->addFieldMapping($target . ':source_dir', $path);
     $this->addFieldMapping($target . ':file_replace')
-      ->defaultValue(FILE_EXISTS_REPLACE);
+         ->defaultValue(FILE_EXISTS_REPLACE);
   }
 
   /**
@@ -172,7 +172,7 @@ abstract class C4dMigrateImportBase extends Migration {
     $row->{$file} = $result->filename;
 
     // All other keys combined are the relative path from the root dir.
-    $rel_path = dirname($result->filepath);
+    $rel_path     = dirname($result->filepath);
     $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
       . DIRECTORY_SEPARATOR
       . $rel_path;
