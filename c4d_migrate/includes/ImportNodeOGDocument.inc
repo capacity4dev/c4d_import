@@ -33,7 +33,7 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
          ->arguments(array('format' => 'full_html'));
 
     // Map the picture field.
-    $this->addFileFieldMapping('c4m_media', 'file_field');
+    $this->addFileFieldMapping('c4m_media', 'file_field', FILE_EXISTS_RENAME);
   }
 
   /**

@@ -125,18 +125,28 @@ abstract class C4dMigrateImportBase extends Migration {
    * @param string $source
    *   The name of the field that holds the file ID (fid) in the data row from
    *   the source table.
+   * @param int $file_replace
+   *   What to do when a file already exists with the same name.
+   *   Options:
+   *   - FILE_EXISTS_REPLACE : (default) Replace the existing file.
+   *   - FILE_EXISTS_RENAME  : Appends number until name is unique.
+   *   - FILE_EXISTS_ERROR   : Do nothing and return FALSE.
    */
-  public function addFileFieldMapping($target, $source) {
+  public function addFileFieldMapping(
+    $target, $source, $file_replace = FILE_EXISTS_REPLACE
+  ) {
     // File info is passed trough temporary variables.
     $file = self::FILE_PREFIX_FILE . $source;
     $path = self::FILE_PREFIX_PATH . $source;
+
+    FILE_EXISTS_ERROR;
 
     $this->addFieldMapping($file, $file);
     $this->addFieldMapping($path, $path);
     $this->addFieldMapping($target, $file);
     $this->addFieldMapping($target . ':source_dir', $path);
     $this->addFieldMapping($target . ':file_replace')
-         ->defaultValue(FILE_EXISTS_REPLACE);
+         ->defaultValue($file_replace);
   }
 
   /**
