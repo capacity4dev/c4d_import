@@ -33,8 +33,10 @@ files[] = includes/ImportNodeOGMinisite.inc
 ; Tag parsers
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
+files[] = includes/parser/IbImage.inc
 
 
 ; Tests
 files[] = tests/parser/C4dImage.test
+files[] = tests/parser/IbImage.test
 
