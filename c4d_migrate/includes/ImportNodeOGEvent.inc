@@ -60,8 +60,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $row->field_ref_document = unserialize($row->field_ref_document);
-    $row->field_event_location = unserialize($row->field_event_location);
+    $row->field_ref_document    = unserialize($row->field_ref_document);
+    $row->field_event_location  = unserialize($row->field_event_location);
     $row->field_event_organiser = unserialize($row->field_event_organiser);
 
     return TRUE;
@@ -82,11 +82,11 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     $criteria = array(
       'field_name' => 'c4m_location',
-      'vid' => $entity->vid,
-      'nid' => $entity->nid,
+      'vid'        => $entity->vid,
+      'nid'        => $entity->nid,
     );
 
-    $field = field_info_field('c4m_location');
+    $field    = field_info_field('c4m_location');
     $instance = field_info_instance('node', 'c4m_location', $entity->type);
 
     $settings = FALSE;
@@ -133,7 +133,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
       return TRUE;
     }
-    return FALSE;
 
+    return FALSE;
   }
 }
