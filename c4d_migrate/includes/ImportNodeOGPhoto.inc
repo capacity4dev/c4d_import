@@ -21,6 +21,8 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
 
     $this->setCategoriesAndTags(FALSE);
 
+    $this->dependencies[] = 'C4dMigrateImportNodeOGPhotoalbum';
+
     parent::__construct($group);
   }
 
