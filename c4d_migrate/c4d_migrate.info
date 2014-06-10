@@ -34,9 +34,11 @@ files[] = includes/ImportNodeOGMinisite.inc
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
+files[] = includes/parser/EcMedia.inc
 
 
 ; Tests
 files[] = tests/parser/C4dImage.test
 files[] = tests/parser/IbImage.test
+files[] = tests/parser/EcMedia.test
 
