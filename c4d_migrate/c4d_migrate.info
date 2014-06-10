@@ -28,3 +28,13 @@ files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportNodeOGBlog.inc
 files[] = includes/ImportNodeOGMinisite.inc
+
+
+; Tag parsers
+files[] = includes/parser/Abstract.inc
+files[] = includes/parser/C4dImage.inc
+
+
+; Tests
+files[] = tests/parser/C4dImage.test
+
