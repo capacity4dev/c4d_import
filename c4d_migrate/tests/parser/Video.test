@@ -1,0 +1,86 @@
+<?php
+/**
+ * @file
+ * Tests for the video tag parser.
+ */
+
+/**
+ * Tests for the [video:…] tag parser.
+ */
+class C4dMigrateTestParserVideo extends DrupalUnitTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 5 [] tags in total but only 4 unique tags.
+   *
+   * @var string
+   */
+  private $text = <<<EOT
+<p>[video:http://www.youtube.com/v/_IFglfiI2bQ]</p>
+<p>A video of the contributions by Jos Jonckers, a special presentation made at the Fourth High Level Forum.</p>
+<p>Part I: The TC Reform</p>
+<p>[video:http://vimeo.com/50678094#at=0]</p>
+<p>Part II: Reflections on the TC Reform</p>
+<p>[video:http://www.youtube.com/v/nUVcYIoYTuY]</p>
+<p>Part III: Three Capacity Development Lessons</p>
+<p>[video:http://www.youtube.com/v/FpX5xRGNpIQ][video:http://www.youtube.com/v/nUVcYIoYTuY]</p>
+EOT;
+
+  /**
+   * Expected result
+   *
+   * @var array
+   */
+  private $expectedTags = array(
+    '[video:http://www.youtube.com/v/_IFglfiI2bQ]' => array(
+      'type' => "video",
+      'url'  => "http://www.youtube.com/v/_IFglfiI2bQ",
+    ),
+    '[video:http://vimeo.com/50678094#at=0]' => array(
+      'type' => "video",
+      'url'  => "http://vimeo.com/50678094#at=0",
+    ),
+    '[video:http://www.youtube.com/v/nUVcYIoYTuY]' => array(
+      'type' => "video",
+      'url'  => "http://www.youtube.com/v/nUVcYIoYTuY",
+    ),
+    '[video:http://www.youtube.com/v/FpX5xRGNpIQ]' => array(
+      'type' => "video",
+      'url'  => "http://www.youtube.com/v/FpX5xRGNpIQ",
+    ),
+  );
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Parse [video:…] tags',
+      'description' => 'Test that the Video parser parses out the [video:…] tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the parser class during setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    require_once __DIR__ . '/../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../includes/parser/Video.inc';
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testParser() {
+    $parser = new C4dMigrateParserVideo();
+
+    $parser->parse($this->text);
+    $tags = $parser->getTags();
+    $this->assertEqual(4, count($tags), 'Expected to get 4 unique tags.');
+    $this->assertEqual($this->expectedTags, $tags);
+  }
+}
