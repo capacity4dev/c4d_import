@@ -11,6 +11,7 @@ files[] = includes/ImportBase.inc
 files[] = includes/ImportBaseNode.inc
 files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
+files[] = includes/ImportBaseComment.inc
 
 files[] = includes/ImportNodeRegion.inc
 files[] = includes/ImportVocabGeo.inc
