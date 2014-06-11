@@ -28,6 +28,8 @@ files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportNodeOGBlog.inc
+files[] = includes/ImportNodeOGPhotoalbum.inc
+files[] = includes/ImportNodeOGPhoto.inc
 files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportNodeOGMinisite.inc
 
