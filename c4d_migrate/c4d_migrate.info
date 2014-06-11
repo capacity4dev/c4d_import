@@ -50,3 +50,4 @@ files[] = tests/parser/C4dImage.test
 files[] = tests/parser/IbImage.test
 
 files[] = includes/ImportNodeOGEvent.inc
+files[] = includes/ImportCommentOGEvent.inc
