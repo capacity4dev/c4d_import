@@ -35,6 +35,7 @@ files[] = includes/ImportNodeOGTask.inc
 files[] = includes/ImportNodeOGBlog.inc
 files[] = includes/ImportCommentOGBlog.inc
 files[] = includes/ImportNodeOGPhotoalbum.inc
+files[] = includes/ImportCommentOGPhotoalbum.inc
 files[] = includes/ImportNodeOGPhoto.inc
 files[] = includes/ImportNodeOGMinisite.inc
 files[] = includes/ImportCommentOGMinisite.inc
