@@ -232,6 +232,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    *   Timestamp.
    */
   public function node_save($node, $changed = NULL) {
+    $node->revision = FALSE;
+
     node_save($node);
     if ($changed) {
       db_update('node')->fields(array('changed' => $changed))
