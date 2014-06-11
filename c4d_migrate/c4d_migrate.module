@@ -57,6 +57,7 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportNodeOGPhotoalbum',
     'C4dMigrateImportNodeOGPhoto',
     'C4dMigrateImportNodeOGMinisite',
+    'C4dMigrateImportCommentOGMinisite',
     'C4dMigrateImportNodeOGEvent',
     'C4dMigrateImportCommentOGEvent',
   );

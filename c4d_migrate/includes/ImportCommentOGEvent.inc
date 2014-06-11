@@ -18,6 +18,6 @@ class C4dMigrateImportCommentOGEvent extends C4dMigrateImportBaseComment {
     $this->setNodeMigration('C4dMigrateImportNodeOGEvent');
     $this->setCommentMigration(__CLASS__);
 
-    parent::__construct('event', 'c4d_export_node_event', $group);
+    parent::__construct('event', 'event', 'c4d_export_node_event', $group);
   }
 }

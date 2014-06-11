@@ -18,6 +18,6 @@ class C4dMigrateImportCommentOGBlog extends C4dMigrateImportBaseComment {
     $this->setNodeMigration('C4dMigrateImportNodeOGBlog');
     $this->setCommentMigration(__CLASS__);
 
-    parent::__construct('blog', 'c4d_export_node_blog', $group);
+    parent::__construct('blog', 'blog', 'c4d_export_node_blog', $group);
   }
 }

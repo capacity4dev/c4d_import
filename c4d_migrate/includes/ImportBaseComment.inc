@@ -58,10 +58,10 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
    * @param MigrateGroup $group
    *   The migrate Group object.
    */
-  public function __construct($node_type, $base_node_export_table, $group = NULL) {
+  public function __construct($source_node_type, $destination_node_type, $base_node_export_table, $group = NULL) {
     $this->description = t('Import Comments.');
     $this->setSourceTable('c4d_export_comment');
-    $this->setTargetBundle($node_type);
+    $this->setTargetBundle($destination_node_type);
 
     $this->dependencies = array(
       $this->getNodeMigration(),
@@ -78,13 +78,13 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
     // table of their nodes.
     $query->rightJoin($base_node_export_table, 'n', 'n.nid = c.nid');
     $query->orderBy('pid, cid')
-          ->condition('node_type', $node_type, '=');
+          ->condition('node_type', $source_node_type, '=');
     $this->source = new MigrateSourceSQL(
       $query
     );
 
     // Set the destination node bundle to import the data to.
-    $destination_handler = new MigrateDestinationComment('comment_node_' . $node_type);
+    $destination_handler = new MigrateDestinationComment('comment_node_' . $destination_node_type);
 
     // Add map to track relationships between source & destination rows.
     $key               = array(
