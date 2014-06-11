@@ -58,7 +58,7 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
    * @param MigrateGroup $group
    *   The migrate Group object.
    */
-  public function __construct($node_type, $group = NULL) {
+  public function __construct($node_type, $base_node_export_table, $group = NULL) {
     $this->description = t('Import Comments.');
     $this->setSourceTable('c4d_export_comment');
     $this->setTargetBundle($node_type);
@@ -70,10 +70,15 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
     parent::__construct($group);
 
     // Define the source table to import the data from.
-    $query        = $this->createSelect($this->getSourceTable(), 'comment')
-                         ->fields('comment')
-                         ->orderBy('pid, cid')
-                         ->condition('node_type', $node_type, '=');
+    $query = $this->createSelect($this->getSourceTable(), 'c')
+                  ->fields('c');
+    // Lots of comments were made on nodes that belong to groups that were
+    // deleted. The node id still exists but is not migrated (filter out nodes
+    // that are orphans during migration). So we map comments vs the exported
+    // table of their nodes.
+    $query->rightJoin($base_node_export_table, 'n', 'n.nid = c.nid');
+    $query->orderBy('pid, cid')
+          ->condition('node_type', $node_type, '=');
     $this->source = new MigrateSourceSQL(
       $query
     );

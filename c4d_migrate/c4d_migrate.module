@@ -49,7 +49,9 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabOGCategories',
     'C4dMigrateImportVocabOGTags',
     'C4dMigrateImportNodeOGDocument',
+    'C4dMigrateImportCommentOGDocument',
     'C4dMigrateImportNodeOGBlog',
+    'C4dMigrateImportCommentOGBlog',
     'C4dMigrateImportNodeOGMinisite',
   );
 

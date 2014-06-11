@@ -18,6 +18,6 @@ class C4dMigrateImportCommentArticle extends C4dMigrateImportBaseComment {
     $this->setNodeMigration('C4dMigrateImportNodeArticle');
     $this->setCommentMigration(__CLASS__);
 
-    parent::__construct('article', $group);
+    parent::__construct('article', 'c4d_export_node_article', $group);
   }
 }

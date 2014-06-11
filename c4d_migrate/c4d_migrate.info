@@ -28,7 +28,9 @@ files[] = includes/ImportNodeProject.inc
 files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
+files[] = includes/ImportCommentOGDocument.inc
 files[] = includes/ImportNodeOGBlog.inc
+files[] = includes/ImportCommentOGBlog.inc
 files[] = includes/ImportNodeOGMinisite.inc
 
 
