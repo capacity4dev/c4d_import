@@ -3,6 +3,7 @@ description = Import data from Capacity4Dev
 core = 7.x
 package = capacity4more - Migrate
 version = 7.x-1.x-dev
+dependencies[] = location
 dependencies[] = migrate
 dependencies[] = migrate_extras
 
@@ -29,6 +30,9 @@ files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportNodeOGTasklist.inc
 files[] = includes/ImportNodeOGTask.inc
 files[] = includes/ImportNodeOGBlog.inc
+files[] = includes/ImportNodeOGPhotoalbum.inc
+files[] = includes/ImportNodeOGPhoto.inc
+files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportNodeOGMinisite.inc
 
 
@@ -41,4 +45,3 @@ files[] = includes/parser/IbImage.inc
 ; Tests
 files[] = tests/parser/C4dImage.test
 files[] = tests/parser/IbImage.test
-
