@@ -37,7 +37,7 @@ class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
     $this->addFieldMapping('c4m_related_user', 'field_project_managers')
          ->sourceMigration('C4dMigrateImportUsers');
 
-    $this->addFieldMapping('c4m_related_document', 'documents')
+    $this->addFieldMapping('c4m_related_document', 'field_ref_document')
          ->sourceMigration('C4dMigrateImportNodeOGDocument');
   }
 
