@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Migrate class to import the Tasklist group nodes.
+ * Migrate class to import the Task group nodes.
  */
 
 /**
- * Class to import the Tasklist group nodes from the Drupal 6 platform.
+ * Class to import the Task group nodes from the Drupal 6 platform.
  */
-class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
+class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
@@ -15,11 +15,11 @@ class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
-    $this->description = t('Import Tasklist group nodes.');
-    $this->setSourceTable('c4d_export_node_project');
-    $this->setTargetBundle('tasklist');
+    $this->description = t('Import Task group nodes.');
+    $this->setSourceTable('c4d_export_node_task');
+    $this->setTargetBundle('task');
 
-    $this->setCategoriesAndTags(TRUE);
+    $this->setCategoriesAndTags(FALSE);
 
     parent::__construct($group);
   }
@@ -32,13 +32,20 @@ class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
 
-    $this->addFieldMapping('c4m_tasklist_status', 'field_project_status');
-
-    $this->addFieldMapping('c4m_related_user', 'field_project_managers')
-         ->sourceMigration('C4dMigrateImportUsers');
+    $this->addFieldMapping('c4m_date', 'field_task_deadline');
 
     $this->addFieldMapping('c4m_related_document', 'field_ref_document')
          ->sourceMigration('C4dMigrateImportNodeOGDocument');
+
+    $this->addFieldMapping('c4m_related_user', 'tasklist')
+         ->sourceMigration('C4dMigrateImportUsers');
+
+    $this->addFieldMapping('c4m_related_tasklist', 'assigned_to')
+         ->sourceMigration('C4dMigrateImportNodeOGTasklist');
+
+    $this->addFieldMapping('c4m_task_priority', 'case_priority');
+
+    $this->addFieldMapping('c4m_task_status', 'case_status');
   }
 
   /**
