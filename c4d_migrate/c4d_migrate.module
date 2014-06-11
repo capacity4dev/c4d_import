@@ -50,6 +50,8 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabOGTags',
     'C4dMigrateImportNodeOGDocument',
     'C4dMigrateImportCommentOGDocument',
+    'C4dMigrateImportNodeOGTasklist',
+    'C4dMigrateImportNodeOGTask',
     'C4dMigrateImportNodeOGBlog',
     'C4dMigrateImportCommentOGBlog',
     'C4dMigrateImportNodeOGPhotoalbum',
