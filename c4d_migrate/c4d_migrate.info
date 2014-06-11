@@ -29,3 +29,4 @@ files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportNodeOGBlog.inc
 files[] = includes/ImportNodeOGEvent.inc
+files[] = includes/ImportNodeOGMinisite.inc
