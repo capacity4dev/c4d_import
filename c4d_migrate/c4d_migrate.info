@@ -12,6 +12,7 @@ files[] = includes/ImportBase.inc
 files[] = includes/ImportBaseNode.inc
 files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
+files[] = includes/ImportBaseComment.inc
 
 files[] = includes/ImportNodeRegion.inc
 files[] = includes/ImportVocabGeo.inc
@@ -20,6 +21,7 @@ files[] = includes/ImportUsers.inc
 files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportNodeTopic.inc
 files[] = includes/ImportNodeArticle.inc
+files[] = includes/ImportCommentArticle.inc
 files[] = includes/ImportNodeBookPage.inc
 files[] = includes/ImportNodeHelpPage.inc
 files[] = includes/ImportNodeGroup.inc
@@ -27,13 +29,19 @@ files[] = includes/ImportNodeProject.inc
 files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
+files[] = includes/ImportCommentOGDocument.inc
 files[] = includes/ImportNodeOGTasklist.inc
 files[] = includes/ImportNodeOGTask.inc
+files[] = includes/ImportCommentOGTask.inc
 files[] = includes/ImportNodeOGBlog.inc
+files[] = includes/ImportCommentOGBlog.inc
 files[] = includes/ImportNodeOGPhotoalbum.inc
+files[] = includes/ImportCommentOGPhotoalbum.inc
 files[] = includes/ImportNodeOGPhoto.inc
-files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportNodeOGMinisite.inc
+files[] = includes/ImportCommentOGMinisite.inc
+files[] = includes/ImportNodeOGEvent.inc
+files[] = includes/ImportCommentOGEvent.inc
 
 
 ; Tag parsers
