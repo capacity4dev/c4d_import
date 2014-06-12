@@ -9,6 +9,28 @@
  */
 class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
   /**
+   * Mapping between indexes and String values from export.
+   *
+   * @var array
+   */
+  private $case_priorities = array(
+    1 => 'Low',
+    2 => 'Normal',
+    3 => 'High'
+  );
+
+  /**
+   * Mapping between indexes and String values from export.
+   *
+   * @var array
+   */
+  private $case_statuses = array(
+    -1 => 'Not Started',
+    0  => 'Ongoing',
+    1  => 'Completed'
+  );
+
+  /**
    * Configure the object during creation.
    *
    * @param MigrateGroup $group
@@ -37,10 +59,10 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
     $this->addFieldMapping('c4m_related_document', 'field_ref_document')
          ->sourceMigration('C4dMigrateImportNodeOGDocument');
 
-    $this->addFieldMapping('c4m_related_user', 'tasklist')
+    $this->addFieldMapping('c4m_task_assigned_to', 'assigned_to')
          ->sourceMigration('C4dMigrateImportUsers');
 
-    $this->addFieldMapping('c4m_related_tasklist', 'assigned_to')
+    $this->addFieldMapping('c4m_related_tasklist', 'tasklist')
          ->sourceMigration('C4dMigrateImportNodeOGTasklist');
 
     $this->addFieldMapping('c4m_task_priority', 'case_priority');
@@ -54,8 +76,9 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $row->field_project_status   = ($row->field_project_status == 'open') ? '1' : '0';
-    $row->field_project_managers = unserialize($row->field_project_managers);
-    $row->field_ref_document     = unserialize($row->field_ref_document);
+    $row->case_priority = array_search($row->case_priority, $this->case_priorities);
+    $row->case_status   = array_search($row->case_status, $this->case_statuses);
+
+    $row->field_ref_document = unserialize($row->field_ref_document);
   }
 }
