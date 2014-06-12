@@ -125,6 +125,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     if (!$this->hasTags()) {
       $row->tags = array();
     }
+
     $terms = array_merge($row->categories, $row->tags );
     if (!empty($terms)) {
       foreach ($terms as $key => $term) {
