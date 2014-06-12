@@ -26,6 +26,7 @@ files[] = includes/ImportNodeBookPage.inc
 files[] = includes/ImportNodeHelpPage.inc
 files[] = includes/ImportNodeGroup.inc
 files[] = includes/ImportNodeProject.inc
+files[] = includes/ImportOGMemberships.inc
 files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
 files[] = includes/ImportNodeOGDocument.inc
