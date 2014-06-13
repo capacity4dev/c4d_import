@@ -43,6 +43,6 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
   public function postImport() {
     parent::postImport();
 
-//    drupal_flush_all_caches();
+    drupal_flush_all_caches();
   }
 }

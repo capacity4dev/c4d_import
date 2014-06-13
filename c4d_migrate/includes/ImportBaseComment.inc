@@ -189,28 +189,40 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
   }
 
   /**
-   * @param string $nodeMigration
+   * Set the current node migration class (needed for node mapping).
+   *
+   * @param string $node_migration
+   *   Class name of the node migration class.
    */
-  public function setNodeMigration($nodeMigration) {
-    $this->nodeMigration = $nodeMigration;
+  public function setNodeMigration($node_migration) {
+    $this->nodeMigration = $node_migration;
   }
 
   /**
+   * Get the current node migration class (needed for node mapping).
+   *
    * @return string
+   *   Class name of the node migration class.
    */
   public function getNodeMigration() {
     return $this->nodeMigration;
   }
 
   /**
-   * @param string $commentMigration
+   * Set the current comment migration class (needed for mapping of parents).
+   *
+   * @param string $comment_migration
+   *   Class name of base commentMigration.
    */
-  public function setCommentMigration($commentMigration) {
-    $this->commentMigration = $commentMigration;
+  public function setCommentMigration($comment_migration) {
+    $this->commentMigration = $comment_migration;
   }
 
   /**
+   * Get the current comment migration class (needed for mapping of parents).
+   *
    * @return string
+   *   Class name of base commentMigration.
    */
   public function getCommentMigration() {
     return $this->commentMigration;

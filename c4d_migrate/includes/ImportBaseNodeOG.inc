@@ -18,7 +18,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     'C4dMigrateImportNodeProject',
     'C4dMigrateImportUsers',
     'C4dMigrateImportVocabOGCategories',
-    'C4dMigrateImportVocabOGTags'
+    'C4dMigrateImportVocabOGTags',
   );
 
   /**
@@ -26,13 +26,13 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *
    * @var bool
    */
-  private $has_categories = FALSE;
+  private $hasCategories = FALSE;
   /**
    * Flag whether this content type has tags enabled.
    *
    * @var bool
    */
-  private $has_tags = FALSE;
+  private $hasTags = FALSE;
 
   /**
    * Configure the migration class during creation.
@@ -126,7 +126,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
       $row->tags = array();
     }
 
-    $terms = array_merge($row->categories, $row->tags );
+    $terms = array_merge($row->categories, $row->tags);
     if (!empty($terms)) {
       foreach ($terms as $key => $term) {
         $terms[$key] = array('target_id' => $term);
@@ -156,7 +156,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   TRUE|FALSE flag for categories for this content type.
    */
   public function setCategories($status = FALSE) {
-    $this->has_categories = $status;
+    $this->hasCategories = $status;
   }
 
   /**
@@ -166,7 +166,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   TRUE|FALSE flag for tags for this content type.
    */
   public function setTags($status = FALSE) {
-    $this->has_tags = $status;
+    $this->hasTags = $status;
   }
 
   /**
@@ -176,7 +176,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   TRUE|FALSE flag for categories for this content type.
    */
   public function hasCategories() {
-    return $this->has_categories;
+    return $this->hasCategories;
   }
 
   /**
@@ -186,6 +186,6 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   TRUE|FALSE flag for tags for this content type.
    */
   public function hasTags() {
-    return $this->has_tags;
+    return $this->hasTags;
   }
 }

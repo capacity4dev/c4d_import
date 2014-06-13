@@ -81,7 +81,7 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
       }
     }
 
-    // Set cover
+    // Set cover.
     if ($row->is_cover == 1) {
       node_gallery_api_set_gallery_cover_item($node->nid, $gallery_id);
     }
