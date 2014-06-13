@@ -47,6 +47,7 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportNodeGroup',
     'C4dMigrateImportNodeProject',
     'C4dMigrateImportOGMemberships',
+    'C4dMigrateImportOGUserRoles',
     'C4dMigrateImportVocabOGCategories',
     'C4dMigrateImportVocabOGTags',
     'C4dMigrateImportNodeOGDocument',
