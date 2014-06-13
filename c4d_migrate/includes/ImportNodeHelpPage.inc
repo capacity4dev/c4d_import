@@ -91,7 +91,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
       }
     }
 
-    // If no parent - we need to create a new book
+    // If no parent - we need to create a new book.
     $parent = $row->parent;
     if ($parent == NULL) {
       // No parent: this is the main "Help & Guidance" page, so create book.
@@ -108,7 +108,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
           'weight'             => $row->weight,
           'nid'                => $node->nid,
         );
-        $this->node_save($node, $row->changed);
+        $this->nodeSave($node, $row->changed);
       }
       else {
         // This is an update, so we retrieve the existing book.
@@ -117,7 +117,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
         if ($book['weight'] != $row->weight) {
           $book['weight'] = $row->weight;
           $node->book     = $book;
-          $this->node_save($node, $row->changed);
+          $this->nodeSave($node, $row->changed);
         }
       }
     }
@@ -143,7 +143,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
       $node->book = $book;
 
       _book_update_outline($node);
-      $this->node_save($node, $row->changed);
+      $this->nodeSave($node, $row->changed);
     }
   }
 

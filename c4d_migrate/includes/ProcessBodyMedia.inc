@@ -38,6 +38,7 @@ class C4dMigrateProcessBodyMedia {
    * Set the body we need to process.
    *
    * @param string $body
+   *   Body string (html) to process.
    */
   private function setBody($body) {
     $this->body = $body;
@@ -47,15 +48,17 @@ class C4dMigrateProcessBodyMedia {
    * Get the original body.
    *
    * @return string
+   *   Body content.
    */
   public function getBody() {
     return $this->body;
   }
 
   /**
-   * Get the file id's that are related to teh processed body.
+   * Get the file id's that are related to the processed body.
    *
    * @return array
+   *   Array of {files} fids.
    */
   public function getFileIds() {
     return $this->fileIds;
@@ -106,8 +109,6 @@ class C4dMigrateProcessBodyMedia {
   private function processIbImage() {
     $body = $this->getBody();
 
-
-
     $this->setBody($body);
   }
 
@@ -116,8 +117,6 @@ class C4dMigrateProcessBodyMedia {
    */
   private function processVideo() {
     $body = $this->getBody();
-
-
 
     $this->setBody($body);
   }

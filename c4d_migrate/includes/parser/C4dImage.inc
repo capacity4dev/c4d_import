@@ -46,8 +46,8 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Fill data into the data array.
     $data['source']   = $parts[1];
-    $data['width']    = (int)$parts[2];
-    $data['height']   = (int)$parts[3];
+    $data['width']    = (int) $parts[2];
+    $data['height']   = (int) $parts[3];
     $data['alt']      = $parts[4];
     $data['title']    = $parts[5];
     $data['position'] = $parts[6];

@@ -231,7 +231,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * @param int    $changed
    *   Timestamp.
    */
-  public function node_save($node, $changed = NULL) {
+  public function nodeSave($node, $changed = NULL) {
     $node->revision = FALSE;
 
     node_save($node);

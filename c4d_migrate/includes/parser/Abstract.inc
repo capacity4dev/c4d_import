@@ -45,7 +45,7 @@ abstract class C4dMigrateParserAbstract {
       return 0;
     }
 
-    foreach ($matches[0] AS $tag) {
+    foreach ($matches[0] as $tag) {
       $data = $this->parseTag($tag);
       if (!$data) {
         continue;
@@ -82,7 +82,9 @@ abstract class C4dMigrateParserAbstract {
    * Add a single tag and the parsed data to the found array.
    *
    * @param string $tag
+   *   HTML tag to add/set.
    * @param array $data
+   *   Parsed data for the tag.
    */
   private function addTag($tag, array $data) {
     $this->tags[$tag] = $data;

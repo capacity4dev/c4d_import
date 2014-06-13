@@ -91,20 +91,20 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
         array(
           'amount'   => $row->field_project_group_budget_amount,
           'currency' => $row->field_project_group_budget_currency,
-        )
-      )
+        ),
+      ),
     );
-    $this->node_save($node, $row->changed);
+    $this->nodeSave($node, $row->changed);
   }
 
   /**
    * Code to execute after the last row has been imported.
    */
-//  public function postImport() {
-//    parent::postImport();
-//
-//    drupal_flush_all_caches();
-//  }
+  public function postImport() {
+    parent::postImport();
+
+    drupal_flush_all_caches();
+  }
 
   /**
    * Create stub Topics (when creating users), who will be replaced afterwards.
