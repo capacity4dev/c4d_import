@@ -26,7 +26,7 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
    * Configure the object during creation.
    */
   public function __construct() {
-    $tableName = 'og_users_roles';
+    $table_name = 'og_users_roles';
 
     parent::__construct(
           MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
@@ -56,9 +56,9 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
       ),
     );
 
-    $this->map         = new MigrateSQLMap($this->machineName, $key, MigrateDestinationTable::getKeySchema($tableName));
+    $this->map         = new MigrateSQLMap($this->machineName, $key, MigrateDestinationTable::getKeySchema($table_name));
     $this->source      = new MigrateSourceSQL($query);
-    $this->destination = new MigrateDestinationTable($tableName);
+    $this->destination = new MigrateDestinationTable($table_name);
 
     $this->addFieldMapping('uid', 'uid');
     $this->addFieldMapping('rid')
@@ -140,6 +140,7 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
                            NULL,
                            $this);
         break;
+
       case 'group':
         $row->gid = $this->handleSourceMigration(
                          'C4dMigrateImportNodeGroup',

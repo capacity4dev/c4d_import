@@ -27,7 +27,7 @@ class C4dMigrateImportOGMemberships extends C4dMigrateImportBase {
           MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
     );
 
-    $this->description = t('Import user\' OG memberships from our Drupal 6 database.');
+    $this->description = t("Import user's OG memberships from our Drupal 6 database.");
 
     $query = $this->createSelect('og_uid', 'u')
                   ->fields('u');
@@ -93,6 +93,7 @@ class C4dMigrateImportOGMemberships extends C4dMigrateImportBase {
                            NULL,
                            $this);
         break;
+
       case 'group':
         $row->nid = $this->handleSourceMigration(
                          'C4dMigrateImportNodeGroup',
