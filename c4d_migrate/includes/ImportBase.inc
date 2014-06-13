@@ -21,7 +21,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * @var array
    */
-  static private $group_mapping;
+  static private $groupMapping;
 
   /**
    * General initialization of a Migration object.
@@ -125,7 +125,7 @@ abstract class C4dMigrateImportBase extends Migration {
    * @param string $source
    *   The name of the field that holds the file ID (fid) in the data row from
    *   the source table.
-   * @param int $file_exists
+   * @param int    $file_exists
    *   What to do when a file already exists with the same name.
    *   Options:
    *   - FILE_EXISTS_RENAME  : (default) Appends number until name is unique.
@@ -207,7 +207,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *   The destination nid of the group.
    */
   protected function getMappedGroupGid($type, $gid) {
-    if (empty(self::$group_mapping)) {
+    if (empty(self::$groupMapping)) {
       $cache = cache_get('c4d_migrate_og_group_mappings', 'cache');
 
       if (empty($cache->data)) {
@@ -218,7 +218,7 @@ abstract class C4dMigrateImportBase extends Migration {
       }
     }
     else {
-      $mapped_ids = self::$group_mapping;
+      $mapped_ids = self::$groupMapping;
     }
 
     $cache_changed = FALSE;
@@ -231,6 +231,7 @@ abstract class C4dMigrateImportBase extends Migration {
         case 'project_group':
           $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeProject', $gid, NULL, $this);
           break;
+
         case 'group':
         default:
           $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeGroup', $gid, NULL, $this);
@@ -247,7 +248,7 @@ abstract class C4dMigrateImportBase extends Migration {
       cache_set('c4d_migrate_og_group_mappings', $mapped_ids, 'cache', CACHE_TEMPORARY);
     }
 
-    self::$group_mapping = $mapped_ids;
+    self::$groupMapping = $mapped_ids;
 
     return $dest_id;
   }

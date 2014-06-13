@@ -36,9 +36,6 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     $this->addFieldMapping('c4m_body:summary', 'body')
          ->arguments(array('format' => 'full_html'));
 
-    // field_event_location
-    // field_event_type @TODO: not mapped
-
     $this->addFieldMapping('c4m_organised_by', 'field_event_organiser');
 
     $this->addFieldMapping('c4m_datetime_end', 'field_date_start');
@@ -96,7 +93,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     $settings['display_settings'] = getlocations_fields_get_display_settings($instance['display']['default']['settings']);
 
-    include_once(DRUPAL_ROOT . '/' . drupal_get_path('module', 'location') . '/geocoding/google.inc');
+    include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'location') . '/geocoding/google.inc';
     $parsed = google_geocode_location($location);
 
     $locations = array(
@@ -129,7 +126,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     if (is_array($items)) {
       $entity->c4m_location[LANGUAGE_NONE][0] = $items[0];
 
-      $this->node_save($entity, $row->changed);
+      $this->nodeSave($entity, $row->changed);
 
       return TRUE;
     }

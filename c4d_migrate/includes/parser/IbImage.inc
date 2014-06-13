@@ -45,7 +45,7 @@ class C4dMigrateParserIbImage extends C4dMigrateParserAbstract {
     }
 
     // Fill data into the data array.
-    $data['fid']      = (int)$parts[1];
+    $data['fid']      = (int) $parts[1];
     $data['preset']   = $parts[2];
     $data['link']     = $parts[3];
     $data['target']   = $parts[4];

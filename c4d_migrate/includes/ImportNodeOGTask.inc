@@ -13,10 +13,10 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
    *
    * @var array
    */
-  private $case_priorities = array(
+  private $casePriorities = array(
     1 => 'Low',
     2 => 'Normal',
-    3 => 'High'
+    3 => 'High',
   );
 
   /**
@@ -24,10 +24,10 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
    *
    * @var array
    */
-  private $case_statuses = array(
+  private $caseStatuses = array(
     -1 => 'Not Started',
     0  => 'Ongoing',
-    1  => 'Completed'
+    1  => 'Completed',
   );
 
   /**
@@ -76,8 +76,8 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    $row->case_priority = array_search($row->case_priority, $this->case_priorities);
-    $row->case_status   = array_search($row->case_status, $this->case_statuses);
+    $row->case_priority = array_search($row->case_priority, $this->casePriorities);
+    $row->case_status   = array_search($row->case_status, $this->caseStatuses);
 
     $row->field_ref_document = unserialize($row->field_ref_document);
   }
