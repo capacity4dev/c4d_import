@@ -56,13 +56,13 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Fill data into the data array.
     $source = $this->cleanUpSource($parts[1]);
+    $data['type']    .= ':' . $this->getOrigin($source);
     $data['source']   = $source;
     $data['width']    = (int) $parts[2];
     $data['height']   = (int) $parts[3];
     $data['alt']      = $parts[4];
     $data['title']    = $parts[5];
     $data['position'] = $parts[6];
-    $data['origin']   = $this->getOrigin($source);
 
     return $data;
   }

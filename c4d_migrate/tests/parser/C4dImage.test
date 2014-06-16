@@ -44,7 +44,7 @@ EOT;
    */
   private $expectedTags = array(
     '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]' => array(
-      'type' => "c4d-image",
+      'type' => "c4d-image:remote",
       'tag' => '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]',
       'source' => "http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg",
       'width' => 595,
@@ -52,10 +52,9 @@ EOT;
       'alt' => "Truck Malaba",
       'title' => "",
       'position' => "",
-      'origin' => 'remote',
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]' => array(
-      'type' => "c4d-image",
+      'type' => "c4d-image:local",
       'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
       'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG",
       'width' => 150,
@@ -63,10 +62,9 @@ EOT;
       'alt' => "PRAG Logo",
       'title' => "",
       'position' => "",
-      'origin' => 'local',
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]' => array(
-      'type' => "c4d-image",
+      'type' => "c4d-image:local",
       'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
       'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG",
       'width' => 150,
@@ -74,10 +72,9 @@ EOT;
       'alt' => "PRAG Logo 2",
       'title' => "",
       'position' => "",
-      'origin' => 'local',
     ),
     '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]' => array(
-      'type' => "c4d-image",
+      'type' => "c4d-image:local",
       'tag' => '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]',
       'source' => "sites/default/files/magazine/images/Woman_Sunflowers.jpg",
       'width' => 433,
@@ -85,7 +82,6 @@ EOT;
       'alt' => "Woman with Sunflowers",
       'title' => "",
       'position' => "",
-      'origin' => 'local',
     ),
   );
 
