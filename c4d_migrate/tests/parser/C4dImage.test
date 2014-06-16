@@ -32,6 +32,9 @@ class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
 <p>
   <a href="http://ec.europa.eu/development/geographical/cotonouintro_en.cfm">The revision of the Cotonou agreement</a>
 </p>
+<p>
+  [c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]
+</p>
 EOT;
 
   /**
@@ -49,26 +52,40 @@ EOT;
       'alt' => "Truck Malaba",
       'title' => "",
       'position' => "",
+      'origin' => 'remote',
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]' => array(
       'type' => "c4d-image",
       'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
-      'source' => "../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG",
+      'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG",
       'width' => 150,
       'height' => 56,
       'alt' => "PRAG Logo",
       'title' => "",
       'position' => "",
+      'origin' => 'local',
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]' => array(
       'type' => "c4d-image",
       'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
-      'source' => "../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG",
+      'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG",
       'width' => 150,
       'height' => 56,
       'alt' => "PRAG Logo 2",
       'title' => "",
       'position' => "",
+      'origin' => 'local',
+    ),
+    '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]' => array(
+      'type' => "c4d-image",
+      'tag' => '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]',
+      'source' => "sites/default/files/magazine/images/Woman_Sunflowers.jpg",
+      'width' => 433,
+      'height' => 325,
+      'alt' => "Woman with Sunflowers",
+      'title' => "",
+      'position' => "",
+      'origin' => 'local',
     ),
   );
 
@@ -101,7 +118,7 @@ EOT;
 
     $parser->parse($this->text);
     $tags = $parser->getTags();
-    $this->assertEqual(3, count($tags), 'Expected to get 3 unique tags.');
+    $this->assertEqual(4, count($tags), 'Expected to get 3 unique tags.');
     $this->assertEqual($this->expectedTags, $tags);
   }
 }
