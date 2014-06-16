@@ -25,8 +25,9 @@ class C4dMigrateParserVideo extends C4dMigrateParserAbstract {
    */
   protected function parseTag($tag) {
     $data = array(
-      'type'     => 'video',
-      'url'      => NULL,
+      'type' => 'video',
+      'tag'  => $tag,
+      'url'  => NULL,
     );
 
     // Parse the tag.

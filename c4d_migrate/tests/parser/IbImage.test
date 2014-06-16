@@ -38,6 +38,7 @@ EOT;
     = array(
       '[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg]' => array(
         'type'    => "ibimage",
+        'tag'     => '[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg]',
         'fid'     => 21182,
         'preset'  => "small",
         'link'    => "none",
@@ -47,6 +48,7 @@ EOT;
       ),
       '[ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]' => array(
         'type'    => "ibimage",
+        'tag'     => '[ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]',
         'fid'     => 21181,
         'preset'  => "small",
         'link'    => "popup",
@@ -56,6 +58,7 @@ EOT;
       ),
       '[ibimage==21172==small==photo_album_slideshow====ibimage-left==Test album]' => array(
         'type'    => "ibimage",
+        'tag'     => '[ibimage==21172==small==photo_album_slideshow====ibimage-left==Test album]',
         'fid'     => 21172,
         'preset'  => "small",
         'link'    => "photo_album_slideshow",
@@ -65,6 +68,7 @@ EOT;
       ),
       '[ibimage==21252==large==popup==_blank==ibimage-right==AID 2013]' => array(
         'type'    => "ibimage",
+        'tag'     => '[ibimage==21252==large==popup==_blank==ibimage-right==AID 2013]',
         'fid'     => 21252,
         'preset'  => "large",
         'link'    => "popup",
@@ -74,6 +78,7 @@ EOT;
       ),
       '[ibimage==25927==large==photo_album_slideshow======Test album]' => array(
         'type'    => "ibimage",
+        'tag'     => '[ibimage==25927==large==photo_album_slideshow======Test album]',
         'fid'     => 25927,
         'preset'  => "large",
         'link'    => "photo_album_slideshow",

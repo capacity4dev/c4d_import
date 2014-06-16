@@ -26,6 +26,7 @@ class C4dMigrateParserEcMedia extends C4dMigrateParserAbstract {
   protected function parseTag($tag) {
     $data = array(
       'type'     => 'ec_media',
+      'tag'      => $tag,
       'id'       => NULL,
       'width'    => NULL,
       'height'   => NULL,
@@ -44,10 +45,10 @@ class C4dMigrateParserEcMedia extends C4dMigrateParserAbstract {
     }
 
     // Fill data into the data array.
-    $data['id']       = (int)$parts[1];
-    $data['width']    = (int)$parts[2];
-    $data['height']   = (int)$parts[3];
-    $data['autoplay'] = (int)$parts[4];
+    $data['id']       = (int) $parts[1];
+    $data['width']    = (int) $parts[2];
+    $data['height']   = (int) $parts[3];
+    $data['autoplay'] = (int) $parts[4];
     $data['align']    = $parts[5];
 
     return $data;

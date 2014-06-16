@@ -16,14 +16,6 @@ class C4dMigrateProcessBodyMedia {
   private $body;
 
   /**
-   * The mapping between strings we need to replace and their replacements.
-   *
-   * @var array
-   */
-  private $replacements;
-
-
-  /**
    * Construct by passing the body data.
    *
    * @param string $body
@@ -54,42 +46,14 @@ class C4dMigrateProcessBodyMedia {
     return $this->body;
   }
 
-  /**
-   * Get the file id's that are related to the processed body.
-   *
-   * @return array
-   *   Array of {files} fids.
-   */
-  public function getFileIds() {
-    return $this->fileIds;
-  }
-
-  /**
-   * Add a single file id to the file usage array.
-   *
-   * @param int $fid
-   *   The file id that needs to be added.
-   */
-  protected function addFileId($fid) {
-    if (!in_array($fid, $this->fileIds)) {
-      $this->fileIds[] = $fid;
-    }
-  }
-
 
   /**
    * Process the body.
-   *
-   * @return bool
-   *   Was there anything we needed to process?
    */
   public function process() {
     $this->processC4dImage();
     $this->processIbImage();
     $this->processVideo();
-
-    $file_ids = $this->getFileIds();
-    return !empty($file_ids);
   }
 
   /**
@@ -99,6 +63,18 @@ class C4dMigrateProcessBodyMedia {
     $body = $this->getBody();
 
     // Identify all body parts.
+    $parser = new C4dMigrateParserC4dImage();
+    $tags = $parser->parse($body);
+    if (!$tags) {
+      return;
+    }
+
+    // Process the found tags.
+
+
+    // Replace the body tags.
+
+
 
     $this->setBody($body);
   }

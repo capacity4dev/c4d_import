@@ -26,6 +26,7 @@ class C4dMigrateParserIbImage extends C4dMigrateParserAbstract {
   protected function parseTag($tag) {
     $data = array(
       'type'    => 'ibimage',
+      'tag'     => $tag,
       'fid'     => NULL,
       'preset'  => NULL,
       'link'    => NULL,

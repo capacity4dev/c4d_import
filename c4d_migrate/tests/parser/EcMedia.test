@@ -32,6 +32,7 @@ EOT;
   private $expectedTags = array(
     '[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]' => array(
       'type'     => "ec_media",
+      'tag'      => '[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]',
       'id'       => 443,
       'width'    => 500,
       'height'   => 320,
@@ -40,6 +41,7 @@ EOT;
     ),
     '[ec_media:377 width:500 height:320 autoplay:0 align:left-clear]' => array(
       'type'     => "ec_media",
+      'tag'      => '[ec_media:377 width:500 height:320 autoplay:0 align:left-clear]',
       'id'       => 377,
       'width'    => 500,
       'height'   => 320,
@@ -48,6 +50,7 @@ EOT;
     ),
     '[ec_media:325 width:500 height:320 autoplay:0 align:left-clear]' => array(
       'type'     => "ec_media",
+      'tag'      => '[ec_media:325 width:500 height:320 autoplay:0 align:left-clear]',
       'id'       => 325,
       'width'    => 500,
       'height'   => 320,
@@ -56,6 +59,7 @@ EOT;
     ),
     '[ec_media:326 width:500 height:320 autoplay:1 align:right-clear]' => array(
       'type'     => "ec_media",
+      'tag'      => '[ec_media:326 width:500 height:320 autoplay:1 align:right-clear]',
       'id'       => 326,
       'width'    => 500,
       'height'   => 320,

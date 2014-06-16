@@ -42,6 +42,7 @@ EOT;
   private $expectedTags = array(
     '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]' => array(
       'type' => "c4d-image",
+      'tag' => '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]',
       'source' => "http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg",
       'width' => 595,
       'height' => 300,
@@ -51,6 +52,7 @@ EOT;
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]' => array(
       'type' => "c4d-image",
+      'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
       'source' => "../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG",
       'width' => 150,
       'height' => 56,
@@ -60,6 +62,7 @@ EOT;
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]' => array(
       'type' => "c4d-image",
+      'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
       'source' => "../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG",
       'width' => 150,
       'height' => 56,

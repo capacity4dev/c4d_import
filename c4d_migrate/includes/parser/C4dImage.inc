@@ -26,6 +26,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
   protected function parseTag($tag) {
     $data = array(
       'type'     => 'c4d-image',
+      'tag'      => $tag,
       'source'   => NULL,
       'width'    => NULL,
       'height'   => NULL,
