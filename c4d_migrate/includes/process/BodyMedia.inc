@@ -9,93 +9,88 @@
  */
 class C4dMigrateProcessBodyMedia {
   /**
-   * The body content that needs processing.
+   * Names of all the available tag parsers.
    *
-   * @var string
+   * @var array
    */
-  private $body;
+  protected $parsers = array(
+    'C4dMigrateParserC4dImage',
+    'C4dMigrateParserIbImage',
+    'C4dMigrateParserVideo',
+    'C4dMigrateParserEcMedia',
+  );
 
   /**
-   * Construct by passing the body data.
+   * Mapping between type and the processor class.
    *
-   * @param string $body
-   *   The body content.
+   * @var array
    */
-  public function __construct($body) {
-    $this->setBody($body);
-    $this->replacements = array();
-  }
-
-  /**
-   * Set the body we need to process.
-   *
-   * @param string $body
-   *   Body string (html) to process.
-   */
-  private function setBody($body) {
-    $this->body = $body;
-  }
-
-  /**
-   * Get the original body.
-   *
-   * @return string
-   *   Body content.
-   */
-  public function getBody() {
-    return $this->body;
-  }
+  protected $processors = array(
+    'c4d-image:local'  => 'C4dMigrateProcessTagC4dImageLocal',
+    //'c4d-image:remote' => 'C4dMigrateProcessTagC4dImageLocal',
+    //'ibimage'          => 'C4DMigrateProcessTagIbImage',
+    //'video'            => 'C4DMigrateProcessTagVideo',
+    //'ec_media'         => 'C4DMigrateProcessTagEcMedia',
+  );
 
 
   /**
    * Process the body.
    */
-  public function process() {
-    $this->processC4dImage();
-    $this->processIbImage();
-    $this->processVideo();
-  }
+  public function process($body) {
+    $tags = array();
+    $replacements = array();
 
-  /**
-   * Process the [c4d-image:…] tags.
-   */
-  private function processC4dImage() {
-    $body = $this->getBody();
-
-    // Identify all body parts.
-    $parser = new C4dMigrateParserC4dImage();
-    $tags = $parser->parse($body);
-    if (!$tags) {
-      return;
+    // Parse the tags out of the body field.
+    foreach ($this->parsers as $parser_name) {
+      $parser = new $parser_name();
+      /* @var $parser C4dMigrateParserAbstract */
+      if ($parser->parse($body)) {
+        $tags += $parser->getTags();
+      }
     }
 
-    // Process the found tags.
+    // Process the tags to replacement strings.
+    foreach ($tags as $tag) {
+      $processor = $this->getProcessor($tag['type']);
+      if ($processor->process($tag)) {
+        $replacements[$tag] = $processor->getReplacement();
+      }
+    }
 
-
-    // Replace the body tags.
-
-
-
-    $this->setBody($body);
+    return $this->replaceTags($body, $replacements);
   }
 
   /**
-   * Process the [ibimage] tags.
+   * Replace all tags in the body with the replacements.
+   *
+   * @param string $body
+   *   The body where the tags needs to be replaced.
+   * @param array $replacements
+   *   The replacements array.
+   *
+   * @return string
    */
-  private function processIbImage() {
-    $body = $this->getBody();
-
-    $this->setBody($body);
+  protected function replaceTags($body, $replacements) {
+    foreach($replacements as $search => $replace) {
+      $body = str_replace($search, $replace, $body);
+    }
+    return $body;
   }
 
   /**
-   * Process the [video:…] tags.
+   * Get the processor object based on the tag type and mapping.
+   *
+   * @param string $type
+   *
+   * @return C4dMigrateProcessTagAbstract
    */
-  private function processVideo() {
-    $body = $this->getBody();
+  protected function getProcessor($type) {
+    if (!isset($this->processors[$type])) {
+      return FALSE;
+    }
 
-    $this->setBody($body);
+    $processor_name = $this->processors[$type];
+    return new $processor_name();
   }
-
-
 }

@@ -1,0 +1,76 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagC4dImageLocal class.
+ */
+
+/**
+ * Tests for the [c4d-image==…] tag processor.
+ */
+class C4dMigrateTestProcessTagC4dImageLocal extends DrupalWebTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 4 [] tags in total but only 3 unique tags.
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'     => 'c4d-image:local',
+    'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]',
+    'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+    'width'    => 200,
+    'height'   => 200,
+    'alt'      => 'confusing_whiteboard',
+    'title'    => NULL,
+    'position' => NULL,
+  );
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Process [c4d-image==…] tags',
+      'description' => 'Test that the C4dImage tag processor downloads copies the file and add it to the file system.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = array('files_root' => __DIR__ . '/../../resources');
+
+    $processor = new C4dMigrateProcessTagC4dImageLocal($this->tag, $config);
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = $GLOBALS['base_url']
+      . '/'
+      . variable_get('file_public_path', NULL)
+      . '/media/CD_in_ethiopia-thumb.jpg';
+
+    $expected_replacement = sprintf(
+      '<img src="%s" class="img__fid__%d media-image" style="height:200px; width:200px" alt="confusing_whiteboard" title="" />',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+    $this->assertEqual(
+      $expected_replacement,
+      $processor->getReplacement(),
+      'The replacement string was not as expected'
+    );
+  }
+}

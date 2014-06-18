@@ -46,6 +46,9 @@ files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
 
 
+; Parsers
+files[] = includes/process/BodyMedia.inc
+
 ; Tag parsers
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
@@ -53,9 +56,14 @@ files[] = includes/parser/IbImage.inc
 files[] = includes/parser/EcMedia.inc
 files[] = includes/parser/Video.inc
 
+; Tag processors
+files[] = includes/process/tag/Abstract.inc
+files[] = includes/process/tag/C4dImageLocal.inc
+
 
 ; Tests
 files[] = tests/parser/C4dImage.test
 files[] = tests/parser/IbImage.test
 files[] = tests/parser/EcMedia.test
 files[] = tests/parser/Video.test
+files[] = tests/process/tag/C4dImageLocal.test
