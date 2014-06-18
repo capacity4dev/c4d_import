@@ -16,29 +16,8 @@ class C4dMigrateProcessTagC4dImageLocal extends C4dMigrateProcessTagAbstract {
    */
   public function process() {
     $tag = $this->getTag();
+    $file = $this->copyFile($tag['source'], 'public://media');
 
-    // Source file.
-    $source_path = $this->getConfigValue('files_root')
-      . '/'
-      . $tag['source'];
-    $source_name = drupal_basename($source_path);
-
-    // We can only migrate files that exist.
-    if (!file_exists($source_path)) {
-      return FALSE;
-    }
-
-    // Copy the file to the new platform.
-    $target_folder = 'public://media';
-    $target_path   = $target_folder . '/' . $source_name;
-    $file_source = new stdClass();
-    $file_source->uri      = $source_path;
-    $file_source->filename = $source_name;
-    $file_source->filemime = file_get_mimetype($source_path);
-    $file_source->status   = FILE_STATUS_PERMANENT;
-
-    file_prepare_directory($target_folder, FILE_CREATE_DIRECTORY);
-    $file = file_copy($file_source, $target_path, FILE_EXISTS_RENAME);
     if (!$file) {
       return FALSE;
     }
@@ -51,8 +30,8 @@ class C4dMigrateProcessTagC4dImageLocal extends C4dMigrateProcessTagAbstract {
    * {@inheritdoc}
    */
   public function getReplacement() {
-    $tag   = $this->getTag();
-    $file  = $this->getFile();
+    $tag  = $this->getTag();
+    $file = $this->getFile();
 
     $replacement = sprintf(
       '<img src="%s" class="img__fid__%d media-image" style="height:%dpx; width:%dpx" alt="%s" title="%s" />',
