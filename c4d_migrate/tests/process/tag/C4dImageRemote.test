@@ -64,10 +64,11 @@ class C4dMigrateTestProcessTagC4dImageRemote extends DrupalWebTestCase {
       $expected_path,
       (int) $processor->getFile()->fid
     );
+
     $this->assertEqual(
          $expected_replacement,
            $processor->getReplacement(),
-           'The replacement string was not as expected.'
+           'The replacement string was what we expected.'
     );
   }
 }

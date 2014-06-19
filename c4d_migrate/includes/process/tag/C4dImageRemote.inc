@@ -51,7 +51,12 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstract {
    * {@inheritdoc}
    */
   protected function copyFile($source, $target_folder) {
-    $file_stream = file_get_contents($source);
+    try {
+      $file_stream = file_get_contents($source);
+    }
+    catch (Exception $e) {
+      return FALSE;
+    }
 
     // We can only migrate files that exist.
     if (empty($file_stream)) {
