@@ -1,0 +1,113 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateTestProcessTagIbImage class.
+ */
+
+/**
+ * Tests for the [ibimage==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  // [ibimage==22289==medium==none====ibimage-left==Owen Barder]
+  // [ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]
+//<div class="ibimage ibimage-center-clear ibimage-preset-large">
+  //<div class="ibimage-inner" style="">
+  //<a href="/photo-album/b4life-slideshow" class=" ibimage-link photo-album-link" target="_blank">
+  //
+  //<img src="http://capacity4dev.eu.dev/system/files/imagecache/large/photo_album/22/05/2014_-_0921/2013-12-24_09.45.10-4.jpg" alt="B4Life slideshow" title="" width="400" height="267" class="imagecache imagecache-large">
+  //<span class="caption">B4Life slideshow</span>
+  //
+  //</a>
+  //</div>
+//</div>
+  private $tag = array(
+    'type'    => 'ibimage',
+    'tag'     => '[ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
+    'fid'     => 26046,
+    'preset'  => 'large',
+    'link'    => 'photo_album_link',
+    'target'  => '_blank',
+    'style'   => 'ibimage-center-clear',
+    'caption' => 'B4Life slideshow',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage==…] tags',
+      'description' => 'Test that the IbImage tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = array('files_root' => 'public://');
+
+    $processor   = new C4dMigrateProcessTagIbImage($this->tag, $config);
+
+    // Retrieve dummy image to test.
+    $dummy_image = $this->getTestFile('image');
+
+    // Set the source manually. If left empty, the processor will try to
+    // retrieve the image from the Drupal 6 database (based on fid).
+    $processor->setSource($dummy_image->filename);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = $GLOBALS['base_url']
+      . '/'
+      . variable_get('file_public_path', NULL)
+      . '/media/image-test.png';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<img src="%s" class="img__fid__%d media-image" alt="B4Life slideshow" title="B4Life slideshow" />',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    var_dump('EXPECTED');
+    var_dump($expected_replacement);
+    var_dump('RECEIVED');
+    var_dump($processor->getReplacement());
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+
+  function getTestFile($type_name, $size = NULL) {
+    // Get a file to upload.
+    $file = current($this->drupalGetTestFiles($type_name, $size));
+
+    // Add a filesize property to files as would be read by file_load().
+    $file->filesize = filesize($file->uri);
+
+    return $file;
+  }
+}
