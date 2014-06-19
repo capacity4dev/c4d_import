@@ -27,7 +27,7 @@ class C4dMigrateProcessBodyMedia {
    */
   protected $processors = array(
     'c4d-image:local'  => 'C4dMigrateProcessTagC4dImageLocal',
-    //'c4d-image:remote' => 'C4dMigrateProcessTagC4dImageLocal',
+    'c4d-image:remote' => 'C4dMigrateProcessTagC4dImageLocal',
     //'ibimage'          => 'C4DMigrateProcessTagIbImage',
     //'video'            => 'C4DMigrateProcessTagVideo',
     //'ec_media'         => 'C4DMigrateProcessTagEcMedia',
