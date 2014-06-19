@@ -62,16 +62,19 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
   }
 
   /**
-   * Retrieve the file, either by fid of the
+   * Retrieve the file, either by fid of the file or a defined source path.
    *
-   * @param $fid
+   * @param int $fid
+   *   Optional file id.
    *
-   * @return FALSE|null|object
+   * @return object
+   *   File object.
    */
   public function getSource($fid) {
     if (empty($this->source)) {
       $img = $this->getImageFile($fid);
-      // $config = array('files_root' => '/Volumes/webdev/www/amplexor/capacity4dev.eu/trunk/platform/http');
+      // $config = array('files_root' =>
+      // '/Volumes/webdev/www/amplexor/capacity4dev.eu/trunk/platform/http');
       $this->source = $img->filepath;
     }
     return $this->source;
@@ -80,7 +83,7 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
   /**
    * Setter for $this->source.
    *
-   * @param String $source
+   * @param string $source
    *   File path.
    */
   public function setSource($source) {

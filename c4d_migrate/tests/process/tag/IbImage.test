@@ -17,18 +17,6 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
    *
    * @var string
    */
-  // [ibimage==22289==medium==none====ibimage-left==Owen Barder]
-  // [ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]
-//<div class="ibimage ibimage-center-clear ibimage-preset-large">
-  //<div class="ibimage-inner" style="">
-  //<a href="/photo-album/b4life-slideshow" class=" ibimage-link photo-album-link" target="_blank">
-  //
-  //<img src="http://capacity4dev.eu.dev/system/files/imagecache/large/photo_album/22/05/2014_-_0921/2013-12-24_09.45.10-4.jpg" alt="B4Life slideshow" title="" width="400" height="267" class="imagecache imagecache-large">
-  //<span class="caption">B4Life slideshow</span>
-  //
-  //</a>
-  //</div>
-//</div>
   private $tag = array(
     'type'    => 'ibimage',
     'tag'     => '[ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
@@ -65,7 +53,7 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
   public function testProcess() {
     $config = array('files_root' => 'public://');
 
-    $processor   = new C4dMigrateProcessTagIbImage($this->tag, $config);
+    $processor = new C4dMigrateProcessTagIbImage($this->tag, $config);
 
     // Retrieve dummy image to test.
     $dummy_image = $this->getTestFile('image');
@@ -89,11 +77,6 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
       (int) $processor->getFile()->fid
     );
 
-    var_dump('EXPECTED');
-    var_dump($expected_replacement);
-    var_dump('RECEIVED');
-    var_dump($processor->getReplacement());
-
     $this->assertEqual(
          $expected_replacement,
            $processor->getReplacement(),
@@ -101,7 +84,18 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
     );
   }
 
-  function getTestFile($type_name, $size = NULL) {
+  /**
+   * Get a dummy file inside our sandbox to test with.
+   *
+   * @param string $type_name
+   *   Type of file to generate.
+   * @param int    $size
+   *   Optional filesize to generate.
+   *
+   * @return mixed
+   *   File object with the dummy image.
+   */
+  private function getTestFile($type_name, $size = NULL) {
     // Get a file to upload.
     $file = current($this->drupalGetTestFiles($type_name, $size));
 

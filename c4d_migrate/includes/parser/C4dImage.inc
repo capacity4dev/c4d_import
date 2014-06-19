@@ -71,8 +71,10 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
    * Get the origin from the source string.
    *
    * @param string $source
+   *   Source path of the image.
    *
    * @return string
+   *   String indicating remote or local file.
    */
   protected function getOrigin($source) {
     if (preg_match('|^http[s]?://|iSu', $source)) {

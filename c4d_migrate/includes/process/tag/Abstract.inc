@@ -25,21 +25,22 @@ abstract class C4dMigrateProcessTagAbstract {
   private $config;
 
   /**
-   * The result of the file processing is a file in the file + file_entity tables.
+   * The result of the processing is a file in the file + file_entity tables.
    *
    * @var stdClass
    */
   private $file;
 
-
   /**
    * Create the processor by passing the tag data.
    *
    * @param array $tag
+   *   The tag array to process.
    * @param array $config
+   *   Config parameters for the processor.
    */
   public function __construct(array $tag, array $config = array()) {
-    $this->tag = $tag;
+    $this->tag    = $tag;
     $this->config = $config;
   }
 
@@ -59,11 +60,10 @@ abstract class C4dMigrateProcessTagAbstract {
    */
   abstract public function getReplacement();
 
-
   /**
    * Set the file.
    *
-   * @param stdClass
+   * @param object $file
    *   The file object (result of the process).
    */
   protected function setFile(stdClass $file) {
@@ -73,16 +73,16 @@ abstract class C4dMigrateProcessTagAbstract {
   /**
    * Get the file.
    *
-   * @return stdClass
+   * @return object
    *   The file object as saved in the local database.
    */
-   public function getFile() {
-     if (is_null($this->file)) {
-       return FALSE;
-     }
+  public function getFile() {
+    if (is_null($this->file)) {
+      return FALSE;
+    }
 
-     return $this->file;
-   }
+    return $this->file;
+  }
 
   /**
    * Get the tag we are processing.
@@ -100,7 +100,8 @@ abstract class C4dMigrateProcessTagAbstract {
    * @param string $key
    *   The configuration key.
    *
-   * @return mixed
+   * @return string
+   *   The configuration value.
    */
   protected function getConfigValue($key) {
     if (!array_key_exists($key, $this->config)) {
@@ -115,7 +116,8 @@ abstract class C4dMigrateProcessTagAbstract {
    *
    * @param string $source
    *   The source path (including the filename) of the file that needs to be
-   *   copied. The source path is relative to the files root of the old platform.
+   *   copied. The source path is relative to the files root of the old
+   *   platform.
    * @param string $target_folder
    *   The target directory URI where the file should be copied to.
    *
@@ -139,7 +141,7 @@ abstract class C4dMigrateProcessTagAbstract {
     file_prepare_directory($target_folder, FILE_CREATE_DIRECTORY);
 
     // Create a fake file object so we can use the file_copy() function.
-    $file_source = new stdClass();
+    $file_source           = new stdClass();
     $file_source->uri      = $source_path;
     $file_source->filename = $source_name;
     $file_source->filemime = file_get_mimetype($source_path);
@@ -147,7 +149,7 @@ abstract class C4dMigrateProcessTagAbstract {
 
     // Copy the file.
     $target_path = $target_folder . '/' . $source_name;
-    $file = file_copy($file_source, $target_path, FILE_EXISTS_RENAME);
+    $file        = file_copy($file_source, $target_path, FILE_EXISTS_RENAME);
 
     return ($file) ? $file : FALSE;
   }
