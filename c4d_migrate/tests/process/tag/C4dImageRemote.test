@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Tests for the C4dMigrateProcessTagC4dImageLocal class.
+ * Tests for the C4dMigrateProcessTagC4dImageRemote class.
  */
 
 /**
