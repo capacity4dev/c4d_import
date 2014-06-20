@@ -43,7 +43,7 @@ class C4dMigrateTestProcessTagC4dImageLocal extends DrupalWebTestCase {
    * Load the process class during setup.
    */
   public function setUp() {
-    $modules = array('c4d_migrate');
+    $modules = array('c4d_migrate', 'c4d_migrate_test');
     parent::setUp($modules);
   }
 
@@ -51,7 +51,7 @@ class C4dMigrateTestProcessTagC4dImageLocal extends DrupalWebTestCase {
    * Test parsing out the tags.
    */
   public function testProcess() {
-    $config = array('files_root' => __DIR__ . '/../../resources');
+    $config = array('files_root' => __DIR__ . '/../../../resources');
 
     $processor = new C4dMigrateProcessTagC4dImageLocal($this->tag, $config);
     $result = $processor->process();

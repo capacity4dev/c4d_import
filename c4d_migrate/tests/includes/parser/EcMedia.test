@@ -85,8 +85,8 @@ EOT;
    */
   public function setUp() {
     parent::setUp();
-    require_once __DIR__ . '/../../includes/parser/Abstract.inc';
-    require_once __DIR__ . '/../../includes/parser/EcMedia.inc';
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/EcMedia.inc';
   }
 
   /**

@@ -60,12 +60,3 @@ files[] = includes/parser/Video.inc
 files[] = includes/process/tag/Abstract.inc
 files[] = includes/process/tag/C4dImageLocal.inc
 files[] = includes/process/tag/C4dImageRemote.inc
-
-
-; Tests
-files[] = tests/parser/C4dImage.test
-files[] = tests/parser/IbImage.test
-files[] = tests/parser/EcMedia.test
-files[] = tests/parser/Video.test
-files[] = tests/process/tag/C4dImageLocal.test
-files[] = tests/process/tag/C4dImageRemote.test

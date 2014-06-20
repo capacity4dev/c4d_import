@@ -102,8 +102,8 @@ EOT;
    */
   public function setUp() {
     parent::setUp();
-    require_once __DIR__ . '/../../includes/parser/Abstract.inc';
-    require_once __DIR__ . '/../../includes/parser/C4dImage.inc';
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/C4dImage.inc';
   }
 
   /**

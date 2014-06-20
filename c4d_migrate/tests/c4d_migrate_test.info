@@ -1,0 +1,15 @@
+name = C4D Content Migration Tests
+description = Tests for the capacity4dev migration.
+core = 7.x
+package = capacity4more - Migrate
+version = 7.x-1.x-dev
+dependencies[] = c4d_migrate
+hidden = TRUE
+
+; Test files
+files[] = includes/parser/C4dImage.test
+files[] = includes/parser/IbImage.test
+files[] = includes/parser/EcMedia.test
+files[] = includes/parser/Video.test
+files[] = includes/process/tag/C4dImageLocal.test
+files[] = includes/process/tag/C4dImageRemote.test
