@@ -33,16 +33,39 @@ class C4dMigrateProcessTagC4dImageLocal extends C4dMigrateProcessTagAbstractFile
     $tag  = $this->getTag();
     $file = $this->getFile();
 
-    $replacement = sprintf(
-      '<img src="%s" class="img__fid__%d media-image" style="height:%dpx; width:%dpx" alt="%s" title="%s" />',
+    $string = array(
+      '<img',
+      'src="%s"',
+      'class="img__fid__%d media-image"',
+    );
+    $args = array(
       file_create_url($file->uri),
       $file->fid,
-      $tag['height'],
-      $tag['width'],
-      $tag['alt'],
-      $tag['title']
     );
 
+    if ($tag['width']) {
+      $string[] = 'width="%d"';
+      $args[] = $tag['width'];
+    }
+    if ($tag['height']) {
+      $string[] = 'height="%d"';
+      $args[] = $tag['height'];
+    }
+    if ($tag['alt']) {
+      $string[] = 'alt="%s"';
+      $args[] = $tag['alt'];
+    }
+    if ($tag['title']) {
+      $string[] = 'title="%s"';
+      $args[] = $tag['title'];
+    }
+
+    $string[] = '/>';
+
+    $replacement = vsprintf(
+      implode(' ', $string),
+      $args
+    );
     return $replacement;
   }
 }
