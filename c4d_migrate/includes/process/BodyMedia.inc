@@ -30,9 +30,9 @@ class C4dMigrateProcessBodyMedia {
     'c4d-image:remote'   => 'C4dMigrateProcessTagC4dImageLocal',
     'ibimage:image'      => 'C4DMigrateProcessTagIbImageImage',
     'ibimage:link'       => 'C4DMigrateProcessTagIbImageLink',
-//    'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
-//    'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
-//    'ibimage:slideshow'  => 'C4DMigrateProcessTagIbImageSlideshow',
+    'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
+    'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
+    'ibimage:slideshow'  => 'C4DMigrateProcessTagIbImageSlideshow',
     // 'video'            => 'C4DMigrateProcessTagVideo',
     // 'ec_media'         => 'C4DMigrateProcessTagEcMedia',
   );

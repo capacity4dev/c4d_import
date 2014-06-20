@@ -7,27 +7,7 @@
 /**
  * Processor to make files out of ibimage:image tags.
  */
-class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagAbstractFile {
-  private $source = NULL;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function process() {
-    $tag = $this->getTag();
-
-    $source = $this->getSource($tag['fid']);
-    $file   = $this->copyFile($source, 'public://media');
-
-    if (!$file) {
-      return FALSE;
-    }
-
-    $this->setFile($file);
-
-    return TRUE;
-  }
-
+class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
   /**
    * {@inheritdoc}
    */
@@ -55,39 +35,5 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagAbstractFile 
     );
 
     return $replacement;
-  }
-
-  /**
-   * Retrieve the file object related with the file id.
-   *
-   * @param int $fid
-   *   File id to retrieve the file object.
-   *
-   * @return object|FALSE
-   *   File object or FALSE if not found.
-   */
-  public function getImageFile($fid) {
-    $q = $this->createSelect('c4d_export_other_files', 'f');
-    $q->fields('f');
-    $q->condition('fid', $fid, '=');
-    $res = $q->execute();
-
-    return $res->fetchObject();
-  }
-
-  /**
-   * Retrieve the file, either by fid of the file or a defined source path.
-   *
-   * @param int $fid
-   *   Optional file id.
-   *
-   * @return object
-   *   File object.
-   */
-  public function getSource($fid) {
-    $img          = $this->getImageFile($fid);
-    $this->source = $img->filepath;
-
-    return $this->source;
   }
 }

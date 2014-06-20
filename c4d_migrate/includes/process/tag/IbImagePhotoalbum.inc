@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Processor for local ibimage:link tags.
+ * Processor for local ibimage:photoalbum tags.
  */
 
 /**
- * Processor to make files out of ibimage:link tags.
+ * Processor to make files out of ibimage:photoalbum tags.
  */
-class C4dMigrateProcessTagIbImageLink extends C4dMigrateProcessTagIbImage {
+class C4dMigrateProcessTagIbImagePhotoalbum extends C4dMigrateProcessTagIbImage {
   /**
    * {@inheritdoc}
    */
@@ -21,7 +21,7 @@ class C4dMigrateProcessTagIbImageLink extends C4dMigrateProcessTagIbImage {
     $replacement = sprintf(
       '<div class="ibimage %s ibimage-preset-%s">' .
       '<div class="ibimage-inner">' .
-      '<a href="%s"%s class="ibimage-link">' .
+      '<a href="%s"%s class="ibimage-link photo-album-link">' .
       '<img src="%s" class="img__fid__%d media-image" alt="%s" title="" />' .
       '<span class="caption">%s</span>' .
       '</a>' .
@@ -30,7 +30,7 @@ class C4dMigrateProcessTagIbImageLink extends C4dMigrateProcessTagIbImage {
       ,
       $tag['style'],
       $tag['preset'],
-      $tag['link'],
+      $url, // @TODO LINK TO PHOTOALBUM!
       $tag['target'] == '_blank' ? ' target="_blank"' : '',
       $url,
       $file->fid,

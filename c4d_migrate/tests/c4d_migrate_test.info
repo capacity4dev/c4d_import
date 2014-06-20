@@ -18,4 +18,7 @@ files[] = includes/process/tag/C4dImageRemote.test
 files[] = includes/process/tag/IbImage.test
 files[] = includes/process/tag/IbImageImage.test
 files[] = includes/process/tag/IbImageLink.test
+files[] = includes/process/tag/IbImagePopup.test
+files[] = includes/process/tag/IbImagePhotoalbum.test
+files[] = includes/process/tag/IbImageSlideshow.test
 files[] = includes/process/tag/EcMedia.test
