@@ -1,0 +1,107 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateTestProcessTagIbImage class.
+ */
+
+/**
+ * Tests for the [ibimage==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'    => 'ibimage',
+    'tag'     => '[ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
+    'fid'     => 26046,
+    'preset'  => 'large',
+    'link'    => 'photo_album_link',
+    'target'  => '_blank',
+    'style'   => 'ibimage-center-clear',
+    'caption' => 'B4Life slideshow',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage==…] tags',
+      'description' => 'Test that the IbImage tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = array('files_root' => 'public://');
+
+    $processor = new C4dMigrateProcessTagIbImage($this->tag, $config);
+
+    // Retrieve dummy image to test.
+    $dummy_image = $this->getTestFile('image');
+
+    // Set the source manually. If left empty, the processor will try to
+    // retrieve the image from the Drupal 6 database (based on fid).
+    $processor->setSource($dummy_image->filename);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = $GLOBALS['base_url']
+      . '/'
+      . variable_get('file_public_path', NULL)
+      . '/media/image-test.png';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<img src="%s" class="img__fid__%d media-image" alt="B4Life slideshow" title="B4Life slideshow" />',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+
+  /**
+   * Get a dummy file inside our sandbox to test with.
+   *
+   * @param string $type_name
+   *   Type of file to generate.
+   * @param int    $size
+   *   Optional filesize to generate.
+   *
+   * @return mixed
+   *   File object with the dummy image.
+   */
+  private function getTestFile($type_name, $size = NULL) {
+    // Get a file to upload.
+    $file = current($this->drupalGetTestFiles($type_name, $size));
+
+    // Add a filesize property to files as would be read by file_load().
+    $file->filesize = filesize($file->uri);
+
+    return $file;
+  }
+}

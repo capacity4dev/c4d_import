@@ -28,17 +28,16 @@ class C4dMigrateProcessBodyMedia {
   protected $processors = array(
     'c4d-image:local'  => 'C4dMigrateProcessTagC4dImageLocal',
     'c4d-image:remote' => 'C4dMigrateProcessTagC4dImageLocal',
-    //'ibimage'          => 'C4DMigrateProcessTagIbImage',
-    //'video'            => 'C4DMigrateProcessTagVideo',
-    //'ec_media'         => 'C4DMigrateProcessTagEcMedia',
+    'ibimage'          => 'C4DMigrateProcessTagIbImage',
+    // 'video'            => 'C4DMigrateProcessTagVideo',
+    // 'ec_media'         => 'C4DMigrateProcessTagEcMedia',
   );
-
 
   /**
    * Process the body.
    */
   public function process($body) {
-    $tags = array();
+    $tags         = array();
     $replacements = array();
 
     // Parse the tags out of the body field.
@@ -66,15 +65,17 @@ class C4dMigrateProcessBodyMedia {
    *
    * @param string $body
    *   The body where the tags needs to be replaced.
-   * @param array $replacements
+   * @param array  $replacements
    *   The replacements array.
    *
    * @return string
+   *   String with replacements.
    */
   protected function replaceTags($body, $replacements) {
-    foreach($replacements as $search => $replace) {
+    foreach ($replacements as $search => $replace) {
       $body = str_replace($search, $replace, $body);
     }
+
     return $body;
   }
 
@@ -82,8 +83,10 @@ class C4dMigrateProcessBodyMedia {
    * Get the processor object based on the tag type and mapping.
    *
    * @param string $type
+   *   Type of processor to return.
    *
    * @return C4dMigrateProcessTagAbstract
+   *   Instanciated processor object.
    */
   protected function getProcessor($type) {
     if (!isset($this->processors[$type])) {
@@ -91,6 +94,7 @@ class C4dMigrateProcessBodyMedia {
     }
 
     $processor_name = $this->processors[$type];
+
     return new $processor_name();
   }
 }

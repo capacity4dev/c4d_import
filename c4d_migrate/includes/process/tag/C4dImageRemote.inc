@@ -75,4 +75,3 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstract {
     return ($file) ? $file : FALSE;
   }
 }
-

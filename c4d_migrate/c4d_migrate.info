@@ -60,3 +60,4 @@ files[] = includes/parser/Video.inc
 files[] = includes/process/tag/Abstract.inc
 files[] = includes/process/tag/C4dImageLocal.inc
 files[] = includes/process/tag/C4dImageRemote.inc
+files[] = includes/process/tag/IbImage.inc
