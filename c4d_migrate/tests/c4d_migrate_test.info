@@ -22,3 +22,4 @@ files[] = includes/process/tag/IbImagePopup.test
 files[] = includes/process/tag/IbImagePhotoalbum.test
 files[] = includes/process/tag/IbImageSlideshow.test
 files[] = includes/process/tag/EcMedia.test
+files[] = includes/process/tag/Video.test

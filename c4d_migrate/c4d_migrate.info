@@ -71,3 +71,4 @@ files[] = includes/process/tag/IbImagePhotoalbum.inc
 files[] = includes/process/tag/IbImageSlideshow.inc
 
 files[] = includes/process/tag/EcMedia.inc
+files[] = includes/process/tag/Video.inc
