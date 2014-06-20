@@ -46,7 +46,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Parse the tag.
     $parts = array();
-    $pattern = '/\[c4d-image==([^=]*)==([0-9]+)x([0-9]+)==([^=]*)==([^=]*)==([^=]*)\]/iSu';
+    $pattern = '/\[c4d-image==([^=]*)==(([0-9]+)x([0-9]+))?==([^=]*)==([^=]*)==([^=]*)\]/iSu';
     preg_match($pattern, $tag, $parts);
 
     // Check tag.
@@ -56,13 +56,23 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Fill data into the data array.
     $source = $this->cleanUpSource($parts[1]);
-    $data['type']    .= ':' . $this->getOrigin($source);
-    $data['source']   = $source;
-    $data['width']    = (int) $parts[2];
-    $data['height']   = (int) $parts[3];
-    $data['alt']      = $parts[4];
-    $data['title']    = $parts[5];
-    $data['position'] = $parts[6];
+    $data['type']  .= ':' . $this->getOrigin($source);
+    $data['source'] = $source;
+    if ($parts[3]) {
+      $data['width'] = (int) $parts[3];
+    }
+    if ($parts[4]) {
+      $data['height'] = (int) $parts[4];
+    }
+    if ($parts[5]) {
+      $data['alt'] = $parts[5];
+    }
+    if ($parts[6]) {
+      $data['title'] = $parts[6];
+    }
+    if ($parts[7]) {
+      $data['position'] = $parts[7];
+    }
 
     return $data;
   }

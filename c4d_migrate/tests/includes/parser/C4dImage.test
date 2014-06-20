@@ -35,6 +35,9 @@ class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
 <p>
   [c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]
 </p>
+<p>
+  [c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]
+</p>
 EOT;
 
   /**
@@ -44,44 +47,54 @@ EOT;
    */
   private $expectedTags = array(
     '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]' => array(
-      'type' => "c4d-image:remote",
-      'tag' => '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]',
-      'source' => "http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg",
-      'width' => 595,
-      'height' => 300,
-      'alt' => "Truck Malaba",
-      'title' => "",
-      'position' => "",
+      'type'     => 'c4d-image:remote',
+      'tag'      => '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]',
+      'source'   => "http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg",
+      'width'    => 595,
+      'height'   => 300,
+      'alt'      => 'Truck Malaba',
+      'title'    => NULL,
+      'position' => NULL,
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]' => array(
-      'type' => "c4d-image:local",
-      'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
-      'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG",
-      'width' => 150,
-      'height' => 56,
-      'alt' => "PRAG Logo",
-      'title' => "",
-      'position' => "",
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
+      'source'   => 'sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG',
+      'width'    => 150,
+      'height'   => 56,
+      'alt'      => 'PRAG Logo',
+      'title'    => NULL,
+      'position' => NULL,
     ),
     '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]' => array(
-      'type' => "c4d-image:local",
-      'tag' => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
-      'source' => "sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG",
-      'width' => 150,
-      'height' => 56,
-      'alt' => "PRAG Logo 2",
-      'title' => "",
-      'position' => "",
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
+      'source'   => 'sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG',
+      'width'    => 150,
+      'height'   => 56,
+      'alt'      => 'PRAG Logo 2',
+      'title'    => NULL,
+      'position' => NULL,
     ),
     '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]' => array(
-      'type' => "c4d-image:local",
-      'tag' => '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]',
-      'source' => "sites/default/files/magazine/images/Woman_Sunflowers.jpg",
-      'width' => 433,
-      'height' => 325,
-      'alt' => "Woman with Sunflowers",
-      'title' => "",
-      'position' => "",
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]',
+      'source'   => 'sites/default/files/magazine/images/Woman_Sunflowers.jpg',
+      'width'    => 433,
+      'height'   => 325,
+      'alt'      => 'Woman with Sunflowers',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+    '[c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]',
+      'source'   => 'sites/default/files/files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => NULL,
+      'alt'      => 'confusing_whiteboard',
+      'title'    => NULL,
+      'position' => NULL,
     ),
   );
 
@@ -114,7 +127,7 @@ EOT;
 
     $parser->parse($this->text);
     $tags = $parser->getTags();
-    $this->assertEqual(4, count($tags), 'Expected to get 3 unique tags.');
+    $this->assertEqual(5, count($tags));
     $this->assertEqual($this->expectedTags, $tags);
   }
 }
