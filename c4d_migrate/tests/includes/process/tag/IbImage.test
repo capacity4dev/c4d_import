@@ -7,7 +7,7 @@
 /**
  * Tests for the [ibimage==…] tag processor.
  */
-class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
+class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
   /**
    * The body we use as test data.
    *
@@ -19,8 +19,8 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
    */
   private $tag = array(
     'type'    => 'ibimage',
-    'tag'     => '[ibimage==26046==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
-    'fid'     => 26046,
+    'tag'     => '[ibimage==1234==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
+    'fid'     => 1234,
     'preset'  => 'large',
     'link'    => 'photo_album_link',
     'target'  => '_blank',
@@ -43,7 +43,7 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
    * Load the process class during setup.
    */
   public function setUp() {
-    $modules = array('c4d_migrate');
+    $modules = array('c4d_migrate', 'c4d_migrate_test');
     parent::setUp($modules);
   }
 
@@ -51,16 +51,9 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
    * Test parsing out the tags.
    */
   public function testProcess() {
-    $config = array('files_root' => 'public://');
+    $config = $this->getC4dMigrateConfig();
 
     $processor = new C4dMigrateProcessTagIbImage($this->tag, $config);
-
-    // Retrieve dummy image to test.
-    $dummy_image = $this->getTestFile('image');
-
-    // Set the source manually. If left empty, the processor will try to
-    // retrieve the image from the Drupal 6 database (based on fid).
-    $processor->setSource($dummy_image->filename);
 
     $result = $processor->process();
     $this->assertTrue($result, 'Process should return TRUE.');
@@ -68,7 +61,7 @@ class C4dMigrateTestProcessTagIbImage extends DrupalWebTestCase {
     $expected_path = $GLOBALS['base_url']
       . '/'
       . variable_get('file_public_path', NULL)
-      . '/media/image-test.png';
+      . '/media/CD_in_ethiopia-thumb.jpg';
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(

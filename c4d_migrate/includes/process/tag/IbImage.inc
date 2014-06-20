@@ -9,13 +9,15 @@
  */
 class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
   private $source = NULL;
+
   /**
    * {@inheritdoc}
    */
   public function process() {
     $tag = $this->getTag();
 
-    $file = $this->copyFile($this->getSource($tag['fid']), 'public://media');
+    $source = $this->getSource($tag['fid']);
+    $file = $this->copyFile($source, 'public://media');
 
     if (!$file) {
       return FALSE;
@@ -54,10 +56,11 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
    *   File object or FALSE if not found.
    */
   public function getImageFile($fid) {
-    $q = $this->createSelect('files', 'f');
+    $q = $this->createSelect('c4d_export_other_files', 'f');
     $q->fields('f');
     $q->condition('fid', $fid, '=');
     $res = $q->execute();
+
     return $res->fetchObject();
   }
 
@@ -71,22 +74,9 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
    *   File object.
    */
   public function getSource($fid) {
-    if (empty($this->source)) {
-      $img = $this->getImageFile($fid);
-      // $config = array('files_root' =>
-      // '/Volumes/webdev/www/amplexor/capacity4dev.eu/trunk/platform/http');
-      $this->source = $img->filepath;
-    }
-    return $this->source;
-  }
+    $img = $this->getImageFile($fid);
+    $this->source = $img->filepath;
 
-  /**
-   * Setter for $this->source.
-   *
-   * @param string $source
-   *   File path.
-   */
-  public function setSource($source) {
-    $this->source = $source;
+    return $this->source;
   }
 }
