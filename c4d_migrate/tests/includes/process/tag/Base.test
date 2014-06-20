@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagC4dImageLocal class.
+ */
+
+/**
+ * Tests for the [c4d-image==…] tag processor.
+ */
+class C4dMigrateTestProcessTagBase extends DrupalWebTestCase {
+  /**
+   * Helper to generate the config array.
+   *
+   * @return array
+   *   The configuration array.
+   */
+  protected function getC4dMigrateConfig() {
+    $config = array(
+      'files_root' => __DIR__ . '/../../../resources',
+      'db'         => $this->getC4dMigrateDbConnection(),
+    );
+    return $config;
+  }
+
+  /**
+   * Create the DB connection
+   *
+   * @return object
+   *   The DB connection.
+   */
+  private function getC4dMigrateDbConnection() {
+    $connection_name = 'c4d_migrate_test';
+
+    $existing = Database::getConnectionInfo($connection_name);
+    if (is_null($existing)) {
+      $db_default = Database::getConnectionInfo('default');
+      $db_info = array(
+        'host'     => $db_default['default']['host'],
+        'database' => $db_default['default']['database'],
+        'username' => $db_default['default']['username'],
+        'password' => $db_default['default']['password'],
+        'port'     => $db_default['default']['port'],
+        'driver'   => $db_default['default']['driver'],
+        'prefix'   => $db_default['default']['prefix'],
+      );
+      Database::addConnectionInfo($connection_name, 'default', $db_info);
+    }
+
+    return Database::getConnection('default', $connection_name);
+  }
+}
