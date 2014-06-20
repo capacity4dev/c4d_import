@@ -69,13 +69,6 @@ class C4dMigrateTestProcessTagIbImageLink extends C4dMigrateTestProcessTagIbImag
       (int) $processor->getFile()->fid
     );
 
-
-
-    var_dump('EXPECTED');
-    var_dump($expected_replacement);
-    var_dump('RECEIVED');
-    var_dump($processor->getReplacement());
-
     $this->assertEqual(
          $expected_replacement,
            $processor->getReplacement(),
