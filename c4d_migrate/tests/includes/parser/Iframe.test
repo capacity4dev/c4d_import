@@ -1,0 +1,110 @@
+<?php
+/**
+ * @file
+ * Tests for the c4d-image tag parser.
+ */
+
+/**
+ * Tests for the <iframe></iframe> tag parser.
+ */
+class C4dMigrateTestParserIframe extends DrupalUnitTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 4 [] tags in total but only 3 unique tags.
+   *
+   * @var string
+   */
+  private $text = <<<EOT
+<p>
+  On the number of documents used to clear cargo
+</p>
+<p>
+  <a href="http://www.businessdailyafrica.com/-/539444/681446/-/s0yj8i/-/">Business Daily Africa</a>
+</p>
+<p><iframe src="http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube vf-o2afmjzwafy" frameborder="0"></iframe></p>
+<p><a href="http://ec.europa.eu/europeaid/work/procedures/implementation/practical_guide/index_en.htm">Link text</a></p>
+<p>The Cotonou Agreement was revised on 23 June 2010 in Ouagadougou, Burkina Faso. The update has introduced modifications concerning rules of nationality and origin, basically aligning EDF and BUDGET instruments. Consequently the PRAG is now.</p>
+<p>
+  <iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>
+</p>
+<p>
+  <a href="http://ec.europa.eu/development/geographical/cotonouintro_en.cfm">The revision of the Cotonou agreement</a>
+</p>
+<p>
+  <iframe frameborder="0" src="http://www.utoolize.com/html5player?mID=15093&amp;wID=1710&amp;vID=7320&amp;lang=en&amp;fld=1&amp;showVideoLink=false&amp;showChannels=true&amp;channelColor=0x468a87&amp;themeId=9&amp;isSharedPlayer=true" marginheight="0" marginwidth="0" width="480" height="360"></iframe>
+</p>
+<p>
+  <iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>
+</p>
+EOT;
+
+  /**
+   * Expected result
+   *
+   * @var array
+   */
+  private $expectedTags = array(
+    '<iframe src="http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube vf-o2afmjzwafy" frameborder="0"></iframe>' => array(
+      'type' => 'iframe',
+      'tag' => '<iframe src="http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube vf-o2afmjzwafy" frameborder="0"></iframe>',
+      'src' =>  'http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque',
+      'width' => 500,
+      'height' => 320,
+      'class' => 'video-filter video-youtube vf-o2afmjzwafy',
+      'style' => NULL,
+    ),
+    '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>' => array (
+      'type' => 'iframe',
+      'tag' => '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>',
+      'src' => 'https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels',
+      'width' => 500,
+      'height' => 320,
+      'class' => NULL,
+      'style' => 'border: 0',
+    ),
+    '<iframe frameborder="0" src="http://www.utoolize.com/html5player?mID=15093&amp;wID=1710&amp;vID=7320&amp;lang=en&amp;fld=1&amp;showVideoLink=false&amp;showChannels=true&amp;channelColor=0x468a87&amp;themeId=9&amp;isSharedPlayer=true" marginheight="0" marginwidth="0" width="480" height="360"></iframe>' => array(
+      'type' => 'iframe',
+      'tag' => '<iframe frameborder="0" src="http://www.utoolize.com/html5player?mID=15093&amp;wID=1710&amp;vID=7320&amp;lang=en&amp;fld=1&amp;showVideoLink=false&amp;showChannels=true&amp;channelColor=0x468a87&amp;themeId=9&amp;isSharedPlayer=true" marginheight="0" marginwidth="0" width="480" height="360"></iframe>',
+      'src' => 'http://www.utoolize.com/html5player?mID=15093&amp;wID=1710&amp;vID=7320&amp;lang=en&amp;fld=1&amp;showVideoLink=false&amp;showChannels=true&amp;channelColor=0x468a87&amp;themeId=9&amp;isSharedPlayer=true',
+      'width' => 0,
+      'height' => 0,
+      'class' => NULL,
+      'style' => NULL,
+    ),
+  );
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Parse <iframe></iframe> tags',
+      'description' => 'Test that the iFrame parser parses out the <iframe></iframe> tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the parser class during setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/Iframe.inc';
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testParser() {
+    $parser = new C4dMigrateParserIframe();
+
+    $parser->parse($this->text);
+    $tags = $parser->getTags();
+    $this->assertEqual(3, count($tags));
+    $this->assertEqual($this->expectedTags, $tags);
+  }
+}
