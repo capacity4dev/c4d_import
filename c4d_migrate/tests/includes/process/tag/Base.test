@@ -9,30 +9,20 @@
  */
 class C4dMigrateTestProcessTagBase extends DrupalWebTestCase {
   /**
-   * Helper to generate the config array.
-   *
-   * @return array
-   *   The configuration array.
+   * Helper to prepare the migration data environment in test mode.
    */
-  protected function getC4dMigrateConfig() {
-    $config = array(
-      'files_root' => __DIR__ . '/../../../resources',
-      'db'         => $this->getC4dMigrateDbConnection(),
-    );
-    return $config;
-  }
+  protected function setUpMigrationInTestMode() {
+    static $has_run = FALSE;
 
-  /**
-   * Create the DB connection
-   *
-   * @return object
-   *   The DB connection.
-   */
-  private function getC4dMigrateDbConnection() {
-    $connection_name = 'c4d_migrate_test';
+    if (!$has_run) {
+      // Test files directory.
+      $files_root = __DIR__ . '/../../../resources';
+      variable_set(C4D_MIGRATE_FILES_ROOT, $files_root);
+      $this->refreshVariables();
 
-    $existing = Database::getConnectionInfo($connection_name);
-    if (is_null($existing)) {
+      $test = variable_get(C4D_MIGRATE_FILES_ROOT, 'OH OH');
+
+      // Use the test sandbox DB connection to setup a fake migration source DB.
       $db_default = Database::getConnectionInfo('default');
       $db_info = array(
         'host'     => $db_default['default']['host'],
@@ -43,9 +33,25 @@ class C4dMigrateTestProcessTagBase extends DrupalWebTestCase {
         'driver'   => $db_default['default']['driver'],
         'prefix'   => $db_default['default']['prefix'],
       );
-      Database::addConnectionInfo($connection_name, 'default', $db_info);
-    }
+      Database::addConnectionInfo(C4D_MIGRATE_DATABASE, 'default', $db_info);
 
-    return Database::getConnection('default', $connection_name);
+      $has_run = TRUE;
+    }
+  }
+
+  /**
+   * Helper to generate the config array.
+   *
+   * @return array
+   *   The configuration array.
+   */
+  protected function getC4dMigrateConfig() {
+    $this->setUpMigrationInTestMode();
+
+    $config = array(
+      'files_root' => c4d_migrate_get_files_root(),
+      'db'         => c4d_migrate_get_db_connection(),
+    );
+    return $config;
   }
 }
