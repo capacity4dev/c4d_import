@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagIbImageLink class.
+ */
+
+/**
+ * Tests for the [ibimage:link==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImageLink extends C4dMigrateTestProcessTagIbImage {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'    => 'ibimage:link',
+    'tag'     => '[ibimage==1234==original==http://www.google.com==_blank==ibimage-center-clear==Linked image]',
+    'fid'     => 1234,
+    'preset'  => 'original',
+    'link'    => 'http://www.google.com',
+    'target'  => '_blank',
+    'style'   => 'ibimage-center-clear',
+    'caption' => 'Linked image',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage:link==…] tags',
+      'description' => 'Test that the IbImage:link tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = $this->getC4dMigrateConfig();
+
+    $processor = new C4dMigrateProcessTagIbImageLink($this->tag, $config);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = $GLOBALS['base_url']
+      . '/'
+      . variable_get('file_public_path', NULL)
+      . '/media/CD_in_ethiopia-thumb.jpg';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<div class="ibimage ibimage-center-clear ibimage-preset-original">' .
+      '<div class="ibimage-inner">' .
+      '<a href="http://www.google.com" target="_blank" class="ibimage-link">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="Linked image" title="" />' .
+      '<span class="caption">Linked image</span>' .
+      '</a>' .
+      '</div>' .
+      '</div>',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+
+
+    var_dump('EXPECTED');
+    var_dump($expected_replacement);
+    var_dump('RECEIVED');
+    var_dump($processor->getReplacement());
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+}
