@@ -27,7 +27,7 @@ class C4dMigrateProcessBodyMedia {
    */
   protected $processors = array(
     'c4d-image:local'    => 'C4dMigrateProcessTagC4dImageLocal',
-    'c4d-image:remote'   => 'C4dMigrateProcessTagC4dImageLocal',
+    'c4d-image:remote'   => 'C4dMigrateProcessTagC4dImageRemote',
     'ibimage:image'      => 'C4DMigrateProcessTagIbImageImage',
     'ibimage:link'       => 'C4DMigrateProcessTagIbImageLink',
     'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
@@ -104,6 +104,24 @@ class C4dMigrateProcessBodyMedia {
 
     $processor_name = $this->processors[$type];
 
-    return new $processor_name($tag);
+    return new $processor_name($tag, $this->getConfig());
+  }
+
+  /**
+   * Create the config array.
+   *
+   * @return array
+   */
+  protected function getConfig() {
+    static $config;
+
+    if (!$config) {
+      $config = array(
+        'files_root' => c4d_migrate_get_files_root(),
+        'db'         => c4d_migrate_get_db_connection(),
+      );
+    }
+
+    return $config;
   }
 }
