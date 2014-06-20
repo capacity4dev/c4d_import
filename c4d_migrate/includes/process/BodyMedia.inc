@@ -33,8 +33,8 @@ class C4dMigrateProcessBodyMedia {
     'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
     'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
     'ibimage:slideshow'  => 'C4DMigrateProcessTagIbImageSlideshow',
-    // 'video'            => 'C4DMigrateProcessTagVideo',
-    // 'ec_media'         => 'C4DMigrateProcessTagEcMedia',
+    'video'              => 'C4DMigrateProcessTagVideo',
+    'ec_media'           => 'C4DMigrateProcessTagEcMedia',
   );
 
   /**
