@@ -21,6 +21,9 @@ class C4dMigrateTestProcessBodyMedia extends C4dMigrateTestProcessTagBase {
   [c4d-image==/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]
 </p>
 <p>
+  [c4d-image==http://aipetcher.files.wordpress.com/2011/04/european-union-flags.jpg==2480x1599==European_Flags====]
+</p>
+<p>
   [video:http://www.youtube.com/v/_IFglfiI2bQ]
 </p>
 <p>
@@ -41,7 +44,10 @@ EOL;
   Start test.
 </p>
 <p>
-  <img src="%s" class="img__fid__%d media-image" alt="confusing_whiteboard" />
+  <img src="%s" class="img__fid__1 media-image" alt="confusing_whiteboard" />
+</p>
+<p>
+  <img src="%s" class="img__fid__2 media-image" width="2480" height="1599" alt="European_Flags" />
 </p>
 <p>
   <iframe src="http://www.youtube.com/v/_IFglfiI2bQ?autoplay=0" width="520" height="450" frameborder="0"></iframe>
@@ -83,9 +89,8 @@ EOL;
   public function testProcess() {
     $expected = sprintf(
       $this->expectedBody,
-      // Image parts.
       file_create_url('public://media/CD_in_ethiopia-thumb.jpg'),
-      1
+      file_create_url('public://media/european-union-flags.jpg')
     );
 
     $processor = new C4dMigrateProcessBodyMedia();
