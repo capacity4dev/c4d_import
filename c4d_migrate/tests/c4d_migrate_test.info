@@ -15,4 +15,5 @@ files[] = includes/process/tag/Base.test
 files[] = includes/process/tag/C4dImageLocal.test
 files[] = includes/process/tag/C4dImageRemote.test
 files[] = includes/process/tag/IbImage.test
+files[] = includes/process/tag/IbImageImage.test
 files[] = includes/process/tag/EcMedia.test

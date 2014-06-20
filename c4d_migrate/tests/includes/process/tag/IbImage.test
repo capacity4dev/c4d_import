@@ -7,7 +7,7 @@
 /**
  * Tests for the [ibimage==…] tag processor.
  */
-class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
+abstract class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
   /**
    * The body we use as test data.
    *
@@ -17,27 +17,7 @@ class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
    *
    * @var string
    */
-  private $tag = array(
-    'type'    => 'ibimage',
-    'tag'     => '[ibimage==1234==large==photo_album_link==_blank==ibimage-center-clear==B4Life slideshow]',
-    'fid'     => 1234,
-    'preset'  => 'large',
-    'link'    => 'photo_album_link',
-    'target'  => '_blank',
-    'style'   => 'ibimage-center-clear',
-    'caption' => 'B4Life slideshow',
-  );
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name'        => 'Process [ibimage==…] tags',
-      'description' => 'Test that the IbImage tag processor copies the file and add it to the file system.',
-      'group'       => 'C4D Migrate',
-    );
-  }
+  private $tag = array();
 
   /**
    * Load the process class during setup.
@@ -45,36 +25,6 @@ class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
   public function setUp() {
     $modules = array('c4d_migrate', 'c4d_migrate_test');
     parent::setUp($modules);
-  }
-
-  /**
-   * Test parsing out the tags.
-   */
-  public function testProcess() {
-    $config = $this->getC4dMigrateConfig();
-
-    $processor = new C4dMigrateProcessTagIbImage($this->tag, $config);
-
-    $result = $processor->process();
-    $this->assertTrue($result, 'Process should return TRUE.');
-
-    $expected_path = $GLOBALS['base_url']
-      . '/'
-      . variable_get('file_public_path', NULL)
-      . '/media/CD_in_ethiopia-thumb.jpg';
-
-    // @TODO: Need to work on the output. Classes etc...
-    $expected_replacement = sprintf(
-      '<img src="%s" class="img__fid__%d media-image" alt="B4Life slideshow" title="B4Life slideshow" />',
-      $expected_path,
-      (int) $processor->getFile()->fid
-    );
-
-    $this->assertEqual(
-         $expected_replacement,
-           $processor->getReplacement(),
-           'The replacement string was what we expected.'
-    );
   }
 
   /**
@@ -88,7 +38,7 @@ class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
    * @return mixed
    *   File object with the dummy image.
    */
-  private function getTestFile($type_name, $size = NULL) {
+  protected function getTestFile($type_name, $size = NULL) {
     // Get a file to upload.
     $file = current($this->drupalGetTestFiles($type_name, $size));
 
