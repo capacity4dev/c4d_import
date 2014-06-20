@@ -7,7 +7,7 @@
 /**
  * Tests for the [c4d-image==…] tag processor.
  */
-class C4dMigrateTestProcessTagC4dImageLocal extends DrupalWebTestCase {
+class C4dMigrateTestProcessTagC4dImageLocal extends C4dMigrateTestProcessTagBase {
   /**
    * The body we use as test data.
    *
@@ -51,7 +51,7 @@ class C4dMigrateTestProcessTagC4dImageLocal extends DrupalWebTestCase {
    * Test parsing out the tags.
    */
   public function testProcess() {
-    $config = array('files_root' => __DIR__ . '/../../../resources');
+    $config = $this->getC4dMigrateConfig();
 
     $processor = new C4dMigrateProcessTagC4dImageLocal($this->tag, $config);
     $result = $processor->process();
