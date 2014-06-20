@@ -66,3 +66,4 @@ files[] = includes/process/tag/C4dImageRemote.inc
 files[] = includes/process/tag/IbImage.inc
 files[] = includes/process/tag/IbImageImage.inc
 files[] = includes/process/tag/IbImageLink.inc
+files[] = includes/process/tag/IbImagePopup.inc
