@@ -60,7 +60,7 @@ class C4dMigrateTestProcessTagC4dImageRemote extends DrupalWebTestCase {
       . '/media/european-union-flags.jpg';
 
     $expected_replacement = sprintf(
-      '<img src="%s" class="img__fid__%d media-image" style="height:1599px; width:2480px" alt="European_Flags" title="" />',
+      '<img src="%s" class="img__fid__%d media-image" width="2480" height="1599" alt="European_Flags" />',
       $expected_path,
       (int) $processor->getFile()->fid
     );

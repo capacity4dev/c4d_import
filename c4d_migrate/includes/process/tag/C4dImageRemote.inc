@@ -10,7 +10,7 @@
  * Local configuration parameters:
  * - files_root : the root path where the source files are located.
  */
-class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstractFile {
+class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLocal {
   /**
    * {@inheritdoc}
    */
@@ -25,26 +25,6 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstractFil
     $this->setFile($file);
 
     return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getReplacement() {
-    $tag  = $this->getTag();
-    $file = $this->getFile();
-
-    $replacement = sprintf(
-      '<img src="%s" class="img__fid__%d media-image" style="height:%dpx; width:%dpx" alt="%s" title="%s" />',
-      file_create_url($file->uri),
-      $file->fid,
-      $tag['height'],
-      $tag['width'],
-      $tag['alt'],
-      $tag['title']
-    );
-
-    return $replacement;
   }
 
   /**
