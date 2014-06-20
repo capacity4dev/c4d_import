@@ -7,8 +7,8 @@
 /**
  * Processor to make files out of ibimage tags.
  */
-class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
-  private $source = NULL;
+abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
+  protected $source = NULL;
 
   /**
    * {@inheritdoc}
@@ -17,13 +17,14 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
     $tag = $this->getTag();
 
     $source = $this->getSource($tag['fid']);
-    $file = $this->copyFile($source, 'public://media');
+    $file   = $this->copyFile($source, 'public://media');
 
     if (!$file) {
       return FALSE;
     }
 
     $this->setFile($file);
+
     return TRUE;
   }
 
@@ -74,7 +75,7 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
    *   File object.
    */
   public function getSource($fid) {
-    $img = $this->getImageFile($fid);
+    $img          = $this->getImageFile($fid);
     $this->source = $img->filepath;
 
     return $this->source;
