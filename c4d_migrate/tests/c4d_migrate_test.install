@@ -9,6 +9,7 @@
  */
 function c4d_migrate_test_install() {
   c4d_migrate_test_install_files();
+  c4d_migrate_test_install_ec_media_code();
 }
 
 /**
@@ -27,6 +28,29 @@ function c4d_migrate_test_install_files() {
     'timestamp' => time(),
   );
   drupal_write_record('c4d_export_other_files', $file);
+}
+
+/**
+ * Helper to fill the ec_media_code table with dummy data.
+ */
+function c4d_migrate_test_install_ec_media_code() {
+  $youtube = (object) array(
+    'cid'  => 101,
+    'code' => '<iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>'
+  );
+  $googlemaps = (object) array(
+    'cid'  => 202,
+    'code' => '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>',
+  );
+  $flickr = (object) array(
+    'cid'  => 303,
+    'code' => '<object class="video-filter video-flickr_slideshows vf-capacity4dev vf-72157637834755414" type="application/x-shockwave-flash" width="500" height="320" data="http://www.flickr.com/apps/slideshow/show.swf?v=67348">
+  <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=67348"></param><param name="wmode" value="transparent"></param><param name="allowFullScreen" value="true"></param><param name="flashvars" value="&amp;offsite=true&amp;lang=en-us&amp;page_show_url=%2Fphotos%2Fcapacity4dev%2Fsets%2F72157637834755414%2Fshow%2F&amp;page_show_back_url=%2Fphotos%2Fcapacity4dev%2Fsets%2F72157637834755414%2F&amp;set_id=72157637834755414&amp;jump_to="></param></object>',
+  );
+
+  drupal_write_record('ec_media_code', $youtube);
+  drupal_write_record('ec_media_code', $googlemaps);
+  drupal_write_record('ec_media_code', $flickr);
 }
 
 /**
@@ -49,6 +73,7 @@ function c4d_migrate_test_uninstall() {
 function c4d_migrate_test_schema() {
   $schema = array(
     'c4d_export_other_files' => c4d_migrate_test_schema_files(),
+    'ec_media_code' => c4d_migrate_test_schema_ec_media_code(),
   );
 
   return $schema;
@@ -127,3 +152,54 @@ function c4d_migrate_test_schema_files() {
 
   return $schema;
 }
+
+/**
+ * Schema for the ec_media_code table.
+ *
+ * @return array
+ *   The table structure for the ec_media_code table.
+ */
+function c4d_migrate_test_schema_ec_media_code() {
+  $schema = array(
+    'description' => 'Table to save ec_media embed codes.',
+    'fields' => array(
+      'cid' => array(
+        'description' => 'Primary Key: Unique ID for an Ec Media code.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'width' => array(
+        'description' => 'Object width.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'medium',
+      ),
+      'height' => array(
+        'description' => 'Object height.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'medium',
+      ),
+      'autoplay' => array(
+        'description' => 'Object autoplay setting.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'size' => 'tiny',
+      ),
+      'align' => array(
+        'description' => 'Object alignment setting.',
+        'type' => 'varchar',
+        'length' => '32',
+      ),
+      'code' => array(
+        'description' => 'Object HTML code.',
+        'type' => 'text',
+        'size' => 'medium',
+      ),
+    ),
+    'primary key' => array('cid'),
+  );
+  return $schema;
+}
+

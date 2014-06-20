@@ -55,14 +55,15 @@ files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
 files[] = includes/parser/EcMedia.inc
 files[] = includes/parser/Video.inc
-files[] = includes/parser/Iframe.inc
+files[] = includes/parser/Embed.inc
 
 ; Tag processors
 files[] = includes/process/tag/Abstract.inc
 files[] = includes/process/tag/AbstractFile.inc
-files[] = includes/process/tag/AbstractIframe.inc
+files[] = includes/process/tag/AbstractEmbed.inc
 files[] = includes/process/tag/C4dImageLocal.inc
 files[] = includes/process/tag/C4dImageRemote.inc
 files[] = includes/process/tag/IbImage.inc
 files[] = includes/process/tag/IbImageImage.inc
 files[] = includes/process/tag/IbImageLink.inc
+files[] = includes/process/tag/EcMedia.inc
