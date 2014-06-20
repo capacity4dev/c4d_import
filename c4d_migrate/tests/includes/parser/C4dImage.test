@@ -36,7 +36,7 @@ class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
   [c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]
 </p>
 <p>
-  [c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]
 </p>
 EOT;
 
@@ -86,15 +86,15 @@ EOT;
       'title'    => NULL,
       'position' => NULL,
     ),
-    '[c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]' => array(
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]' => array(
       'type'     => 'c4d-image:local',
-      'tag'      => '[c4d-image==/sites/default/files/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]',
-      'source'   => 'sites/default/files/files/CD_in_ethiopia-thumb.jpg',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
       'width'    => NULL,
       'height'   => NULL,
-      'alt'      => 'confusing_whiteboard',
-      'title'    => NULL,
-      'position' => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
     ),
   );
 
