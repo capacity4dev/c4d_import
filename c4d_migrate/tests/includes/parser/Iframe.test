@@ -81,7 +81,7 @@ EOT;
    */
   public static function getInfo() {
     return array(
-      'name' => 'Parse <iframe></iframe> tags',
+      'name' => 'Parse &lt;iframe&gt;&lt;/iframe&gt; tags',
       'description' => 'Test that the iFrame parser parses out the <iframe></iframe> tags.',
       'group' => 'C4D Migrate',
     );
