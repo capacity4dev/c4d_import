@@ -10,7 +10,7 @@
  * Local configuration parameters:
  * - files_root : the root path where the source files are located.
  */
-class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstract {
+class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagAbstractFile {
   /**
    * {@inheritdoc}
    */

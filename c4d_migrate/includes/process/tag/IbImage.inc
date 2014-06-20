@@ -7,7 +7,7 @@
 /**
  * Processor to make files out of ibimage tags.
  */
-class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstract {
+class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
   private $source = NULL;
 
   /**
