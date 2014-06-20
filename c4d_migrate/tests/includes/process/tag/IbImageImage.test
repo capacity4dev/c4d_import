@@ -1,0 +1,76 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagIbImageImage class.
+ */
+
+/**
+ * Tests for the [ibimage:image==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImageImage extends C4dMigrateTestProcessTagIbImage {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'    => 'ibimage:image',
+    'tag'     => '[ibimage==1234==large==none====ibimage-center-clear==Regular image]',
+    'fid'     => 1234,
+    'preset'  => 'large',
+    'link'    => 'none',
+    'target'  => '',
+    'style'   => 'ibimage-center-clear',
+    'caption' => 'Regular image',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage:image==…] tags',
+      'description' => 'Test that the IbImage:image tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = $this->getC4dMigrateConfig();
+
+    $processor = new C4dMigrateProcessTagIbImageImage($this->tag, $config);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = $GLOBALS['base_url']
+      . '/'
+      . variable_get('file_public_path', NULL)
+      . '/media/CD_in_ethiopia-thumb.jpg';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<div class="ibimage ibimage-center-clear ibimage-preset-large">' .
+      '<div class="ibimage-inner">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="Regular image" title="" />' .
+      '<span class="caption">Regular image</span>' .
+      '</div>' .
+      '</div>',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+}

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Processor for local ibimage tags.
+ * Processor for local ibimage:image tags.
  */
 
 /**
- * Processor to make files out of ibimage tags.
+ * Processor to make files out of ibimage:image tags.
  */
-class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
+class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagAbstractFile {
   private $source = NULL;
 
   /**
@@ -17,13 +17,14 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
     $tag = $this->getTag();
 
     $source = $this->getSource($tag['fid']);
-    $file = $this->copyFile($source, 'public://media');
+    $file   = $this->copyFile($source, 'public://media');
 
     if (!$file) {
       return FALSE;
     }
 
     $this->setFile($file);
+
     return TRUE;
   }
 
@@ -34,10 +35,20 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
     $tag  = $this->getTag();
     $file = $this->getFile();
 
+    $url = file_create_url($file->uri);
+
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
-      '<img src="%s" class="img__fid__%d media-image" alt="%s" title="%s" />',
-      file_create_url($file->uri),
+      '<div class="ibimage %s ibimage-preset-%s">' .
+      '<div class="ibimage-inner">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="%s" title="" />' .
+      '<span class="caption">%s</span>' .
+      '</div>' .
+      '</div>'
+      ,
+      $tag['style'],
+      $tag['preset'],
+      $url,
       $file->fid,
       $tag['caption'],
       $tag['caption']
@@ -74,7 +85,7 @@ class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractFile {
    *   File object.
    */
   public function getSource($fid) {
-    $img = $this->getImageFile($fid);
+    $img          = $this->getImageFile($fid);
     $this->source = $img->filepath;
 
     return $this->source;

@@ -46,6 +46,7 @@ class C4dMigrateParserIbImage extends C4dMigrateParserAbstract {
     }
 
     // Fill data into the data array.
+    $data['type']    .= ':' . $this->getType($parts[3]);
     $data['fid']      = (int) $parts[1];
     $data['preset']   = $parts[2];
     $data['link']     = $parts[3];
@@ -55,4 +56,29 @@ class C4dMigrateParserIbImage extends C4dMigrateParserAbstract {
 
     return $data;
   }
+
+  /**
+   * Map the tag link style to the right type of processor.
+   *
+   * @param string $link
+   *   Link (type) of the ibimage tag.
+   *
+   * @return string
+   *   Mapped processor for this tag.
+   */
+  private function getType($link) {
+    switch ($link) {
+      case 'photo_album_link':
+        return 'photoalbum';
+      case 'photo_album_slideshow':
+        return 'slideshow';
+      case 'popup':
+        return 'popup';
+      case 'none':
+        return 'image';
+      default:
+        return 'link';
+    }
+  }
+
 }
