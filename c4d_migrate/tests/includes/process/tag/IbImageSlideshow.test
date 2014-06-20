@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * Tests for the C4dMigrateProcessTagIbImagePhotoalbum class.
+ * Tests for the C4dMigrateProcessTagIbImageSlideshow class.
  */
 
 /**
- * Tests for the [ibimage:photoalbum==…] tag processor.
+ * Tests for the [ibimage:slideshow==…] tag processor.
  */
-class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTagIbImage {
+class C4dMigrateTestProcessTagIbImageSlideshow extends C4dMigrateTestProcessTagIbImage {
   /**
    * The body we use as test data.
    *
@@ -18,14 +18,14 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
    * @var string
    */
   private $tag = array(
-    'type'    => 'ibimage:photoalbum',
-    'tag'     => '[ibimage==1234==large==photo_album_link====ibimage-left==Teaser to album]',
+    'type'    => 'ibimage:slideshow',
+    'tag'     => '[ibimage==1234==original==photo_album_slideshow==_blank==ibimage-right-clear==Linked album in slideshow]',
     'fid'     => 1234,
-    'preset'  => 'large',
-    'link'    => 'photo_album_link',
-    'target'  => '',
-    'style'   => 'ibimage-left',
-    'caption' => 'Teaser to album',
+    'preset'  => 'original',
+    'link'    => 'photo_album_slideshow',
+    'target'  => '_blank',
+    'style'   => 'ibimage-right-clear',
+    'caption' => 'Linked album in slideshow',
   );
 
   /**
@@ -33,7 +33,7 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
    */
   public static function getInfo() {
     return array(
-      'name'        => 'Process [ibimage:photoalbum==…] tags',
+      'name'        => 'Process [ibimage:slideshow==…] tags',
       'description' => 'Test that the IbImage:photoalbum tag processor copies the file and add it to the file system.',
       'group'       => 'C4D Migrate',
     );
@@ -45,7 +45,7 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
   public function testProcess() {
     $config = $this->getC4dMigrateConfig();
 
-    $processor = new C4dMigrateProcessTagIbImagePhotoalbum($this->tag, $config);
+    $processor = new C4dMigrateProcessTagIbImageSlideshow($this->tag, $config);
 
     $result = $processor->process();
     $this->assertTrue($result, 'Process should return TRUE.');
@@ -57,11 +57,11 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(
-      '<div class="ibimage ibimage-left ibimage-preset-large">' .
+      '<div class="ibimage ibimage-right-clear ibimage-preset-original">' .
       '<div class="ibimage-inner">' .
-      '<a href="%s" class="ibimage-link photo-album-link">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="Teaser to album" title="" />' .
-      '<span class="caption">Teaser to album</span>' .
+      '<a href="%s" target="_blank" class="ibimage-link photo-album-slideshow popup lightbox">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="Linked album in slideshow" title="" />' .
+      '<span class="caption">Linked album in slideshow</span>' .
       '</a>' .
       '</div>' .
       '</div>',

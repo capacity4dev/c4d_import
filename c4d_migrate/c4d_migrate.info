@@ -68,3 +68,4 @@ files[] = includes/process/tag/IbImageImage.inc
 files[] = includes/process/tag/IbImageLink.inc
 files[] = includes/process/tag/IbImagePopup.inc
 files[] = includes/process/tag/IbImagePhotoalbum.inc
+files[] = includes/process/tag/IbImageSlideshow.inc
