@@ -31,7 +31,7 @@ class C4dMigrateProcessBodyMedia {
     'ibimage:image'      => 'C4DMigrateProcessTagIbImageImage',
     'ibimage:link'       => 'C4DMigrateProcessTagIbImageLink',
     'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
-//    'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
+    'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
 //    'ibimage:slideshow'  => 'C4DMigrateProcessTagIbImageSlideshow',
     // 'video'            => 'C4DMigrateProcessTagVideo',
     // 'ec_media'         => 'C4DMigrateProcessTagEcMedia',
