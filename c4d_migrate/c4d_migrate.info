@@ -46,9 +46,6 @@ files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
 
 
-; Parsers
-files[] = includes/process/BodyMedia.inc
-
 ; Tag parsers
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
@@ -69,6 +66,8 @@ files[] = includes/process/tag/IbImageLink.inc
 files[] = includes/process/tag/IbImagePopup.inc
 files[] = includes/process/tag/IbImagePhotoalbum.inc
 files[] = includes/process/tag/IbImageSlideshow.inc
-
 files[] = includes/process/tag/EcMedia.inc
 files[] = includes/process/tag/Video.inc
+
+; Body processors
+files[] = includes/process/BodyMedia.inc

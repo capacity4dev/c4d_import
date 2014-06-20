@@ -55,9 +55,13 @@ class C4dMigrateProcessBodyMedia {
 
     // Process the tags to replacement strings.
     foreach ($tags as $tag) {
-      $processor = $this->getProcessor($tag['type']);
-      if ($processor->process($tag)) {
-        $replacements[$tag] = $processor->getReplacement();
+      $processor = $this->getProcessor($tag);
+      if (!$processor) {
+        continue;
+      }
+
+      if ($processor->process()) {
+        $replacements[$tag['tag']] = $processor->getReplacement();
       }
     }
 
@@ -86,19 +90,20 @@ class C4dMigrateProcessBodyMedia {
   /**
    * Get the processor object based on the tag type and mapping.
    *
-   * @param string $type
-   *   Type of processor to return.
+   * @param array $tag
+   *   The tag to process
    *
    * @return C4dMigrateProcessTagAbstract
    *   Instanciated processor object.
    */
-  protected function getProcessor($type) {
+  protected function getProcessor($tag) {
+    $type = $tag['type'];
     if (!isset($this->processors[$type])) {
       return FALSE;
     }
 
     $processor_name = $this->processors[$type];
 
-    return new $processor_name();
+    return new $processor_name($tag);
   }
 }

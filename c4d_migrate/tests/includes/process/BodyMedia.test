@@ -1,0 +1,73 @@
+<?php
+/**
+ * @file
+ * Tests fot the [ec_media:…] tag processor.
+ */
+
+/**
+ * Tests for C4dMigrateProcessBodyMedia.
+ */
+class C4dMigrateTestProcessBodyMedia extends C4dMigrateTestProcessTagBase {
+  /**
+   * The test body
+   *
+   * @var string
+   */
+  private $testBody = <<<EOL
+<p>
+  Start test.
+</p>
+<p>
+  [video:http://www.youtube.com/v/_IFglfiI2bQ]
+</p>
+<p>
+  End test.
+</p>
+EOL;
+
+  /**
+   * The expected outcome.
+   *
+   * @var string
+   */
+  private $expectedBody = <<<EOL
+<p>
+  Start test.
+</p>
+<p>
+  <iframe src="http://www.youtube.com/v/_IFglfiI2bQ?autoplay=0" width="520" height="450" frameborder="0"></iframe>
+</p>
+<p>
+  End test.
+</p>
+EOL;
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Process body fields',
+      'description' => 'Test that the BodyMedia processor process all tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate', 'c4d_migrate_test');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $processor = new C4dMigrateProcessBodyMedia();
+    $result = $processor->process($this->testBody);
+    $this->assertEqual($this->expectedBody, $result);
+  }
+}
