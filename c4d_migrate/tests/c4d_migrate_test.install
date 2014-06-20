@@ -1,0 +1,129 @@
+<?php
+/**
+ * @file
+ * Install hooks + DB schema's to support tests.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function c4d_migrate_test_install() {
+  c4d_migrate_test_install_files();
+}
+
+/**
+ * Helper to fill the c4d_export_other_files table with dummy data.
+ */
+function c4d_migrate_test_install_files() {
+  $file_test = __DIR__ . '/resources/files/CD_in_ethiopia-thumb.jpg';
+  $file = (object) array(
+    'fid' => 1234,
+    'uid' => 1,
+    'filename' => 'CD_in_ethiopia-thumb.jpg',
+    'filepath' => 'files/CD_in_ethiopia-thumb.jpg',
+    'filemime' => file_get_mimetype($file_test),
+    'filesize' => filesize($file_test),
+    'status' => 1,
+    'timestamp' => time(),
+  );
+  drupal_write_record('c4d_export_other_files', $file);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function c4d_migrate_test_uninstall() {
+
+}
+
+
+/******************************************************************************
+ * Schema.
+ ******************************************************************************/
+
+/**
+ * Implements hook_schema().
+ *
+ * Dummy data tables to support test without the need for the old D6 website.
+ */
+function c4d_migrate_test_schema() {
+  $schema = array(
+    'c4d_export_other_files' => c4d_migrate_test_schema_files(),
+  );
+
+  return $schema;
+}
+
+/**
+ * File schema.
+ *
+ * @return array
+ *   The schema description.
+ */
+function c4d_migrate_test_schema_files() {
+  $schema = array(
+    'description' => '',
+    'fields'      => array(
+      'fid'       => array(
+        'description' => 'Primary Key: Unique files ID.',
+        'type'        => 'int',
+        'unsigned'    => 1,
+        'not null'    => 1,
+      ),
+      'uid'       => array(
+        'description' => 'The {users}.uid of the user who is associated with the file.',
+        'type'        => 'int',
+        'unsigned'    => 1,
+        'not null'    => 1,
+        'default'     => 0,
+      ),
+      'filename'  => array(
+        'description' => 'Name of the file.',
+        'type'        => 'varchar',
+        'length'      => 255,
+        'not null'    => 1,
+        'default'     => '',
+      ),
+      'filepath'  => array(
+        'description' => 'Path of the file relative to Drupal root.',
+        'type'        => 'varchar',
+        'length'      => 255,
+        'not null'    => 1,
+        'default'     => '',
+      ),
+      'filemime'  => array(
+        'description' => 'The file MIME type.',
+        'type'        => 'varchar',
+        'length'      => 255,
+        'not null'    => 1,
+        'default'     => '',
+      ),
+      'filesize'  => array(
+        'description' => 'The size of the file in bytes.',
+        'type'        => 'int',
+        'unsigned'    => 1,
+        'not null'    => 1,
+        'default'     => 0,
+      ),
+      'status'    => array(
+        'description' => 'A flag indicating whether file is temporary (0) or permanent (1).',
+        'type'        => 'int',
+        'not null'    => 1,
+        'default'     => 0,
+      ),
+      'timestamp' => array(
+        'description' => 'UNIX timestamp for when the file was added.',
+        'type'        => 'int',
+        'unsigned'    => 1,
+        'not null'    => 1,
+        'default'     => 0,
+      ),
+    ),
+    'indexes'     => array(),
+    'primary key' => array(
+      0 => 'fid',
+    ),
+  );
+
+  return $schema;
+}
