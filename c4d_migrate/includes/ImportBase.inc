@@ -49,29 +49,6 @@ abstract class C4dMigrateImportBase extends Migration {
   }
 
   /**
-   * Private helper function to inform drupal about our d6 connection.
-   *
-   * This will add the DB connection parameters to the DB connections list.
-   */
-  private function setUpConnection() {
-    $existing = Database::getConnectionInfo(C4D_MIGRATE_DATABASE);
-    if (!is_null($existing)) {
-      // Already setup, don't do it again.
-      return;
-    }
-
-    // Add information based on the variables.
-    $c4d_database = array(
-      'database' => variable_get(C4D_MIGRATE_DB_NAME, ''),
-      'username' => variable_get(C4D_MIGRATE_DB_USER, ''),
-      'password' => variable_get(C4D_MIGRATE_DB_PASS, ''),
-      'host'     => variable_get(C4D_MIGRATE_DB_HOST, ''),
-      'driver'   => 'mysql',
-    );
-    Database::addConnectionInfo(C4D_MIGRATE_DATABASE, 'default', $c4d_database);
-  }
-
-  /**
    * Get the connection to the D6 database.
    *
    * @return DatabaseConnection
@@ -80,24 +57,7 @@ abstract class C4dMigrateImportBase extends Migration {
    * @throws Exception
    */
   public function getConnection() {
-    try {
-      $this->setUpConnection();
-
-      return Database::getConnection('default', C4D_MIGRATE_DATABASE);
-    }
-    catch (Exception $e) {
-      drupal_set_message(
-        t('Unable to connect to the database, <a href="@url">please check your settings</a>.',
-          array(
-            '@url' => url('admin/content/migrate/import'),
-          )
-        ),
-        'error'
-      );
-
-      // Bubble up the exception.
-      throw $e;
-    }
+    return c4d_migrate_get_db_connection();
   }
 
   /**
