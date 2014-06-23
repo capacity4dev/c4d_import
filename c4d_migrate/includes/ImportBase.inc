@@ -212,4 +212,28 @@ abstract class C4dMigrateImportBase extends Migration {
 
     return $dest_id;
   }
+
+  /**
+   * Helper to process a field containing HTML created with WYSIWYG editors.
+   *
+   * It will search for [tags] and process them into media, html, …
+   * @see C4dMigrateProcessBodyMedia.
+   *
+   * @param string $field
+   *   The field that needs to be processed.
+   *
+   * @return string
+   *   The processed field.
+   */
+  protected function prepareHtml($field) {
+    static $processor;
+
+    if (!$processor) {
+      $processor = new C4dMigrateProcessBodyMedia();
+      $processor->addLogger(new C4dMigrateLoggerDrush());
+      $processor->addLogger(new C4dMigrateLoggerMigrate());
+    }
+
+    return $processor->process($field);
+  }
 }
