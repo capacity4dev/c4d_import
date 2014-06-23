@@ -39,6 +39,15 @@ class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
   [c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]
 </p>
 <p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]
+</p>
+<p>
   [c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]
 </p>
 EOT;
@@ -99,6 +108,36 @@ EOT;
       'title'    => 'confusing_whiteboard',
       'position' => 'float-left',
     ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => 500,
+      'height'   => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => 300,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
     '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]' => array(
       'type'     => 'c4d-image:local',
       'tag'      => '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]',
@@ -140,7 +179,7 @@ EOT;
 
     $parser->parse($this->text);
     $tags = $parser->getTags();
-    $this->assertEqual(6, count($tags));
+    $this->assertEqual(9, count($tags));
     $this->assertEqual($this->expectedTags, $tags);
   }
 }

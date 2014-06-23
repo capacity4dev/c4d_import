@@ -46,7 +46,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Parse the tag.
     $parts = array();
-    $pattern = '/\[c4d-image==([^=]*)==(([0-9]+)x([0-9]+))?==([^=]*)==([^=]*)==([^=]*)\]/isU';
+    $pattern = '/\[c4d-image==([^=]*)==(([0-9]+)?x([0-9]+)?)?==([^=]*)==([^=]*)==([^=]*)\]/isU';
     preg_match($pattern, $tag, $parts);
 
     // Check tag.
