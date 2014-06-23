@@ -66,8 +66,8 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
 
     if (!$file) {
       $this->log(
-        'Could not load the file information for id %id.',
-        array('%id' => $fid),
+        'Could not load the file information for id @id.',
+        array('@id' => $fid),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;

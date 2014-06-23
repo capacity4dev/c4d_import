@@ -36,8 +36,8 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
     }
     catch (Exception $e) {
       $this->log(
-        'An exception occured while retrieving %source. Message: %message.',
-        array('%source' => $source, '%message' => $e->getMessage()),
+        'An exception occured while retrieving @source. Message: @message.',
+        array('@source' => $source, '@message' => $e->getMessage()),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;
@@ -46,8 +46,8 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
     // We can only migrate files that exist.
     if (empty($file_stream)) {
       $this->log(
-        'The specified source file %source does not exist.',
-        array('%source' => $source),
+        'The specified source file @source does not exist.',
+        array('@source' => $source),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;
@@ -63,8 +63,8 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
     $file = file_save_data($file_stream, $target_path);
     if (!$file) {
       $this->log(
-        'The specified remote file %source could not be copied to %target.',
-        array('%source' => $source, '%target' => $target_path),
+        'The specified remote file @source could not be copied to @target.',
+        array('@source' => $source, '@target' => $target_path),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;

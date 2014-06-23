@@ -86,8 +86,8 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
     }
 
     $this->log(
-      'Replacing tags with %count found replacements.',
-      array('%count' => count($replacements)),
+      'Replacing tags with @count found replacements.',
+      array('@count' => count($replacements)),
       C4dMigrateLoggerInterface::DEBUG
     );
 
@@ -107,8 +107,8 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
     $type = $tag['type'];
     if (!isset($this->processors[$type])) {
       $this->log(
-        'Unknown processor for tag type "%type"',
-        array('%type' => $type),
+        'Unknown processor for tag type "@type"',
+        array('@type' => $type),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;

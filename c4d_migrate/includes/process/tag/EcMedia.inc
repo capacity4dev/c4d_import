@@ -47,8 +47,8 @@ class C4dMigrateProcessTagEcMedia extends C4dMigrateProcessTagAbstractEmbed {
     $info = $result->fetchObject();
     if (!$info) {
       $this->log(
-        'No info available for ec_media with id %id (%tag).',
-        array('%id' => $tag['id'], '%tag' => $tag['tag']),
+        'No info available for ec_media with id @id (@tag).',
+        array('@id' => $tag['id'], '@tag' => $tag['tag']),
         C4dMigrateLoggerInterface::ERROR
       );
       return FALSE;
