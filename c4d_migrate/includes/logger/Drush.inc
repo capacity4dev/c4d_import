@@ -18,7 +18,7 @@ class C4dMigrateLoggerDrush implements C4dMigrateLoggerInterface {
     }
 
     // Check if running Drush in verbose or debug mode.
-    if (!drush_get_context(DRUSH_VERBOSE) && !drush_get_context(DRUSH_DEBUG)) {
+    if (!drush_get_context('DRUSH_VERBOSE') && !drush_get_context('DRUSH_DEBUG')) {
       return;
     }
 
