@@ -15,7 +15,7 @@ class C4dMigrateProcessTagIbImagePopup extends C4dMigrateProcessTagIbImage {
     $tag  = $this->getTag();
     $file = $this->getFile();
 
-    $url = file_create_url($file->uri);
+    $url = $this->fileCreateUrl($file->uri);
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(

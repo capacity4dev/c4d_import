@@ -39,7 +39,7 @@ class C4dMigrateProcessTagC4dImageLocal extends C4dMigrateProcessTagAbstractFile
       'class="img__fid__%d media-image"',
     );
     $args = array(
-      file_create_url($file->uri),
+      $this->fileCreateUrl($file->uri),
       $file->fid,
     );
 

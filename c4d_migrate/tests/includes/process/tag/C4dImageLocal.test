@@ -71,9 +71,7 @@ class C4dMigrateTestProcessTagC4dImageLocal extends C4dMigrateTestProcessTagBase
   public function testProcess() {
     $config = $this->getC4dMigrateConfig();
 
-    $file_path = $GLOBALS['base_url']
-               . '/'
-               . variable_get('file_public_path', NULL);
+    $file_path = '/' . variable_get('file_public_path', NULL);
 
     foreach ($this->tags as $data) {
       $processor = new C4dMigrateProcessTagC4dImageLocal($data['tag'], $config);

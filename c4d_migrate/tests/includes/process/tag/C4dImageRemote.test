@@ -54,10 +54,9 @@ class C4dMigrateTestProcessTagC4dImageRemote extends DrupalWebTestCase {
     $result    = $processor->process();
     $this->assertTrue($result, 'Process should return TRUE.');
 
-    $expected_path = $GLOBALS['base_url']
-      . '/'
-      . variable_get('file_public_path', NULL)
-      . '/media/european-union-flags.jpg';
+    $expected_path = '/'
+                   . variable_get('file_public_path', NULL)
+                   . '/media/european-union-flags.jpg';
 
     $expected_replacement = sprintf(
       '<img src="%s" class="img__fid__%d media-image" width="2480" height="1599" alt="European_Flags" />',

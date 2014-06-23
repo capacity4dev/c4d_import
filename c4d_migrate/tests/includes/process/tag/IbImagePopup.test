@@ -50,10 +50,9 @@ class C4dMigrateTestProcessTagIbImagePopup extends C4dMigrateTestProcessTagIbIma
     $result = $processor->process();
     $this->assertTrue($result, 'Process should return TRUE.');
 
-    $expected_path = $GLOBALS['base_url']
-      . '/'
-      . variable_get('file_public_path', NULL)
-      . '/media/CD_in_ethiopia-thumb.jpg';
+    $expected_path = '/'
+                   . variable_get('file_public_path', NULL)
+                   . '/media/CD_in_ethiopia-thumb.jpg';
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(

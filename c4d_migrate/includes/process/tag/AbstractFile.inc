@@ -99,6 +99,21 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
   }
 
   /**
+   * Helper to create a absolute file path without the Domain prefix.
+   *
+   * @param string $uri
+   *   The uri we need to create the URL for.
+   *
+   * @return string
+   *   The URL
+   */
+  protected function fileCreateUrl($uri) {
+    global $base_url;
+    $url = file_create_url($uri);
+    return str_replace($base_url .'/', '/', $url);
+  }
+
+  /**
    * Helper to reduce the filename if to long.
    *
    * @param string $filename
