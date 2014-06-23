@@ -26,7 +26,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
    * {@inheritdoc}
    */
   public function __construct() {
-    $this->setPattern('/\[c4d-image==[^\]]*\]/iSu');
+    $this->setPattern('/\[c4d-image==[^\]]*\]/isU');
   }
 
   /**
@@ -46,7 +46,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     // Parse the tag.
     $parts = array();
-    $pattern = '/\[c4d-image==([^=]*)==(([0-9]+)x([0-9]+))?==([^=]*)==([^=]*)==([^=]*)\]/iSu';
+    $pattern = '/\[c4d-image==([^=]*)==(([0-9]+)x([0-9]+))?==([^=]*)==([^=]*)==([^=]*)\]/isU';
     preg_match($pattern, $tag, $parts);
 
     // Check tag.
@@ -87,7 +87,7 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
    *   String indicating remote or local file.
    */
   protected function getOrigin($source) {
-    if (preg_match('|^http[s]?://|iSu', $source)) {
+    if (preg_match('|^http[s]?://|isU', $source)) {
       return self::SOURCE_ORIGIN_REMOTE;
     }
 
@@ -105,25 +105,25 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
    */
   protected function cleanUpSource($source) {
     // Relative path.
-    $pattern = '/^(\.\.\/)+/iSu';
+    $pattern = '/^(\.\.\/)+/is';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, NULL, $source);
     }
 
     // PURL paths.
-    $pattern = '/^\/[^\/]*\/system\/files\//iSu';
+    $pattern = '/^\/[^\/]*\/system\/files\//isU';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, 'sites/default/files/', $source);
     }
 
     // Private file system.
-    $pattern = '/^(\/)?system\/files\//iSu';
+    $pattern = '/^(\/)?system\/files\//isU';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, 'sites/default/files/', $source);
     }
 
     // Remove first /.
-    $pattern = '/^\//iSu';
+    $pattern = '/^\//isU';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, NULL, $source);
     }
