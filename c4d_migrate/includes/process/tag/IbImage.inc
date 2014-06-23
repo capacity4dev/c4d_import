@@ -62,7 +62,18 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
     $q->condition('fid', $fid, '=');
     $res = $q->execute();
 
-    return $res->fetchObject();
+    $file = $res->fetchObject();
+
+    if (!$file) {
+      $this->log(
+        'Could not load the file information for id %id.',
+        array('%id' => $fid),
+        C4dMigrateLoggerInterface::ERROR
+      );
+      return FALSE;
+    }
+
+    return $file;
   }
 
   /**

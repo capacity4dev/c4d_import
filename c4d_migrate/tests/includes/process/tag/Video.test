@@ -48,6 +48,7 @@ class C4dMigrateTestProcessTagVideo extends DrupalUnitTestCase {
    */
   public function setUp() {
     parent::setUp();
+    require_once __DIR__ . '/../../../../includes/process/Abstract.inc';
     require_once __DIR__ . '/../../../../includes/process/tag/Abstract.inc';
     require_once __DIR__ . '/../../../../includes/process/tag/Video.inc';
   }

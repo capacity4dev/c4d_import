@@ -7,7 +7,7 @@
 /**
  * Helper class to convert old style media tags to new style media tags.
  */
-class C4dMigrateProcessBodyMedia {
+class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
   /**
    * Names of all the available tag parsers.
    *
@@ -60,6 +60,7 @@ class C4dMigrateProcessBodyMedia {
         continue;
       }
 
+      $processor->setLoggers($this->getLoggers());
       if ($processor->process()) {
         $replacements[$tag['tag']] = $processor->getReplacement();
       }
@@ -84,6 +85,12 @@ class C4dMigrateProcessBodyMedia {
       $body = str_replace($search, $replace, $body);
     }
 
+    $this->log(
+      'Replacing tags with %count found replacements.',
+      array('%count' => count($replacements)),
+      C4dMigrateLoggerInterface::DEBUG
+    );
+
     return $body;
   }
 
@@ -99,6 +106,11 @@ class C4dMigrateProcessBodyMedia {
   protected function getProcessor($tag) {
     $type = $tag['type'];
     if (!isset($this->processors[$type])) {
+      $this->log(
+        'Unknown processor for tag type "%type"',
+        array('%type' => $type),
+        C4dMigrateLoggerInterface::ERROR
+      );
       return FALSE;
     }
 

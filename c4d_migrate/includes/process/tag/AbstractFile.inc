@@ -64,6 +64,11 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
 
     // We can only migrate files that exist.
     if (!file_exists($source_path)) {
+      $this->log(
+        'The specified source file %file does not exist.',
+        array('%file' => $source_path),
+        C4dMigrateLoggerInterface::ERROR
+      );
       return FALSE;
     }
 
@@ -81,6 +86,15 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
     $target_path = $target_folder . '/' . $source_name;
     $file        = file_copy($file_source, $target_path, FILE_EXISTS_RENAME);
 
-    return ($file) ? $file : FALSE;
+    if (!$file) {
+      $this->log(
+        'The specified file %source could not be copied to %target.',
+        array('%source' => $source_path, '%target' => $target_path),
+        C4dMigrateLoggerInterface::ERROR
+      );
+      return FALSE;
+    }
+
+    return $file;
   }
 }

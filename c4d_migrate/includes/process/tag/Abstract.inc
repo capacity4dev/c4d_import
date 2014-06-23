@@ -9,7 +9,7 @@
  *
  * The source of the tags is converted to a media file (file_entity).
  */
-abstract class C4dMigrateProcessTagAbstract {
+abstract class C4dMigrateProcessTagAbstract extends C4dMigrateProcessAbstract {
   /**
    * The tag that needs to be processed.
    *
