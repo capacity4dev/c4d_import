@@ -97,4 +97,27 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
 
     return $file;
   }
+
+  /**
+   * Helper to reduce the filename if to long.
+   *
+   * @param string $filename
+   *   Filename we need to check.
+   *
+   * @return string
+   *   The original if not to long or an MD5 hash of the original file.
+   */
+  protected function safeFilename($filename) {
+    var_dump(drupal_strlen($filename));
+
+
+    if (drupal_strlen($filename) < 200) {
+      return $filename;
+    }
+
+    $path_info = pathinfo($filename);
+    $checksum = md5($path_info['filename']);
+    $safe = $checksum . '.' . $path_info['extension'];
+    return $safe;
+  }
 }

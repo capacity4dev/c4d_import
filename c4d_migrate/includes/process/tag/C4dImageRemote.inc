@@ -31,6 +31,8 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
    * {@inheritdoc}
    */
   protected function copyFile($source, $target_folder) {
+    $source_name = drupal_basename($source);
+
     try {
       $file_stream = file_get_contents($source);
     }
@@ -53,12 +55,10 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
       return FALSE;
     }
 
-    $source_name = drupal_basename($source);
-
     // Make sure that the target folder exists and is writable.
     file_prepare_directory($target_folder, FILE_CREATE_DIRECTORY);
 
-    $target_path = $target_folder . '/' . $source_name;
+    $target_path = $target_folder . '/' . $this->safeFilename($source_name);
 
     $file = file_save_data($file_stream, $target_path);
     if (!$file) {
