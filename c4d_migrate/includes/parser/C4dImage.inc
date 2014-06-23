@@ -104,12 +104,25 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
    *   The cleaned up version of the string.
    */
   protected function cleanUpSource($source) {
-    // Private file system.
-    $pattern = '/^\.\.\/\.\.\/system\/files\//iSu';
+    // Relative path.
+    $pattern = '/^(\.\.\/)+/iSu';
+    if (1 === preg_match($pattern, $source)) {
+      $source = preg_replace($pattern, NULL, $source);
+    }
+
+    // PURL paths.
+    $pattern = '/^\/[^\/]*\/system\/files\//iSu';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, 'sites/default/files/', $source);
     }
 
+    // Private file system.
+    $pattern = '/^(\/)?system\/files\//iSu';
+    if (1 === preg_match($pattern, $source)) {
+      $source = preg_replace($pattern, 'sites/default/files/', $source);
+    }
+
+    // Remove first /.
     $pattern = '/^\//iSu';
     if (1 === preg_match($pattern, $source)) {
       $source = preg_replace($pattern, NULL, $source);

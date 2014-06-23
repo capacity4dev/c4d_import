@@ -38,6 +38,9 @@ class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
 <p>
   [c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]
 </p>
+<p>
+  [c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]
+</p>
 EOT;
 
   /**
@@ -96,6 +99,16 @@ EOT;
       'title'    => 'confusing_whiteboard',
       'position' => 'float-left',
     ),
+    '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]',
+      'source'   => 'sites/default/files/img/u7483/energy_500.jpg',
+      'width'    => 500,
+      'height'   => 130,
+      'alt'      => 'energy_500.jpg',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
   );
 
 
@@ -127,7 +140,7 @@ EOT;
 
     $parser->parse($this->text);
     $tags = $parser->getTags();
-    $this->assertEqual(5, count($tags));
+    $this->assertEqual(6, count($tags));
     $this->assertEqual($this->expectedTags, $tags);
   }
 }
