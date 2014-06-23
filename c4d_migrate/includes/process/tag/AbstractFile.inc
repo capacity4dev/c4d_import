@@ -108,9 +108,6 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    *   The original if not to long or an MD5 hash of the original file.
    */
   protected function safeFilename($filename) {
-    var_dump(drupal_strlen($filename));
-
-
     if (drupal_strlen($filename) < 200) {
       return $filename;
     }
