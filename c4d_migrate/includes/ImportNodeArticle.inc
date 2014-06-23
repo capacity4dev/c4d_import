@@ -65,6 +65,8 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'teaser_image');
 
+    $row->body = $this->prepareHtml($row->body);
+
     return TRUE;
   }
 }

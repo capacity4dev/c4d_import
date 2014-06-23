@@ -80,5 +80,7 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
     $row->case_status   = array_search($row->case_status, $this->caseStatuses);
 
     $row->field_ref_document = unserialize($row->field_ref_document);
+
+    $row->body = $this->prepareHtml($row->body);
   }
 }

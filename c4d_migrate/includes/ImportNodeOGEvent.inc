@@ -61,6 +61,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     $row->field_event_location  = unserialize($row->field_event_location);
     $row->field_event_organiser = unserialize($row->field_event_organiser);
 
+    $row->body = $this->prepareHtml($row->body);
+
     return TRUE;
   }
 
