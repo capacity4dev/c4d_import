@@ -45,8 +45,12 @@ files[] = includes/ImportCommentOGMinisite.inc
 files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
 
+; Loggers.
+files[] = includes/logger/Interface.inc
+files[] = includes/logger/Drush.inc
+files[] = includes/logger/Migrate.inc
 
-; Tag parsers
+; Tag parsers.
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
@@ -54,7 +58,10 @@ files[] = includes/parser/EcMedia.inc
 files[] = includes/parser/Video.inc
 files[] = includes/parser/Embed.inc
 
-; Tag processors
+; Processors.
+files[] = includes/process/Abstract.inc
+
+; Tag processors.
 files[] = includes/process/tag/Abstract.inc
 files[] = includes/process/tag/AbstractFile.inc
 files[] = includes/process/tag/AbstractEmbed.inc
