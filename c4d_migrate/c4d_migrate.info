@@ -49,6 +49,7 @@ files[] = includes/ImportCommentOGEvent.inc
 files[] = includes/logger/Interface.inc
 files[] = includes/logger/Drush.inc
 files[] = includes/logger/Migrate.inc
+files[] = includes/logger/Watchdog.inc
 
 ; Tag parsers.
 files[] = includes/parser/Abstract.inc
