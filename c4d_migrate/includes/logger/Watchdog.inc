@@ -12,8 +12,8 @@ class C4dMigrateLoggerWatchdog implements C4dMigrateLoggerInterface {
    * {@inheritdoc}
    */
   public function log($message, $variables = array(), $severity = self::INFO) {
-    // We do not keep informational & debug data in the watchdog table.
-    if ($severity > self::NOTICE) {
+    // We do not keep debug data in the watchdog table.
+    if ($severity > self::INFO) {
       return;
     }
 

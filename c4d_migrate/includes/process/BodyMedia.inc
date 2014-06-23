@@ -85,11 +85,16 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
       $body = str_replace($search, $replace, $body);
     }
 
+    $severity = C4dMigrateLoggerInterface::DEBUG;
+    if ($count = count($replacements)) {
+      $severity = C4dMigrateLoggerInterface::INFO;
+    }
     $this->log(
-      'Replacing tags with @count found replacements.',
+      'Process Body Media : Replaced @count tags.',
       array('@count' => count($replacements)),
-      C4dMigrateLoggerInterface::DEBUG
+      $severity
     );
+
 
     return $body;
   }

@@ -12,8 +12,8 @@ class C4dMigrateLoggerMigrate implements C4dMigrateLoggerInterface {
    * {inheritdoc}
    */
   public function log($message, $variables = array(), $severity = self::INFO) {
-    // We do not keep informational & debug data in the message table.
-    if ($severity > self::NOTICE) {
+    // We do not keep debug data in the message table.
+    if ($severity > self::INFO) {
       return;
     }
 
