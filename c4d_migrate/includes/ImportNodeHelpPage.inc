@@ -192,4 +192,17 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
 
     return NULL;
   }
+
+  /**
+   * Prepare the row data loaded from the table.
+   *
+   * @param object $row
+   *   The data from the table.
+   *
+   * @return bool
+   *   Success.
+   */
+  public function prepareRow($row) {
+    $row->comment = $this->prepareHtml($row->comment);
+  }
 }

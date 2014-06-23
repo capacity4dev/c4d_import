@@ -73,6 +73,8 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_og_image');
 
+    $row->body = $this->prepareHtml($row->body);
+
     return TRUE;
   }
 

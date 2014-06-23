@@ -136,6 +136,8 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
     // Drupal 6 published: status = 0
     // Drupal 7 published: status = 1, we need to swap this around.
     $row->status = ($row->status == 0) ? 1 : 0;
+
+    $row->comment = $this->prepareHtml($row->comment);
   }
 
   /**

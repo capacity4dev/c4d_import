@@ -70,6 +70,8 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_picture_region');
 
+    $row->body = $this->prepareHtml($row->body);
+
     return TRUE;
   }
 }
