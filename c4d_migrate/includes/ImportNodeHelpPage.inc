@@ -34,7 +34,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
     // Children to be created before their parents otherwise, creating execution
     // errors.
     $query = $this->createSelect('c4d_export_node_help', 't')
-                  ->orderBy('parent', 'ASC')
+                  ->orderBy('weight', 'ASC')
                   ->fields('t');
 
     $this->source = new MigrateSourceSQL($query, array(), NULL, array('map_joinable' => FALSE));
@@ -93,7 +93,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
 
     // If no parent - we need to create a new book.
     $parent = $row->parent;
-    if ($parent == NULL) {
+    if (empty($parent)) {
       // No parent: this is the main "Help & Guidance" page, so create book.
       if (!$update) {
         // This is a new migration, no update, so create a new book.
@@ -204,6 +204,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
    */
   public function prepareRow($row) {
     parent::prepareRow($row);
+
     $row->body = $this->prepareHtml($row->body);
   }
 }
