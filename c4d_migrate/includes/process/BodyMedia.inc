@@ -57,12 +57,16 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
     foreach ($tags as $tag) {
       $processor = $this->getProcessor($tag);
       if (!$processor) {
+        $replacements[$tag['tag']] = $this->createCommentTag($tag['tag']);
         continue;
       }
 
       $processor->setLoggers($this->getLoggers());
       if ($processor->process()) {
         $replacements[$tag['tag']] = $processor->getReplacement();
+      }
+      else {
+        $replacements[$tag['tag']] = $this->createCommentTag($tag['tag']);
       }
     }
 
@@ -140,5 +144,18 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
     }
 
     return $config;
+  }
+
+  /**
+   * Create a "hidden" tag for tags that were not replaced because of errors.
+   *
+   * @param string $tag
+   *   HTML tag to put inside comment.
+   *
+   * @return string
+   *   Commented tag.
+   */
+  protected function createCommentTag($tag) {
+    return '<!--' . $tag . '-->';
   }
 }
