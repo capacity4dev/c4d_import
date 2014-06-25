@@ -45,13 +45,37 @@ files[] = includes/ImportCommentOGMinisite.inc
 files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
 
+; Loggers.
+files[] = includes/logger/Interface.inc
+files[] = includes/logger/Drush.inc
+files[] = includes/logger/Migrate.inc
+files[] = includes/logger/Watchdog.inc
 
-; Tag parsers
+; Tag parsers.
 files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
+files[] = includes/parser/EcMedia.inc
+files[] = includes/parser/Video.inc
+files[] = includes/parser/Embed.inc
 
+; Processors.
+files[] = includes/process/Abstract.inc
 
-; Tests
-files[] = tests/parser/C4dImage.test
-files[] = tests/parser/IbImage.test
+; Tag processors.
+files[] = includes/process/tag/Abstract.inc
+files[] = includes/process/tag/AbstractFile.inc
+files[] = includes/process/tag/AbstractEmbed.inc
+files[] = includes/process/tag/C4dImageLocal.inc
+files[] = includes/process/tag/C4dImageRemote.inc
+files[] = includes/process/tag/IbImage.inc
+files[] = includes/process/tag/IbImageImage.inc
+files[] = includes/process/tag/IbImageLink.inc
+files[] = includes/process/tag/IbImagePopup.inc
+files[] = includes/process/tag/IbImagePhotoalbum.inc
+files[] = includes/process/tag/IbImageSlideshow.inc
+files[] = includes/process/tag/EcMedia.inc
+files[] = includes/process/tag/Video.inc
+
+; Body processors
+files[] = includes/process/BodyMedia.inc

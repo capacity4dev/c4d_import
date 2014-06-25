@@ -50,6 +50,7 @@ class C4dMigrateImportNodeOGBlog extends C4dMigrateImportBaseNodeOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
+    $row->body = $this->prepareHtml($row->body);
     $row->documents = unserialize($row->documents);
 
     return TRUE;

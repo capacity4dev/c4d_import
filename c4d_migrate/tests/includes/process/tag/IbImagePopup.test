@@ -1,0 +1,78 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagIbImagePopup class.
+ */
+
+/**
+ * Tests for the [ibimage:popup==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImagePopup extends C4dMigrateTestProcessTagIbImage {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'    => 'ibimage:popup',
+    'tag'     => '[ibimage==1234==large==popup====ibimage-left==Popup image in lightbox]',
+    'fid'     => 1234,
+    'preset'  => 'large',
+    'link'    => 'popup',
+    'target'  => '',
+    'style'   => 'ibimage-left',
+    'caption' => 'Popup image in lightbox',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage:popup==…] tags',
+      'description' => 'Test that the IbImage:popup tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = $this->getC4dMigrateConfig();
+
+    $processor = new C4dMigrateProcessTagIbImagePopup($this->tag, $config);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = '/'
+                   . variable_get('file_public_path', NULL)
+                   . '/media/CD_in_ethiopia-thumb.jpg';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<div class="ibimage ibimage-left ibimage-preset-large">' .
+      '<div class="ibimage-inner">' .
+      '<a href="%s" class="ibimage-link popup lightbox">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="Popup image in lightbox" title="" />' .
+      '<span class="caption">Popup image in lightbox</span>' .
+      '</a>' .
+      '</div>' .
+      '</div>',
+      $expected_path,
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+}

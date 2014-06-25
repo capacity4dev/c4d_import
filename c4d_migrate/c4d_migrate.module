@@ -106,3 +106,66 @@ function c4d_migrate_menu() {
 
   return $items;
 }
+
+/**
+ * Add the DB connection info from the variables table.
+ *
+ * This will add the database connection info so we can connect to the table
+ * holding the migration data of the old platform.
+ */
+function c4d_migrate_set_up_db_connection() {
+  $existing = Database::getConnectionInfo(C4D_MIGRATE_DATABASE);
+  if (!is_null($existing)) {
+    // Already setup, don't do it again.
+    return;
+  }
+
+  // Add information based on the variables.
+  $c4d_database = array(
+    'database' => variable_get(C4D_MIGRATE_DB_NAME, ''),
+    'username' => variable_get(C4D_MIGRATE_DB_USER, ''),
+    'password' => variable_get(C4D_MIGRATE_DB_PASS, ''),
+    'host'     => variable_get(C4D_MIGRATE_DB_HOST, ''),
+    'driver'   => 'mysql',
+  );
+  Database::addConnectionInfo(C4D_MIGRATE_DATABASE, 'default', $c4d_database);
+}
+
+/**
+ * Get the databse connection to the database holding the migration data.
+ *
+ * @return DatabaseConnection
+ *   The Database connection object.
+ *
+ * @throws Exception
+ */
+function c4d_migrate_get_db_connection() {
+  try {
+    c4d_migrate_set_up_db_connection();
+    return Database::getConnection('default', C4D_MIGRATE_DATABASE);
+  }
+  catch (Exception $e) {
+    drupal_set_message(
+      t('Unable to connect to the database, <a href="@url">please check your settings</a>.',
+        array(
+          '@url' => url('admin/content/migrate/import'),
+        )
+      ),
+      'error'
+    );
+
+    // Bubble up the exception.
+    throw $e;
+  }
+}
+
+/**
+ * Get the root folder of the old platform where the files are stored.
+ *
+ * This will be the path to sites/default/files.
+ *
+ * @return string
+ */
+function c4d_migrate_get_files_root() {
+  return variable_get(C4D_MIGRATE_FILES_ROOT, NULL);
+}

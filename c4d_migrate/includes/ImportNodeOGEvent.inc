@@ -61,6 +61,9 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     $row->field_event_location  = unserialize($row->field_event_location);
     $row->field_event_organiser = unserialize($row->field_event_organiser);
 
+    $row->body                         = $this->prepareHtml($row->body);
+    $row->field_event_full_description = $this->prepareHtml($row->field_event_full_description);
+
     return TRUE;
   }
 
@@ -124,7 +127,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     $items = getlocations_fields_save_locations($locations, $criteria, $settings, 'insert');
 
     if (is_array($items)) {
-      $entity->c4m_location = array(LANGUAGE_NONE => array());
+      $entity->c4m_location                   = array(LANGUAGE_NONE => array());
       $entity->c4m_location[LANGUAGE_NONE][0] = $items[0];
 
       $this->nodeSave($entity, $row->changed);

@@ -1,0 +1,73 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagC4dImageRemote class.
+ */
+
+/**
+ * Tests for the [c4d-image==…] tag processor.
+ */
+class C4dMigrateTestProcessTagC4dImageRemote extends DrupalWebTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 4 [] tags in total but only 3 unique tags.
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'     => 'c4d-image:remote',
+    'tag'      => '[c4d-image==http://aipetcher.files.wordpress.com/2011/04/european-union-flags.jpg====European_Flags====]',
+    'source'   => 'http://aipetcher.files.wordpress.com/2011/04/european-union-flags.jpg',
+    'width'    => 2480,
+    'height'   => 1599,
+    'alt'      => 'European_Flags',
+    'title'    => NULL,
+    'position' => NULL,
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process Remote [c4d-image==…] tags',
+      'description' => 'Test that the C4dImage tag processor downloads the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $processor = new C4dMigrateProcessTagC4dImageRemote($this->tag);
+    $result    = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = '/'
+                   . variable_get('file_public_path', NULL)
+                   . '/media/european-union-flags.jpg';
+
+    $expected_replacement = sprintf(
+      '<img src="%s" class="img__fid__%d media-image" width="2480" height="1599" alt="European_Flags" />',
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+}

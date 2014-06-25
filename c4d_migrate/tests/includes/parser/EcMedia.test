@@ -1,0 +1,103 @@
+<?php
+/**
+ * @file
+ * Tests for the ec_media tag parser.
+ */
+
+/**
+ * Tests for the [ec_media:…] tag parser.
+ */
+class C4dMigrateTestParserEcMedia extends DrupalUnitTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 5 [] tags in total but only 4 unique tags.
+   *
+   * @var string
+   */
+  private $text = <<<EOT
+<p>[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]</p>
+<p>[ec_media:377 width:500 height:320 autoplay:0 align:left-clear]Improving the <a title="More about: Business" href="http://www.euronews.com/tag/business/">business</a> environment is Senegal’s goal.</p>
+<p>[ec_media:325 width:500 height:320 autoplay:0 align:left-clear][ec_media:326 width:500 height:320 autoplay:1 align:right-clear]</p>
+<p>In this way, the programme aims to help create a sound business climate for investment, enhance productivity, support entrepreneurship, develop the private sector, and build knowledge-based economies to render this region more competitive and attractive to foreign investment.</p>
+<p>[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]</p>
+EOT;
+
+  /**
+   * Expected result
+   *
+   * @var array
+   */
+  private $expectedTags = array(
+    '[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]' => array(
+      'type'     => "ec_media",
+      'tag'      => '[ec_media:443 width:500 height:320 autoplay:0 align:left-clear]',
+      'id'       => 443,
+      'width'    => 500,
+      'height'   => 320,
+      'autoplay' => 0,
+      'align'    => "left-clear",
+    ),
+    '[ec_media:377 width:500 height:320 autoplay:0 align:left-clear]' => array(
+      'type'     => "ec_media",
+      'tag'      => '[ec_media:377 width:500 height:320 autoplay:0 align:left-clear]',
+      'id'       => 377,
+      'width'    => 500,
+      'height'   => 320,
+      'autoplay' => 0,
+      'align'    => "left-clear",
+    ),
+    '[ec_media:325 width:500 height:320 autoplay:0 align:left-clear]' => array(
+      'type'     => "ec_media",
+      'tag'      => '[ec_media:325 width:500 height:320 autoplay:0 align:left-clear]',
+      'id'       => 325,
+      'width'    => 500,
+      'height'   => 320,
+      'autoplay' => 0,
+      'align'    => "left-clear",
+    ),
+    '[ec_media:326 width:500 height:320 autoplay:1 align:right-clear]' => array(
+      'type'     => "ec_media",
+      'tag'      => '[ec_media:326 width:500 height:320 autoplay:1 align:right-clear]',
+      'id'       => 326,
+      'width'    => 500,
+      'height'   => 320,
+      'autoplay' => 1,
+      'align'    => "right-clear",
+    ),
+  );
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Parse [ec_media:…] tags',
+      'description' => 'Test that the EcMedia parser parses out the [ec_media:…] tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the parser class during setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/EcMedia.inc';
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testParser() {
+    $parser = new C4dMigrateParserEcMedia();
+
+    $parser->parse($this->text);
+    $tags = $parser->getTags();
+    $this->assertEqual(4, count($tags), 'Expected to get 4 unique tags.');
+    $this->assertEqual($this->expectedTags, $tags);
+  }
+}

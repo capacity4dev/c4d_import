@@ -1,0 +1,32 @@
+name = C4D Content Migration Tests
+description = Tests for the capacity4dev migration.
+core = 7.x
+package = capacity4more - Migrate
+version = 7.x-1.x-dev
+dependencies[] = c4d_migrate
+hidden = TRUE
+
+; Test files
+
+; Parsers
+files[] = includes/parser/C4dImage.test
+files[] = includes/parser/IbImage.test
+files[] = includes/parser/EcMedia.test
+files[] = includes/parser/Video.test
+files[] = includes/parser/Iframe.test
+
+; Processors
+files[] = includes/process/tag/Base.test
+files[] = includes/process/tag/C4dImageLocal.test
+files[] = includes/process/tag/C4dImageRemote.test
+files[] = includes/process/tag/IbImage.test
+files[] = includes/process/tag/IbImageImage.test
+files[] = includes/process/tag/IbImageLink.test
+files[] = includes/process/tag/IbImagePopup.test
+files[] = includes/process/tag/IbImagePhotoalbum.test
+files[] = includes/process/tag/IbImageSlideshow.test
+files[] = includes/process/tag/EcMedia.test
+files[] = includes/process/tag/Video.test
+
+; Body Processor
+files[] = includes/process/BodyMedia.test

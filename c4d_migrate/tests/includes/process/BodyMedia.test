@@ -1,0 +1,100 @@
+<?php
+/**
+ * @file
+ * Tests fot the [ec_media:…] tag processor.
+ */
+
+/**
+ * Tests for C4dMigrateProcessBodyMedia.
+ */
+class C4dMigrateTestProcessBodyMedia extends C4dMigrateTestProcessTagBase {
+  /**
+   * The test body
+   *
+   * @var string
+   */
+  private $testBody = <<<EOL
+<p>
+  Start test.
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg====confusing_whiteboard====]
+</p>
+<p>
+  [c4d-image==http://aipetcher.files.wordpress.com/2011/04/european-union-flags.jpg==2480x1599==European_Flags====]
+</p>
+<p>
+  [video:http://www.youtube.com/v/_IFglfiI2bQ]
+</p>
+<p>
+  [ec_media:101 width:501 height:321 autoplay:0 align:left-clear]
+</p>
+<p>
+  End test.
+</p>
+EOL;
+
+  /**
+   * The expected outcome.
+   *
+   * @var string
+   */
+  private $expectedBody = <<<EOL
+<p>
+  Start test.
+</p>
+<p>
+  <img src="%s" class="img__fid__1 media-image" alt="confusing_whiteboard" />
+</p>
+<p>
+  <img src="%s" class="img__fid__2 media-image" width="2480" height="1599" alt="European_Flags" />
+</p>
+<p>
+  <iframe src="http://www.youtube.com/v/_IFglfiI2bQ?autoplay=0" width="520" height="450" frameborder="0"></iframe>
+</p>
+<p>
+  <iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="501" height="321" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>
+</p>
+<p>
+  End test.
+</p>
+EOL;
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Process body fields',
+      'description' => 'Test that the BodyMedia processor process all tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate', 'c4d_migrate_test');
+    parent::setUp($modules);
+
+    // Make sure that we have overwritten the DB & files directory!
+    $this->setUpMigrationInTestMode();
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $expected = sprintf(
+      $this->expectedBody,
+      file_create_url('public://media/CD_in_ethiopia-thumb.jpg'),
+      file_create_url('public://media/european-union-flags.jpg')
+    );
+
+    $processor = new C4dMigrateProcessBodyMedia();
+    $result = $processor->process($this->testBody);
+    $this->assertEqual($expected, $result);
+  }
+}

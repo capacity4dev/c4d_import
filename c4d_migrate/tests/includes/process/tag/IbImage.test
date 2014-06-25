@@ -1,0 +1,50 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateTestProcessTagIbImage class.
+ */
+
+/**
+ * Tests for the [ibimage==…] tag processor.
+ */
+abstract class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagBase {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array();
+
+  /**
+   * Load the process class during setup.
+   */
+  public function setUp() {
+    $modules = array('c4d_migrate', 'c4d_migrate_test');
+    parent::setUp($modules);
+  }
+
+  /**
+   * Get a dummy file inside our sandbox to test with.
+   *
+   * @param string $type_name
+   *   Type of file to generate.
+   * @param int    $size
+   *   Optional filesize to generate.
+   *
+   * @return mixed
+   *   File object with the dummy image.
+   */
+  protected function getTestFile($type_name, $size = NULL) {
+    // Get a file to upload.
+    $file = current($this->drupalGetTestFiles($type_name, $size));
+
+    // Add a filesize property to files as would be read by file_load().
+    $file->filesize = filesize($file->uri);
+
+    return $file;
+  }
+}

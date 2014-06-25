@@ -1,0 +1,185 @@
+<?php
+/**
+ * @file
+ * Tests for the c4d-image tag parser.
+ */
+
+/**
+ * Tests for the [c4d-image==…] tag parser.
+ */
+class C4dMigrateTestParserC4dImage extends DrupalUnitTestCase {
+  /**
+   * The body we use as test data.
+   *
+   * WARNING:
+   * There are 4 [] tags in total but only 3 unique tags.
+   *
+   * @var string
+   */
+  private $text = <<<EOT
+<p>
+  On the number of documents used to clear cargo
+</p>
+<p>
+  <a href="http://www.businessdailyafrica.com/-/539444/681446/-/s0yj8i/-/">Business Daily Africa</a>
+</p>
+<p>[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]</p>
+<p><a href="http://ec.europa.eu/europeaid/work/procedures/implementation/practical_guide/index_en.htm">                                              [c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]</a></p>
+<p>The Cotonou Agreement was revised on 23 June 2010 in Ouagadougou, Burkina Faso. The update has introduced modifications concerning rules of nationality and origin, basically aligning EDF and BUDGET instruments. Consequently the PRAG is now.</p>
+<p>
+  [c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====][c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]
+</p>
+<p>
+  <a href="http://ec.europa.eu/development/geographical/cotonouintro_en.cfm">The revision of the Cotonou agreement</a>
+</p>
+<p>
+  [c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]
+</p>
+<p>
+  [c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]
+</p>
+EOT;
+
+  /**
+   * Expected result
+   *
+   * @var array
+   */
+  private $expectedTags = array(
+    '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]' => array(
+      'type'     => 'c4d-image:remote',
+      'tag'      => '[c4d-image==http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg==595x300==Truck Malaba====]',
+      'source'   => "http://www.businessdailyafrica.com/image/view/-/681448/highRes/111318/-/maxw/600/-/dgeh0p/-/Truck-Malaba.jpg",
+      'width'    => 595,
+      'height'   => 300,
+      'alt'      => 'Truck Malaba',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+    '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG==150x56==PRAG Logo====]',
+      'source'   => 'sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo.JPG',
+      'width'    => 150,
+      'height'   => 56,
+      'alt'      => 'PRAG Logo',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+    '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==../../system/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG==150x56==PRAG Logo 2====]',
+      'source'   => 'sites/default/files/file/11/10/2010_-_1738/DOC_Topic_2__PRAG_logo_2.JPG',
+      'width'    => 150,
+      'height'   => 56,
+      'alt'      => 'PRAG Logo 2',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+    '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/sites/default/files/magazine/images/Woman_Sunflowers.jpg==433x325==Woman with Sunflowers====]',
+      'source'   => 'sites/default/files/magazine/images/Woman_Sunflowers.jpg',
+      'width'    => 433,
+      'height'   => 325,
+      'alt'      => 'Woman with Sunflowers',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg======confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==500x====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => 500,
+      'height'   => NULL,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/files/CD_in_ethiopia-thumb.jpg==x300====confusing_whiteboard==float-left]',
+      'source'   => 'files/CD_in_ethiopia-thumb.jpg',
+      'width'    => NULL,
+      'height'   => 300,
+      'alt'      => NULL,
+      'title'    => 'confusing_whiteboard',
+      'position' => 'float-left',
+    ),
+    '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]' => array(
+      'type'     => 'c4d-image:local',
+      'tag'      => '[c4d-image==/unep/system/files/img/u7483/energy_500.jpg==500x130==energy_500.jpg====]',
+      'source'   => 'sites/default/files/img/u7483/energy_500.jpg',
+      'width'    => 500,
+      'height'   => 130,
+      'alt'      => 'energy_500.jpg',
+      'title'    => NULL,
+      'position' => NULL,
+    ),
+  );
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Parse [c4d-image==…] tags',
+      'description' => 'Test that the C4dImage parser parses out the [c4d-image==…] tags.',
+      'group' => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Load the parser class during setup.
+   */
+  public function setUp() {
+    parent::setUp();
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/C4dImage.inc';
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testParser() {
+    $parser = new C4dMigrateParserC4dImage();
+
+    $parser->parse($this->text);
+    $tags = $parser->getTags();
+    $this->assertEqual(9, count($tags));
+    $this->assertEqual($this->expectedTags, $tags);
+  }
+}

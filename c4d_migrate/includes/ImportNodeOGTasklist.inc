@@ -50,5 +50,7 @@ class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
     $row->field_project_status   = ($row->field_project_status == 'open') ? '1' : '0';
     $row->field_project_managers = unserialize($row->field_project_managers);
     $row->field_ref_document     = unserialize($row->field_ref_document);
+
+    $row->body = $this->prepareHtml($row->body);
   }
 }

@@ -86,4 +86,18 @@ class C4dMigrateImportNodeBookPage extends C4dMigrateImportBaseNode {
       'weight'             => '0',
     );
   }
+
+  /**
+   * Prepare the row data loaded from the table.
+   *
+   * @param object $row
+   *   The data from the table.
+   *
+   * @return bool
+   *   Success.
+   */
+  public function prepareRow($row) {
+    parent::prepareRow($row);
+    $row->body = $this->prepareHtml($row->body);
+  }
 }

@@ -17,14 +17,14 @@ class C4dMigrateTestParserIbImage extends DrupalUnitTestCase {
    * @var string
    */
   private $text = <<<EOT
-<p>[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg][ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg][ibimage==21172==small==photo_album_slideshow====ibimage-left==Test album]123</p>
+<p>[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg][ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg][ibimage==21172==small==photo_album_link====ibimage-left==Test album]123</p>
 <p>
   In Brussels, the United Nations Industrial Development Organization [UNIDO].
   There will be a message from UN Secretary General Ban Ki-Moon and a message by UNIDO
   [ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]
   Director General Li Yong read by Christophe Yvetot, Head of UNIDO Brussels Office and a
   joint message by the AU, UNECA and UNIDO, read by H.E. Mr. Ajay K. Bramdeo, Ambassador
-  of the AU in Brussels.[ibimage==21252==large==popup==_blank==ibimage-right==AID 2013]
+  of the AU in Brussels.[ibimage==21252==large==http://www.aid2013.nu==_blank==ibimage-right==AID 2013]
 </p>
 <p>[ibimage==25927==large==photo_album_slideshow======Test album]</p>
 EOT;
@@ -36,8 +36,9 @@ EOT;
    */
   private $expectedTags
     = array(
-      '[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg]' => array(
-        'type'    => "ibimage",
+      '[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg]'                     => array(
+        'type'    => "ibimage:image",
+        'tag'     => '[ibimage==21182==small==none====ibimage-left==_dsc3652.jpg]',
         'fid'     => 21182,
         'preset'  => "small",
         'link'    => "none",
@@ -45,8 +46,9 @@ EOT;
         'style'   => "ibimage-left",
         'caption' => "_dsc3652.jpg",
       ),
-      '[ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]' => array(
-        'type'    => "ibimage",
+      '[ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]'                    => array(
+        'type'    => "ibimage:popup",
+        'tag'     => '[ibimage==21181==small==popup====ibimage-left==_dsc3648.jpg]',
         'fid'     => 21181,
         'preset'  => "small",
         'link'    => "popup",
@@ -54,26 +56,29 @@ EOT;
         'style'   => "ibimage-left",
         'caption' => "_dsc3648.jpg",
       ),
-      '[ibimage==21172==small==photo_album_slideshow====ibimage-left==Test album]' => array(
-        'type'    => "ibimage",
+      '[ibimage==21172==small==photo_album_link====ibimage-left==Test album]'           => array(
+        'type'    => "ibimage:photoalbum",
+        'tag'     => '[ibimage==21172==small==photo_album_link====ibimage-left==Test album]',
         'fid'     => 21172,
         'preset'  => "small",
-        'link'    => "photo_album_slideshow",
+        'link'    => "photo_album_link",
         'target'  => "",
         'style'   => "ibimage-left",
         'caption' => "Test album",
       ),
-      '[ibimage==21252==large==popup==_blank==ibimage-right==AID 2013]' => array(
-        'type'    => "ibimage",
+      '[ibimage==21252==large==http://www.aid2013.nu==_blank==ibimage-right==AID 2013]' => array(
+        'type'    => "ibimage:link",
+        'tag'     => '[ibimage==21252==large==http://www.aid2013.nu==_blank==ibimage-right==AID 2013]',
         'fid'     => 21252,
         'preset'  => "large",
-        'link'    => "popup",
+        'link'    => "http://www.aid2013.nu",
         'target'  => "_blank",
         'style'   => "ibimage-right",
         'caption' => "AID 2013",
       ),
-      '[ibimage==25927==large==photo_album_slideshow======Test album]' => array(
-        'type'    => "ibimage",
+      '[ibimage==25927==large==photo_album_slideshow======Test album]'                  => array(
+        'type'    => "ibimage:slideshow",
+        'tag'     => '[ibimage==25927==large==photo_album_slideshow======Test album]',
         'fid'     => 25927,
         'preset'  => "large",
         'link'    => "photo_album_slideshow",
@@ -83,15 +88,14 @@ EOT;
       ),
     );
 
-
   /**
    * {@inheritdoc}
    */
   public static function getInfo() {
     return array(
-      'name' => 'Parse [ibimage==…] tags',
+      'name'        => 'Parse [ibimage==…] tags',
       'description' => 'Test that the IbImage parser parses out the [ibimage==…] tags.',
-      'group' => 'C4D Migrate',
+      'group'       => 'C4D Migrate',
     );
   }
 
@@ -100,8 +104,8 @@ EOT;
    */
   public function setUp() {
     parent::setUp();
-    require_once __DIR__ . '/../../includes/parser/Abstract.inc';
-    require_once __DIR__ . '/../../includes/parser/IbImage.inc';
+    require_once __DIR__ . '/../../../includes/parser/Abstract.inc';
+    require_once __DIR__ . '/../../../includes/parser/IbImage.inc';
   }
 
   /**
@@ -113,6 +117,7 @@ EOT;
     $parser->parse($this->text);
     $tags = $parser->getTags();
     $this->assertEqual(5, count($tags), 'Expected to get 5 unique tags.');
+
     $this->assertEqual($this->expectedTags, $tags);
   }
 }

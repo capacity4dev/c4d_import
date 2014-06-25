@@ -51,6 +51,8 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'file_field');
 
+    $row->body = $this->prepareHtml($row->body);
+
     return TRUE;
   }
 }
