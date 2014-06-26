@@ -1,0 +1,171 @@
+<?php
+/**
+ * @file
+ * Module to import d6 -> d7 content using the Migrate module.
+ */
+
+/**
+ * Name used to group the migration classes.
+ */
+define('C4D_MIGRATE_MIGRATION_GROUP', 'c4d_migrate');
+
+/**
+ * Database name (connection name).
+ */
+define('C4D_MIGRATE_DATABASE', 'c4d_migrate_database');
+
+/**
+ * Database variables (settings form and used in migrations)
+ */
+define('C4D_MIGRATE_DB_HOST', 'c4d_migrate_db_hostname');
+define('C4D_MIGRATE_DB_USER', 'c4d_migrate_db_username');
+define('C4D_MIGRATE_DB_PASS', 'c4d_migrate_db_password');
+define('C4D_MIGRATE_DB_NAME', 'c4d_migrate_db_database');
+
+/**
+ * Files variables (settings form and used in migrations)
+ */
+define('C4D_MIGRATE_FILES_ROOT', 'c4d_migrate_files_root');
+
+/**
+ * Implements hook_migrate_api().
+ */
+function c4d_migrate_migrate_api() {
+  $migrations = array();
+
+  $classes = array(
+    'C4dMigrateImportVocabGeo',
+    'C4dMigrateImportRoles',
+    'C4dMigrateImportUsers',
+    'C4dMigrateImportVocabGeo',
+    'C4dMigrateImportNodeRegion',
+    'C4dMigrateImportNodeTopic',
+    'C4dMigrateImportNodeBookPage',
+    'C4dMigrateImportNodeHelpPage',
+    'C4dMigrateImportNodeArticle',
+    'C4dMigrateImportCommentArticle',
+    'C4dMigrateImportNodeGroup',
+    'C4dMigrateImportNodeProject',
+    'C4dMigrateImportOGMemberships',
+    'C4dMigrateImportOGUserRoles',
+    'C4dMigrateImportVocabOGCategories',
+    'C4dMigrateImportVocabOGTags',
+    'C4dMigrateImportNodeOGDocument',
+    'C4dMigrateImportCommentOGDocument',
+    'C4dMigrateImportNodeOGTasklist',
+    'C4dMigrateImportNodeOGTask',
+    'C4dMigrateImportCommentOGTask',
+    'C4dMigrateImportNodeOGBlog',
+    'C4dMigrateImportCommentOGBlog',
+    'C4dMigrateImportNodeOGPhotoalbum',
+    'C4dMigrateImportCommentOGPhotoalbum',
+    'C4dMigrateImportNodeOGPhoto',
+    'C4dMigrateImportNodeOGMinisite',
+    'C4dMigrateImportCommentOGMinisite',
+    'C4dMigrateImportNodeOGEvent',
+    'C4dMigrateImportCommentOGEvent',
+  );
+
+  $group_name = 'c4d_migrate';
+
+  foreach ($classes as $class_name) {
+    $migrations[$class_name] = array(
+      'class_name' => $class_name,
+      'group_name' => $group_name,
+    );
+  }
+
+  $api = array(
+    'api'        => 2,
+    'groups'     => array(
+      $group_name => array(
+        'title' => t('Import Capacity4dev content'),
+      ),
+    ),
+    'migrations' => $migrations,
+  );
+
+  return $api;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function c4d_migrate_menu() {
+  $items['admin/content/migrate/import'] = array(
+    'title'            => 'C4D Import Content',
+    'description'      => 'Administer importing content from C4D.',
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('c4d_migrate_admin_overview_form'),
+    'access arguments' => array('administer c4d import'),
+    'file'             => 'c4d_migrate.admin.inc',
+    'file path'        => drupal_get_path('module', 'c4d_migrate'),
+    'type'             => MENU_LOCAL_TASK,
+    'weight'           => 20,
+  );
+
+  return $items;
+}
+
+/**
+ * Add the DB connection info from the variables table.
+ *
+ * This will add the database connection info so we can connect to the table
+ * holding the migration data of the old platform.
+ */
+function c4d_migrate_set_up_db_connection() {
+  $existing = Database::getConnectionInfo(C4D_MIGRATE_DATABASE);
+  if (!is_null($existing)) {
+    // Already setup, don't do it again.
+    return;
+  }
+
+  // Add information based on the variables.
+  $c4d_database = array(
+    'database' => variable_get(C4D_MIGRATE_DB_NAME, ''),
+    'username' => variable_get(C4D_MIGRATE_DB_USER, ''),
+    'password' => variable_get(C4D_MIGRATE_DB_PASS, ''),
+    'host'     => variable_get(C4D_MIGRATE_DB_HOST, ''),
+    'driver'   => 'mysql',
+  );
+  Database::addConnectionInfo(C4D_MIGRATE_DATABASE, 'default', $c4d_database);
+}
+
+/**
+ * Get the databse connection to the database holding the migration data.
+ *
+ * @return DatabaseConnection
+ *   The Database connection object.
+ *
+ * @throws Exception
+ */
+function c4d_migrate_get_db_connection() {
+  try {
+    c4d_migrate_set_up_db_connection();
+    return Database::getConnection('default', C4D_MIGRATE_DATABASE);
+  }
+  catch (Exception $e) {
+    drupal_set_message(
+      t('Unable to connect to the database, <a href="@url">please check your settings</a>.',
+        array(
+          '@url' => url('admin/content/migrate/import'),
+        )
+      ),
+      'error'
+    );
+
+    // Bubble up the exception.
+    throw $e;
+  }
+}
+
+/**
+ * Get the root folder of the old platform where the files are stored.
+ *
+ * This will be the path to sites/default/files.
+ *
+ * @return string
+ */
+function c4d_migrate_get_files_root() {
+  return variable_get(C4D_MIGRATE_FILES_ROOT, NULL);
+}

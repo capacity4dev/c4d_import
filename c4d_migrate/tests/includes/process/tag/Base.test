@@ -1,0 +1,57 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagC4dImageLocal class.
+ */
+
+/**
+ * Tests for the [c4d-image==…] tag processor.
+ */
+class C4dMigrateTestProcessTagBase extends DrupalWebTestCase {
+  /**
+   * Helper to prepare the migration data environment in test mode.
+   */
+  protected function setUpMigrationInTestMode() {
+    static $has_run = FALSE;
+
+    if (!$has_run) {
+      // Test files directory.
+      $files_root = __DIR__ . '/../../../resources';
+      variable_set(C4D_MIGRATE_FILES_ROOT, $files_root);
+      $this->refreshVariables();
+
+      $test = variable_get(C4D_MIGRATE_FILES_ROOT, 'OH OH');
+
+      // Use the test sandbox DB connection to setup a fake migration source DB.
+      $db_default = Database::getConnectionInfo('default');
+      $db_info = array(
+        'host'     => $db_default['default']['host'],
+        'database' => $db_default['default']['database'],
+        'username' => $db_default['default']['username'],
+        'password' => $db_default['default']['password'],
+        'port'     => $db_default['default']['port'],
+        'driver'   => $db_default['default']['driver'],
+        'prefix'   => $db_default['default']['prefix'],
+      );
+      Database::addConnectionInfo(C4D_MIGRATE_DATABASE, 'default', $db_info);
+
+      $has_run = TRUE;
+    }
+  }
+
+  /**
+   * Helper to generate the config array.
+   *
+   * @return array
+   *   The configuration array.
+   */
+  protected function getC4dMigrateConfig() {
+    $this->setUpMigrationInTestMode();
+
+    $config = array(
+      'files_root' => c4d_migrate_get_files_root(),
+      'db'         => c4d_migrate_get_db_connection(),
+    );
+    return $config;
+  }
+}

@@ -1,0 +1,78 @@
+<?php
+/**
+ * @file
+ * Tests for the C4dMigrateProcessTagIbImageSlideshow class.
+ */
+
+/**
+ * Tests for the [ibimage:slideshow==…] tag processor.
+ */
+class C4dMigrateTestProcessTagIbImageSlideshow extends C4dMigrateTestProcessTagIbImage {
+  /**
+   * The body we use as test data.
+   *
+   * <pre>
+   * [ibimage==FILE_ID==PRESET==LINK==LINK_TARGET==STYLE==CAPTION]
+   * </pre>
+   *
+   * @var string
+   */
+  private $tag = array(
+    'type'    => 'ibimage:slideshow',
+    'tag'     => '[ibimage==1234==original==photo_album_slideshow==_blank==ibimage-right-clear==Linked album in slideshow]',
+    'fid'     => 1234,
+    'preset'  => 'original',
+    'link'    => 'photo_album_slideshow',
+    'target'  => '_blank',
+    'style'   => 'ibimage-right-clear',
+    'caption' => 'Linked album in slideshow',
+  );
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name'        => 'Process [ibimage:slideshow==…] tags',
+      'description' => 'Test that the IbImage:photoalbum tag processor copies the file and add it to the file system.',
+      'group'       => 'C4D Migrate',
+    );
+  }
+
+  /**
+   * Test parsing out the tags.
+   */
+  public function testProcess() {
+    $config = $this->getC4dMigrateConfig();
+
+    $processor = new C4dMigrateProcessTagIbImageSlideshow($this->tag, $config);
+
+    $result = $processor->process();
+    $this->assertTrue($result, 'Process should return TRUE.');
+
+    $expected_path = '/'
+                   . variable_get('file_public_path', NULL)
+                   . '/media/CD_in_ethiopia-thumb.jpg';
+
+    // @TODO: Need to work on the output. Classes etc...
+    $expected_replacement = sprintf(
+      '<div class="ibimage ibimage-right-clear ibimage-preset-original">' .
+      '<div class="ibimage-inner">' .
+      '<a href="%s" target="_blank" class="ibimage-link photo-album-slideshow popup lightbox">' .
+      '<img src="%s" class="img__fid__%d media-image" alt="Linked album in slideshow" title="" />' .
+      '<span class="caption">Linked album in slideshow</span>' .
+      '</a>' .
+      '</div>' .
+      '</div>',
+      $expected_path,
+      $expected_path,
+      (int) $processor->getFile()->fid
+    );
+
+    $this->assertEqual(
+         $expected_replacement,
+           $processor->getReplacement(),
+           'The replacement string was what we expected.'
+    );
+  }
+}

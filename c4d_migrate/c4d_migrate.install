@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ * Installation and update hooks for migration.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function c4d_migrate_install() {
+  c4d_migrate_update_7001();
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function c4d_migrate_update_7001() {
+  variable_set('location_geocode_google_minimum_accuracy', '1');
+
+  db_query('UPDATE
+              {variable} v
+            SET
+              value = :value
+            WHERE
+              name LIKE :match
+              AND name <> :exception',
+    array(
+      ':value'     => serialize('google'),
+      ':match'     => 'location_geocode_%',
+      ':exception' => 'location_geocode_google_minimum_accuracy',
+    )
+  );
+}
