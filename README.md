@@ -88,6 +88,17 @@ This will:
 * Enable the c4d_migrate module.
 * Set the credentials & file directory of a local copy of the capacity4dev environment.
 
+### Install or upgrade
+
+Run the install script in case of a fresh installation:
+
+	$ ./install
+	
+Or run the upgrade script, this will add the c4d_import package and enable the c4d_migrate module.
+
+	$ ./upgrade
+
+
 
 ## Usage
 
