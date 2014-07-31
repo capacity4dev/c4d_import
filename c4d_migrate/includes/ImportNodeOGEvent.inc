@@ -111,6 +111,11 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
       ),
     );
 
+    $mapping = array(
+      'UK' => 'GB',
+      'uk' => 'gb'
+    );
+
     if (!empty($location['latitude']) && $location['latitude'] != 0.000000) {
       $locations[0]['latitude'] = $location['latitude'];
     }
@@ -122,6 +127,10 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     }
     else {
       $locations[0]['longitude'] = $parsed['lon'];
+    }
+
+    if (!empty($mapping[$locations[0]['country']])) {
+      $locations[0]['country'] = $mapping[$locations[0]['country']];
     }
 
     $items = getlocations_fields_save_locations($locations, $criteria, $settings, 'insert');
