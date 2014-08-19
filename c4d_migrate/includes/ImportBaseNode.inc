@@ -114,6 +114,15 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     // Map the fields.
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
+
+    $variable = variable_get('node_options_' . $this->getTargetBundle(), array());
+    $key = array_search('revision', $variable);
+    if ($key !== FALSE) {
+      unset ($variable[$key]);
+      variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+      drupal_flush_all_caches();
+    }
   }
 
   /**
