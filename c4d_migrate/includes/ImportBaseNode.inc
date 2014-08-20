@@ -115,7 +115,19 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
 
-    $variable = variable_get('node_options_' . $this->getTargetBundle(), array());
+    // make sure no revisions are created during import.
+    $this->disableRevisions();
+  }
+
+  /**
+   * Helper to disable revisions during node import.
+   */
+  public function disableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
     $key = array_search('revision', $variable);
     if ($key !== FALSE) {
       unset ($variable[$key]);
@@ -123,6 +135,27 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
       drupal_flush_all_caches();
     }
+  }
+
+  /**
+   * Helper to enable the revisions after the node import.
+   */
+  public function enableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
+    $key = array_search('revision', $variable);
+    // Has revisions enabled?
+    if ($key === FALSE) {
+      return;
+    }
+
+    unset ($variable[$key]);
+    variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+    drupal_flush_all_caches();
   }
 
   /**
