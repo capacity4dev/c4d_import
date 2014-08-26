@@ -142,6 +142,7 @@ function c4d_migrate_set_up_db_connection() {
 function c4d_migrate_get_db_connection() {
   try {
     c4d_migrate_set_up_db_connection();
+
     return Database::getConnection('default', C4D_MIGRATE_DATABASE);
   }
   catch (Exception $e) {
@@ -168,4 +169,17 @@ function c4d_migrate_get_db_connection() {
  */
 function c4d_migrate_get_files_root() {
   return variable_get(C4D_MIGRATE_FILES_ROOT, NULL);
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Disable creation of new revisions, and set the changed date again.
+ */
+function c4d_migrate_node_presave($node) {
+  // Prevent to disable revisions on node_saves from the backend (non-migrate).
+  if (!empty($node->migrate) && !empty($node->original)) {
+    $node->revision = FALSE;
+    $node->changed  = $node->original->changed;
+  }
 }

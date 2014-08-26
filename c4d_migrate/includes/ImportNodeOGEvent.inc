@@ -135,7 +135,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     $items = getlocations_fields_save_locations($locations, $criteria, $settings, 'insert');
 
-    if (is_array($items)) {
+    if (is_array($items) && !empty($items[0])) {
       $entity->c4m_location                   = array(LANGUAGE_NONE => array());
       $entity->c4m_location[LANGUAGE_NONE][0] = $items[0];
 
