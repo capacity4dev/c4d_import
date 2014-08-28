@@ -12,7 +12,7 @@ function c4d_migrate_install() {
 }
 
 /**
- * Implements hook_update_N().
+ * Update the geocode minimum accuracy setting.
  */
 function c4d_migrate_update_7001() {
   variable_set('location_geocode_google_minimum_accuracy', '1');
@@ -30,4 +30,53 @@ function c4d_migrate_update_7001() {
       ':exception' => 'location_geocode_google_minimum_accuracy',
     )
   );
+}
+
+/**
+ * Adds the inline media mapping table to the Database.
+ */
+function c4d_migrate_update_7002() {
+  $table = 'migrate_map_c4d_inline_media';
+
+  $schema = c4d_migrate_schema();
+  if (db_table_exists($table)) {
+    return st(
+      'Table %table already exists in the platform.',
+      array('%table' => $table)
+    );
+  }
+
+  db_create_table($table, $schema[$table]);
+  return st(
+    'Table %table added to the platform.',
+    array('%table' => $table)
+  );
+}
+
+
+/**
+ * Implements hook_schema().
+ */
+function c4d_migrate_schema() {
+  $schema['migrate_map_c4d_inline_media'] = array(
+    'description' => 'Stores the link between the original file path and the record in the {file_managed} table. This helps to avoid copying the same file multiple times.',
+    'fields' => array(
+      'source_path' => array(
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'default' => '',
+        'length' => 254,
+        'description' => 'Path from where the file is copied.',
+      ),
+      'destination_fid' => array(
+        'description' => 'The {file_managed}.fid being referenced in this field.',
+        'type' => 'int',
+        'not null' => FALSE,
+        'unsigned' => TRUE,
+      ),
+    ),
+    'primary key' => array('source_path'),
+  );
+
+  return $schema;
 }
