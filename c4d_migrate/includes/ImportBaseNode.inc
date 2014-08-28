@@ -111,6 +111,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     );
     $this->destination = $destination_handler;
 
+    $this->setPathManual(TRUE);
+
     // Map the fields.
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
@@ -264,6 +266,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   public function getPathManual() {
     return $this->pathManual;
   }
+
 
   /**
    * Reset the $node->changed timestamp.
