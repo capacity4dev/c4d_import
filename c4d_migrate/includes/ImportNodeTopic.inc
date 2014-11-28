@@ -23,38 +23,12 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
   /**
    * Configure the object during creation.
    */
-  public function __construct() {
-    parent::__construct(
-          MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
-    );
+  public function __construct($group = NULL) {
+    $this->description = t('Import Topic nodes.');
+    $this->setSourceTable('c4d_export_node_topic');
+    $this->setTargetBundle('topic');
 
-    $this->description = t('Import topics from our Drupal 6 database.');
-
-    $query = $this->createSelect('c4d_export_node_topic', 't')
-                  ->orderBy('nid', 'ASC')
-                  ->fields('t');
-
-    $this->source = new MigrateSourceSQL($query, array(), NULL, array('map_joinable' => FALSE));
-
-    // Create a map object for tracking the relationships between source rows.
-    $key = array(
-      'nid' => array(
-        'type'     => 'varchar',
-        'length'   => 255,
-        'not null' => TRUE,
-      ),
-    );
-
-    // Automatically convert drupal passwords to drupal7 hash.
-    $destination_handler = new MigrateDestinationNode($this->bundle);
-
-    $this->map = new MigrateSQLMap(
-      $this->machineName,
-      $key,
-      $destination_handler->getKeySchema()
-    );
-
-    $this->destination = $destination_handler;
+    parent::__construct($group);
   }
 
   /**

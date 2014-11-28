@@ -1,13 +1,14 @@
 <?php
 /**
  * @file
- * Migrate class to import the Blog group nodes.
+ * Migrate class to import the Blog group nodes as Discussions.
  */
 
 /**
- * Class to import the Blog group nodes from the Drupal 6 platform.
+ * Class to import the Blog group nodes from the Drupal 6 platform
+ * as Discussion nodes.
  */
-class C4dMigrateImportNodeOGBlog extends C4dMigrateImportBaseNodeOG {
+class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
@@ -15,9 +16,9 @@ class C4dMigrateImportNodeOGBlog extends C4dMigrateImportBaseNodeOG {
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
-    $this->description = t('Import Blog group nodes.');
+    $this->description = t('Import Discussion group nodes.');
     $this->setSourceTable('c4d_export_node_blog');
-    $this->setTargetBundle('blog');
+    $this->setTargetBundle('discussion');
 
     $this->dependencies[] = 'C4dMigrateImportNodeOGDocument';
 

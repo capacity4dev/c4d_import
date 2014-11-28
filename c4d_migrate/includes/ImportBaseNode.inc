@@ -111,9 +111,53 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     );
     $this->destination = $destination_handler;
 
+    $this->setPathManual(TRUE);
+
     // Map the fields.
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
+
+    // make sure no revisions are created during import.
+    $this->disableRevisions();
+  }
+
+  /**
+   * Helper to disable revisions during node import.
+   */
+  public function disableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
+    $key = array_search('revision', $variable);
+    if ($key !== FALSE) {
+      unset ($variable[$key]);
+      variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+      drupal_flush_all_caches();
+    }
+  }
+
+  /**
+   * Helper to enable the revisions after the node import.
+   */
+  public function enableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
+    $key = array_search('revision', $variable);
+    // Has revisions enabled?
+    if ($key === FALSE) {
+      return;
+    }
+
+    unset ($variable[$key]);
+    variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+    drupal_flush_all_caches();
   }
 
   /**
@@ -223,6 +267,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     return $this->pathManual;
   }
 
+
   /**
    * Reset the $node->changed timestamp.
    *
@@ -234,12 +279,18 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   public function nodeSave($node, $changed = NULL) {
     $node->revision = FALSE;
 
+    if (empty($node->migrate)) {
+      $node->migrate = TRUE; // Flag to set revisions to false in hook_presave.
+    }
+
     node_save($node);
+
     if ($changed) {
-      db_update('node')->fields(array('changed' => $changed))
+      db_update('node')->fields(array('changed' => $changed, 'uid' => $node->uid))
       ->condition('nid', $node->nid, '=')
       ->execute();
-      db_update('node_revision')->fields(array('timestamp' => $changed))
+      // Drush acts as user 0.
+      db_update('node_revision')->fields(array('timestamp' => $changed, 'uid' => $node->uid))
       ->condition('nid', $node->nid, '=')
       ->condition('vid', $node->vid, '=')
       ->execute();

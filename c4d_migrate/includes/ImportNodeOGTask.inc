@@ -43,6 +43,8 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
 
     $this->setCategoriesAndTags(FALSE);
 
+    $this->dependencies[] = 'C4dMigrateImportNodeOGTasklist';
+
     parent::__construct($group);
   }
 
