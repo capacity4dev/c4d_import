@@ -7,7 +7,7 @@
 /**
  * Class to import the Task comments from the Drupal 6 platform.
  */
-class C4dMigrateImportCommentOGTask extends C4dMigrateImportBaseComment {
+class C4dMigrateImportCommentOGTask extends C4dMigrateImportBaseCommentOg {
 
   /**
    * Configure the object during creation.

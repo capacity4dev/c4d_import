@@ -8,7 +8,7 @@
  * Class to import the Blog comments from the Drupal 6 platform
  * as Discussion comments.
  */
-class C4dMigrateImportCommentOGDiscussion extends C4dMigrateImportBaseComment {
+class C4dMigrateImportCommentOGDiscussion extends C4dMigrateImportBaseCommentOg {
 
   /**
    * Configure the object during creation.
