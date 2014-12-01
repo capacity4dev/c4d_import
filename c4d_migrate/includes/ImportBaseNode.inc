@@ -296,4 +296,67 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       ->execute();
     }
   }
+
+  /**
+   * Reset the $message->timestamp of any related insert message (if any).
+   *
+   * @param object $node
+   *   Node object we want to set the message timestamp for.
+   * @param object $row
+   *   The source data of the migrated entity.
+   */
+  public function messageInsertSave($node, $row) {
+    if (!module_exists('c4m_message')) {
+      return;
+    }
+
+    // load the message(s).
+    $message_type = 'c4m_insert__node__' . $node->type;
+    $query = new EntityFieldQuery();
+    $result = $query
+      ->entityCondition('entity_type', 'message')
+      ->propertyCondition('type', $message_type)
+      ->fieldCondition('field_node', 'target_id', $node->nid)
+      ->execute();
+
+    if (empty($result['message'])) {
+      return;
+    }
+
+    // Update the timestamp.
+    $message_ids = array_keys($result['message']);
+    foreach ($message_ids as $message_id) {
+      $message = message_load($message_id);
+      if (!$message) {
+        continue;
+      }
+
+      $message->timestamp = $row->created;
+      message_save($message);
+    }
+  }
+
+  /**
+   * Create optional update messages.
+   *
+   * @param object $node
+   *   Node object we want to set the message timestamp for.
+   * @param object $row
+   *   The source data of the migrated entity.
+   */
+  public function messageUpdateSave($node, $row) {
+    if (!module_exists('c4m_message')) {
+      return;
+    }
+
+    // Only if the update was after 6 hours of creation.
+    $six_hours = 6 * 60 * 60;
+    if ($row->changed < ($row->created + $six_hours)) {
+      return;
+    }
+
+    // @TODO: update message should contain the person who updated the row,
+    // not the creator.
+
+  }
 }

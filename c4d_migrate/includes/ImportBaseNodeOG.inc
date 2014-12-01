@@ -188,4 +188,20 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   public function hasTags() {
     return $this->hasTags;
   }
+
+  /**
+   * Actions after the data is saved in the database.
+   *
+   * @param object $entity
+   *   The entity that is saved into the platform.
+   * @param object $row
+   *   The data row we are importing.
+   */
+  public function complete($entity, $row) {
+    // Make sure the messages have the proper timestamp.
+    $this->messageInsertSave($entity, $row);
+
+    // make sure the update message also exists.
+    $this->messageUpdateSave($entity, $row);
+  }
 }

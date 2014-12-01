@@ -74,6 +74,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    */
   public function complete($entity, $row) {
+    parent::complete($entity, $row);
+
     if ($row->field_event_location == '' || empty($row->field_event_location)) {
       return FALSE;
     }
@@ -140,7 +142,6 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
       $entity->c4m_location[LANGUAGE_NONE][0] = $items[0];
 
       $this->nodeSave($entity, $row->changed);
-
       return TRUE;
     }
 

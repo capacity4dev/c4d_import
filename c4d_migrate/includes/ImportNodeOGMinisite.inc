@@ -53,6 +53,8 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    */
   public function complete($node, $row) {
+    parent::complete($node, $row);
+
     // Books are not loaded by default.
     $node = node_load($node->nid);
 
