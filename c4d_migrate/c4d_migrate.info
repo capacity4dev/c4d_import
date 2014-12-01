@@ -13,6 +13,7 @@ files[] = includes/ImportBaseNode.inc
 files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
 files[] = includes/ImportBaseComment.inc
+files[] = includes/ImportBaseCommentOg.inc
 
 ; Global content.
 files[] = includes/ImportNodeRegion.inc

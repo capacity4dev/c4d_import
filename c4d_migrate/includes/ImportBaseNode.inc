@@ -310,7 +310,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
-    // load the message(s).
+    // Load the message(s).
     $message_type = 'c4m_insert__node__' . $node->type;
     $query = new EntityFieldQuery();
     $result = $query

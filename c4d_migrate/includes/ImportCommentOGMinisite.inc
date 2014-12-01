@@ -7,7 +7,7 @@
 /**
  * Class to import the Minisite page comments from the Drupal 6 platform.
  */
-class C4dMigrateImportCommentOGMinisite extends C4dMigrateImportBaseComment {
+class C4dMigrateImportCommentOGMinisite extends C4dMigrateImportBaseCommentOg {
 
   /**
    * Configure the object during creation.
