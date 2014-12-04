@@ -17,7 +17,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
   public function __construct($group = NULL) {
     $this->description = t('Import Wiki pages.');
     $this->setSourceTable('c4d_export_node_minisite_page');
-    $this->setTargetBundle('page');
+    $this->setTargetBundle('wiki_page');
 
     $this->setCategoriesAndTags(TRUE);
 
