@@ -32,6 +32,10 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
    */
   protected function copyFile($source, $target_folder) {
     $source_name = drupal_basename($source);
+    $existing = $this->loadFileFromMigrateMapping($source);
+    if ($existing) {
+      return $existing;
+    }
 
     try {
       $file_stream = file_get_contents($source);
@@ -69,6 +73,8 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
       );
       return FALSE;
     }
+
+    $this->saveMigrateMapping($source, $file);
 
     return $file;
   }

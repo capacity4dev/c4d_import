@@ -145,11 +145,14 @@ abstract class C4dMigrateImportBase extends Migration {
     $res    = $f_select->execute();
     $result = $res->fetchObject();
 
-    // Pass the filename.
-    $row->{$file} = $result->filename;
+    $path_parts = pathinfo($result->filepath);
+
 
     // All other keys combined are the relative path from the root dir.
-    $rel_path     = dirname($result->filepath);
+    $rel_path     = $path_parts['dirname'];
+
+    // Pass the filename.
+    $row->{$file} = $path_parts['basename'];
     $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
       . DIRECTORY_SEPARATOR
       . $rel_path;

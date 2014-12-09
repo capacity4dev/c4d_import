@@ -111,9 +111,53 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     );
     $this->destination = $destination_handler;
 
+    $this->setPathManual(TRUE);
+
     // Map the fields.
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
+
+    // make sure no revisions are created during import.
+    $this->disableRevisions();
+  }
+
+  /**
+   * Helper to disable revisions during node import.
+   */
+  public function disableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
+    $key = array_search('revision', $variable);
+    if ($key !== FALSE) {
+      unset ($variable[$key]);
+      variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+      drupal_flush_all_caches();
+    }
+  }
+
+  /**
+   * Helper to enable the revisions after the node import.
+   */
+  public function enableRevisions() {
+    $variable = variable_get(
+      'node_options_' . $this->getTargetBundle(),
+      array()
+    );
+
+    $key = array_search('revision', $variable);
+    // Has revisions enabled?
+    if ($key === FALSE) {
+      return;
+    }
+
+    unset ($variable[$key]);
+    variable_set('node_options_' . $this->getTargetBundle(), $variable);
+
+    drupal_flush_all_caches();
   }
 
   /**
@@ -223,6 +267,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     return $this->pathManual;
   }
 
+
   /**
    * Reset the $node->changed timestamp.
    *
@@ -234,15 +279,84 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   public function nodeSave($node, $changed = NULL) {
     $node->revision = FALSE;
 
+    if (empty($node->migrate)) {
+      $node->migrate = TRUE; // Flag to set revisions to false in hook_presave.
+    }
+
     node_save($node);
+
     if ($changed) {
-      db_update('node')->fields(array('changed' => $changed))
+      db_update('node')->fields(array('changed' => $changed, 'uid' => $node->uid))
       ->condition('nid', $node->nid, '=')
       ->execute();
-      db_update('node_revision')->fields(array('timestamp' => $changed))
+      // Drush acts as user 0.
+      db_update('node_revision')->fields(array('timestamp' => $changed, 'uid' => $node->uid))
       ->condition('nid', $node->nid, '=')
       ->condition('vid', $node->vid, '=')
       ->execute();
     }
+  }
+
+  /**
+   * Reset the $message->timestamp of any related insert message (if any).
+   *
+   * @param object $node
+   *   Node object we want to set the message timestamp for.
+   * @param object $row
+   *   The source data of the migrated entity.
+   */
+  public function messageInsertSave($node, $row) {
+    if (!module_exists('c4m_message')) {
+      return;
+    }
+
+    // Load the message(s).
+    $message_type = 'c4m_insert__node__' . $node->type;
+    $query = new EntityFieldQuery();
+    $result = $query
+      ->entityCondition('entity_type', 'message')
+      ->propertyCondition('type', $message_type)
+      ->fieldCondition('field_node', 'target_id', $node->nid)
+      ->execute();
+
+    if (empty($result['message'])) {
+      return;
+    }
+
+    // Update the timestamp.
+    $message_ids = array_keys($result['message']);
+    foreach ($message_ids as $message_id) {
+      $message = message_load($message_id);
+      if (!$message) {
+        continue;
+      }
+
+      $message->timestamp = $row->created;
+      message_save($message);
+    }
+  }
+
+  /**
+   * Create optional update messages.
+   *
+   * @param object $node
+   *   Node object we want to set the message timestamp for.
+   * @param object $row
+   *   The source data of the migrated entity.
+   */
+  public function messageUpdateSave($node, $row) {
+    if (!module_exists('c4m_message')) {
+      return;
+    }
+
+    // Only if the update was after 6 hours of creation.
+    $six_hours = 6 * 60 * 60;
+    if ($row->changed < ($row->created + $six_hours)) {
+      return;
+    }
+
+    // @TODO: update message should contain the person who updated the row,
+    // not the creator.
+
   }
 }

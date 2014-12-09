@@ -7,7 +7,7 @@
 /**
  * Class to import the Photoalbum comments from the Drupal 6 platform.
  */
-class C4dMigrateImportCommentOGPhotoalbum extends C4dMigrateImportBaseComment {
+class C4dMigrateImportCommentOGPhotoalbum extends C4dMigrateImportBaseCommentOg {
 
   /**
    * Configure the object during creation.

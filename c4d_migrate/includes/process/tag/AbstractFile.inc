@@ -56,6 +56,12 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    *   FALSE if the file could not be copied.
    */
   protected function copyFile($source, $target_folder) {
+    // First check if we didn't already copyied the source file.
+    $existing = $this->loadFileFromMigrateMapping($source);
+    if ($existing) {
+      return $existing;
+    }
+
     // Construct the full file path to the source file.
     $source_path = $this->getConfigValue('files_root')
       . '/'
@@ -95,6 +101,9 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
       return FALSE;
     }
 
+    // Log the migrate mapping.
+    $this->saveMigrateMapping($source, $file);
+
     return $file;
   }
 
@@ -131,5 +140,50 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
     $checksum = md5($path_info['filename']);
     $safe = $checksum . '.' . $path_info['extension'];
     return $safe;
+  }
+
+  /**
+   * Helper to load an already migrated file based on the source path.
+   *
+   * @param string $source
+   *   The source path of the file to copy.
+   *
+   * @return bool|stdClass
+   *   False if not already migrated.
+   *   The file object of migrated.
+   */
+  protected function loadFileFromMigrateMapping($source) {
+    $map = db_select('migrate_map_c4d_inline_media', 'm')
+      ->fields('m')
+      ->condition('source_path', $source,'=')
+      ->execute()
+      ->fetch();
+
+    if (!$map) {
+      return FALSE;
+    }
+
+    $file = file_load($map->destination_fid);
+    if (!$file) {
+      return FALSE;
+    }
+
+    return $file;
+  }
+
+  /**
+   * Helper to save a migrated file to the mapping table.
+   *
+   * @param string $source
+   *   The source path.
+   * @param stdClass $file
+   *   The file objects
+   */
+  protected function saveMigrateMapping($source, $file) {
+    $data = new stdClass();
+    $data->source_path = $source;
+    $data->destination_fid = $file->fid;
+
+    drupal_write_record('migrate_map_c4d_inline_media', $data);
   }
 }

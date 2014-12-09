@@ -231,4 +231,44 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
   public function getCommentMigration() {
     return $this->commentMigration;
   }
+
+  /**
+   * Reset the $message->timestamp of any related insert message (if any).
+   *
+   * @param object $comment
+   *   Comment object we want to set the message timestamp for.
+   * @param object $row
+   *   The source data of the migrated entity.
+   */
+  public function messageInsertSave($comment, $row) {
+    if (!module_exists('c4m_message')) {
+      return;
+    }
+
+    // Load the message(s).
+    $message_type = 'c4m_insert__comment';
+    $query = new EntityFieldQuery();
+    $result = $query
+      ->entityCondition('entity_type', 'message')
+      ->propertyCondition('type', $message_type)
+      ->fieldCondition('field_node', 'target_id', $comment->nid)
+      ->fieldCondition('field_comment', 'target_id', $comment->cid)
+      ->execute();
+
+    if (empty($result['message'])) {
+      return;
+    }
+
+    // Update the timestamp.
+    $message_ids = array_keys($result['message']);
+    foreach ($message_ids as $message_id) {
+      $message = message_load($message_id);
+      if (!$message) {
+        continue;
+      }
+
+      $message->timestamp = $row->timestamp;
+      message_save($message);
+    }
+  }
 }
