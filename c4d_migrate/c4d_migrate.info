@@ -13,7 +13,9 @@ files[] = includes/ImportBaseNode.inc
 files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
 files[] = includes/ImportBaseComment.inc
+files[] = includes/ImportBaseCommentOg.inc
 
+; Global content.
 files[] = includes/ImportNodeRegion.inc
 files[] = includes/ImportVocabGeo.inc
 files[] = includes/ImportRoles.inc
@@ -24,19 +26,23 @@ files[] = includes/ImportNodeArticle.inc
 files[] = includes/ImportCommentArticle.inc
 files[] = includes/ImportNodeBookPage.inc
 files[] = includes/ImportNodeHelpPage.inc
+
+; OG nodes + memberships + og vocab.
 files[] = includes/ImportNodeGroup.inc
 files[] = includes/ImportNodeProject.inc
 files[] = includes/ImportOGMemberships.inc
 files[] = includes/ImportOGUserRoles.inc
 files[] = includes/ImportVocabOGCategories.inc
 files[] = includes/ImportVocabOGTags.inc
+
+; Group content nodes + comments.
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportCommentOGDocument.inc
 files[] = includes/ImportNodeOGTasklist.inc
 files[] = includes/ImportNodeOGTask.inc
 files[] = includes/ImportCommentOGTask.inc
-files[] = includes/ImportNodeOGBlog.inc
-files[] = includes/ImportCommentOGBlog.inc
+files[] = includes/ImportNodeOGDiscussion.inc
+files[] = includes/ImportCommentOGDiscussion.inc
 files[] = includes/ImportNodeOGPhotoalbum.inc
 files[] = includes/ImportCommentOGPhotoalbum.inc
 files[] = includes/ImportNodeOGPhoto.inc

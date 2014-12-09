@@ -74,6 +74,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    */
   public function complete($entity, $row) {
+    parent::complete($entity, $row);
+
     if ($row->field_event_location == '' || empty($row->field_event_location)) {
       return FALSE;
     }
@@ -111,6 +113,11 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
       ),
     );
 
+    $mapping = array(
+      'UK' => 'GB',
+      'uk' => 'gb'
+    );
+
     if (!empty($location['latitude']) && $location['latitude'] != 0.000000) {
       $locations[0]['latitude'] = $location['latitude'];
     }
@@ -124,14 +131,17 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
       $locations[0]['longitude'] = $parsed['lon'];
     }
 
+    if (!empty($mapping[$locations[0]['country']])) {
+      $locations[0]['country'] = $mapping[$locations[0]['country']];
+    }
+
     $items = getlocations_fields_save_locations($locations, $criteria, $settings, 'insert');
 
-    if (is_array($items)) {
+    if (is_array($items) && !empty($items[0])) {
       $entity->c4m_location                   = array(LANGUAGE_NONE => array());
       $entity->c4m_location[LANGUAGE_NONE][0] = $items[0];
 
       $this->nodeSave($entity, $row->changed);
-
       return TRUE;
     }
 

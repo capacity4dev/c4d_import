@@ -7,7 +7,7 @@
 /**
  * Class to import the Document comments from the Drupal 6 platform.
  */
-class C4dMigrateImportCommentOGDocument extends C4dMigrateImportBaseComment {
+class C4dMigrateImportCommentOGDocument extends C4dMigrateImportBaseCommentOg {
 
   /**
    * Configure the object during creation.
