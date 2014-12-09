@@ -1,11 +1,11 @@
 <?php
 /**
  * @file
- * Migrate class to import the Minisite pages.
+ * Migrate class to import the Wiki pages.
  */
 
 /**
- * Class to import the Minisite pages from the Drupal 6 platform.
+ * Class to import the Wiki pages from the Drupal 6 platform.
  */
 class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
   /**
@@ -15,9 +15,9 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
-    $this->description = t('Import Minisite pages.');
+    $this->description = t('Import Wiki pages.');
     $this->setSourceTable('c4d_export_node_minisite_page');
-    $this->setTargetBundle('page');
+    $this->setTargetBundle('wiki_page');
 
     $this->setCategoriesAndTags(TRUE);
 
@@ -75,8 +75,8 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
       // No parent: this is a direct child of the master page.
       if (!$update) {
         // Retrieve bid and parent mlid of the minisite master page.
-        module_load_include('module', 'c4m_content_minisite');
-        $parent = c4m_content_minisite_get_book_by_gid($og_id);
+        module_load_include('module', 'c4m_content_wiki');
+        $parent = c4m_content_wiki_get_book_by_gid($og_id);
 
         $book           = $parent->book;
         $book['weight'] = $row->weight;

@@ -79,17 +79,17 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    *   The data row we are importing.
    */
   public function complete($entity, $row) {
-    $minisite = c4m_content_minisite_get_book_by_gid($entity->nid);
+    $wiki = c4m_content_wiki_get_book_by_gid($entity->nid);
 
     db_update('node')->fields(array('created' => $entity->created))
-      ->condition('nid', $minisite->nid, '=')
+      ->condition('nid', $wiki->nid, '=')
       ->execute();
     db_update('node')->fields(array('changed' => $entity->created))
-      ->condition('nid', $minisite->nid, '=')
+      ->condition('nid', $wiki->nid, '=')
       ->execute();
     db_update('node_revision')->fields(array('timestamp' => $entity->created, 'uid' => $entity->uid))
-      ->condition('nid', $minisite->nid, '=')
-      ->condition('vid', $minisite->vid, '=')
+      ->condition('nid', $wiki->nid, '=')
+      ->condition('vid', $wiki->vid, '=')
       ->execute();
   }
 }
