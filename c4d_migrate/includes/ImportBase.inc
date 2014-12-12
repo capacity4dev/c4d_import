@@ -24,6 +24,12 @@ abstract class C4dMigrateImportBase extends Migration {
   static private $groupMapping;
 
   /**
+   * The search indexes that were disabled when the process started.
+   * endProcess will use these to re-enable them.
+   */
+  static protected $searchIndexDisabled = array();
+
+  /**
    * General initialization of a Migration object.
    *
    * This implements the common functionality to import nodes from a flat table.
@@ -46,6 +52,44 @@ abstract class C4dMigrateImportBase extends Migration {
       $group = MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP);
     }
     parent::__construct($group);
+  }
+
+  /**
+   * Begin a process, disable all search indexes so they don't slow down the
+   * process.
+   *
+   * {@inheritDoc}
+   */
+  protected function beginProcess($newStatus) {
+    parent::beginProcess($newStatus);
+
+    if (module_exists('search_api')) {
+      $indexes = search_api_index_load_multiple(FALSE);
+      foreach ($indexes as $index) {
+        if (!$index->status) {
+          // Already disabled.
+          continue;
+        }
+
+        search_api_index_disable($index->id);
+        $this->searchIndexDisabled[] = $index->id;
+      }
+    }
+  }
+
+  /**
+   * Re-enable the search indexes.
+   *
+   * {@inheritDoc}
+   */
+  public function endProcess() {
+    parent::endProcess();
+
+    if (!empty($this->searchIndexDisabled)) {
+      foreach ($this->searchIndexDisabled as $index_id) {
+        search_api_index_enable($index_id);
+      }
+    }
   }
 
   /**
