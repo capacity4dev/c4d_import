@@ -39,6 +39,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_og_image');
     // @TODO Hide EC Field not mapped (field_hide_ec_disclaimer).
+
+    // Map the access (public/private).
+    $this->addFieldMapping('group_access', 'og_private');
   }
 
   /**
@@ -91,5 +94,44 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       ->condition('nid', $wiki->nid, '=')
       ->condition('vid', $wiki->vid, '=')
       ->execute();
+  }
+
+  /**
+   * Helper to create a pluggable node access record based on the og_spaces_type
+   * value.
+   *
+   * @param stdClass $row
+   */
+  public function preparePluggableNodeAccess($row) {
+    $row->_pluggable_node_access = null;
+
+    // Mapping between C4D & C4M group access types.
+    $organisations_map = array(
+      'ec_og' => 'ec',
+      'eu_og' => 'eu',
+    );
+    if (!isset($organisations_map[$row->og_spaces_type])) {
+      return;
+    }
+
+    // Dummy node.
+    $values = array(
+      'type' => $this->getTargetBundle(),
+      'uid' => 1,
+      'status' => 1,
+      'comment' => 1,
+      'promote' => 0,
+    );
+    $group = entity_create('node', $values);
+
+    // Create the pluggable node access record.
+    $pluggable_node_access = c4m_og_save_pluggable_node_access_restricted(
+      $group,
+      array($organisations_map[$row->og_spaces_type])
+    );
+
+    if ($pluggable_node_access) {
+      $row->_pluggable_node_access = $pluggable_node_access->id;
+    }
   }
 }

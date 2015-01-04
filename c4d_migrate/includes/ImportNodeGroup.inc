@@ -32,6 +32,13 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
          ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_body:summary', 'og_description');
 
+    // Map the group type (public/ec/eu/private).
+    // This needs the $this->preparePluggableNodeAccess($row); in the
+    // prepareRow method.
+    // @TODO We should move this code to ImportBaseGroup::addDefaultFieldMapping()
+    // once the projects content type has also the pluggable_node_access field.
+    $this->addFieldMapping('pluggable_node_access', '_pluggable_node_access');
+
     // @TODO field_article_suggestion_type
     // @TODO field_article_suggestions
     // @TODO field_og_reference
@@ -58,5 +65,10 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
   public function prepareRow($row) {
     parent::prepareRow($row);
     $row->body = $this->prepareHtml($row->body);
+
+    // Pluggable node access.
+    // @TODO We should move this code to ImportBaseGroup::prepareRow() once the
+    // projects content type has also the pluggable_node_access field.
+    $this->preparePluggableNodeAccess($row);
   }
 }
