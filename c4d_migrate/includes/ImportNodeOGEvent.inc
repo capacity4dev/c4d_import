@@ -43,6 +43,9 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     $this->addFieldMapping('c4m_related_document', 'field_ref_document')
          ->sourceMigration('C4dMigrateImportNodeOGDocument');
+
+    $this->addFieldMapping('c4m_event_type')
+      ->defaultValue('event');
   }
 
   /**
