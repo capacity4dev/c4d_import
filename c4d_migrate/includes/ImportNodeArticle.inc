@@ -13,10 +13,11 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
    *
    * @var array
    */
-  public $dependencies = array(
-    'C4dMigrateImportUsers',
-    'C4dMigrateImportNodeTopic',
-  );
+  public $dependencies
+    = array(
+      'C4dMigrateImportUsers',
+      'C4dMigrateImportNodeTopic',
+    );
 
   /**
    * Configure the object during creation.
@@ -35,14 +36,15 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+      ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_has_video', 'has_video')
-         ->defaultValue(0);
+      ->defaultValue(0);
     $this->addFieldMapping('c4m_related_topic', 'topics')
-         ->sourceMigration('C4dMigrateImportNodeTopic');
+      ->sourceMigration('C4dMigrateImportNodeTopic');
+
     $this->addFieldMapping('c4m_vocab_geo', 'geo')
-         ->sourceMigration('C4dMigrateImportVocabGeo')
-         ->arguments(array('source_type' => 'tid'));
+      ->arguments(array('source_type' => 'tid'));
+
     $this->addFileFieldMapping('c4m_media', 'teaser_image');
   }
 
@@ -60,7 +62,10 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
 
     // Unserialize data.
     $row->topics = unserialize($row->topics);
-    $row->geo    = unserialize($row->geo);
+    $row->geo = unserialize($row->geo);
+    $row->geo = $this->mapTaxonomyVocabWithParent(
+      $this->mapTaxonomyVocabRegionCountries($row->geo, 'c4m_vocab_geo')
+    );
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'teaser_image');

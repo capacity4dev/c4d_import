@@ -39,7 +39,6 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
-         ->sourceMigration('C4dMigrateImportVocabGeo')
          ->arguments(array('source_type' => 'tid'));
     $this->addFieldMapping('weight_weight', 'weight')
          ->defaultValue(0);
@@ -64,8 +63,11 @@ class C4dMigrateImportNodeRegion extends C4dMigrateImportBaseNode {
     $row->field_links             = unserialize($row->field_links);
     $row->field_documents         = unserialize($row->field_documents);
     $row->field_group_suggestions = unserialize($row->field_group_suggestions);
-    $row->taxonomy                = unserialize($row->taxonomy);
 
+    $row->taxonomy = unserialize($row->taxonomy);
+    $row->taxonomy = $this->mapTaxonomyVocabWithParent(
+      $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
+    );
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_picture_region');
 

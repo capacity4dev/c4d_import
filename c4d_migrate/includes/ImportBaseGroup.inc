@@ -30,7 +30,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       ->sourceMigration('C4dMigrateImportNodeTopic');
 
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
-      ->sourceMigration('C4dMigrateImportVocabGeo')
       ->arguments(array('source_type' => 'tid'));
 
     $this->addFieldMapping(OG_GROUP_FIELD, NULL)->defaultValue(TRUE);
@@ -57,6 +56,10 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     $row->taxonomy = unserialize($row->taxonomy);
+    $row->taxonomy = $this->mapTaxonomyVocabWithParent(
+      $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
+    );
+
     $row->field_ref_topic = unserialize($row->field_ref_topic);
 
     // Prepare the picture data.

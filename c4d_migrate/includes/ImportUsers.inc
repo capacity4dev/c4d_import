@@ -88,7 +88,6 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_country', 'field_country');
     // geo_vocab was not added to the user profile in Drupal 6.
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
-         ->sourceMigration('C4dMigrateImportVocabGeo')
          ->arguments(array('source_type' => 'tid'));
 
     // Special field mapping for files.
@@ -130,6 +129,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       $roles[] = $this->handleSourceMigration('C4dMigrateImportRoles', $role['rid'], NULL, $this);
     }
     $row->roles = $roles;
+
+    $row->taxonomy = unserialize($row->taxonomy);
+    $row->taxonomy = $this->mapTaxonomyVocabWithParent(
+      $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
+    );
 
     return TRUE;
   }
