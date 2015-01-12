@@ -81,8 +81,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   /**
    * Review a data row after fetch, returning FALSE to skip it.
    *
+   * @param object $entity
    * @param object $row
-   *   The data row we are importing.
    */
   public function complete($entity, $row) {
     $wiki = node_load($entity->nid);

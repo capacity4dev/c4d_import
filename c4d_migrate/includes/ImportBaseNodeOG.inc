@@ -115,8 +115,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   /**
    * Review a data row after fetch, returning FALSE to skip it.
    *
+   * @param object $entity
    * @param object $row
-   *   The data row we are importing.
    */
   public function prepare($node, $row) {
     if (!$this->hasCategories()) {

@@ -119,6 +119,8 @@ abstract class C4dMigrateImportBase extends Migration {
     if ($conn = $this->getConnection()) {
       return $conn->select($name, $alias);
     }
+
+    return FALSE;
   }
 
   /**
@@ -334,6 +336,8 @@ abstract class C4dMigrateImportBase extends Migration {
         return $tids;
       }
     }
+
+    return array();
   }
 
 
