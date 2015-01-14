@@ -85,7 +85,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // Define the source table to import the data from.
     $query        = $this->createSelect($this->getSourceTable(), 'node')
-                         ->fields('node');
+      ->fields('node');
     $this->source = new MigrateSourceSQL(
       $query,
       array(),
@@ -99,7 +99,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     // Add map to track relationships between source & destination rows.
     $key               = array(
       'nid' => array(
-        'type'     => 'int',
+        'type' => 'int',
         'not null' => TRUE,
         'unsigned' => TRUE,
       ),
@@ -179,7 +179,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // Node author.
     $this->addFieldMapping('uid', 'uid')
-         ->sourceMigration('C4dMigrateImportUsers');
+      ->sourceMigration('C4dMigrateImportUsers');
 
     // Should the node path be set manually?
     if ($this->getPathManual()) {
@@ -286,14 +286,18 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     node_save($node);
 
     if ($changed) {
-      db_update('node')->fields(array('changed' => $changed, 'uid' => $node->uid))
-      ->condition('nid', $node->nid, '=')
-      ->execute();
+      db_update('node')->fields(
+        array('changed' => $changed, 'uid' => $node->uid)
+      )
+        ->condition('nid', $node->nid, '=')
+        ->execute();
       // Drush acts as user 0.
-      db_update('node_revision')->fields(array('timestamp' => $changed, 'uid' => $node->uid))
-      ->condition('nid', $node->nid, '=')
-      ->condition('vid', $node->vid, '=')
-      ->execute();
+      db_update('node_revision')->fields(
+        array('timestamp' => $changed, 'uid' => $node->uid)
+      )
+        ->condition('nid', $node->nid, '=')
+        ->condition('vid', $node->vid, '=')
+        ->execute();
     }
   }
 
@@ -312,8 +316,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // Load the message(s).
     $message_type = 'c4m_insert__node__' . $node->type;
-    $query = new EntityFieldQuery();
-    $result = $query
+    $query        = new EntityFieldQuery();
+    $result       = $query
       ->entityCondition('entity_type', 'message')
       ->propertyCondition('type', $message_type)
       ->fieldCondition('field_node', 'target_id', $node->nid)
@@ -349,14 +353,25 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
-    // Only if the update was after 6 hours of creation.
-    $six_hours = 6 * 60 * 60;
-    if ($row->changed < ($row->created + $six_hours)) {
+    // Clone
+    // Retrieve the mapped changed_user.
+    $old_user_id = $row->changed_uid;
+
+    if (empty($old_user_id)) {
       return;
     }
+    $new_user_id = $this->handleSourceMigration(
+      'C4dMigrateImportUsers',
+      $old_user_id,
+      NULL,
+      $this
+    );
 
-    // @TODO: update message should contain the person who updated the row,
-    // not the creator.
+    $account = user_load($new_user_id);
 
+    $message = c4m_message__update__node($node, $account);
+
+    $message->timestamp = $row->changed;
+    message_save($message);
   }
 }
