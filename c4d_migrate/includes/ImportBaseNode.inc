@@ -353,7 +353,10 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
-    // Clone
+    if ($row->changed <= $row->created || $row->uid !== $row->changed_uid) {
+      return;
+    }
+
     // Retrieve the mapped changed_user.
     $old_user_id = $row->changed_uid;
 
