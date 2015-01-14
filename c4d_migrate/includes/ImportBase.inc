@@ -119,6 +119,8 @@ abstract class C4dMigrateImportBase extends Migration {
     if ($conn = $this->getConnection()) {
       return $conn->select($name, $alias);
     }
+
+    return FALSE;
   }
 
   /**
@@ -150,7 +152,7 @@ abstract class C4dMigrateImportBase extends Migration {
     $this->addFieldMapping($target, $file);
     $this->addFieldMapping($target . ':source_dir', $path);
     $this->addFieldMapping($target . ':file_replace')
-         ->defaultValue($file_exists);
+      ->defaultValue($file_exists);
   }
 
   /**
@@ -168,7 +170,9 @@ abstract class C4dMigrateImportBase extends Migration {
    * @param string $table
    *   The table to use to lookup the file data.
    */
-  public function prepareFileInRow($row, $source, $table = 'c4d_export_other_files') {
+  public function prepareFileInRow(
+    $row, $source, $table = 'c4d_export_other_files'
+  ) {
     // File info is passed trough temporary variables.
     $file = self::FILE_PREFIX_FILE . $source;
     $path = self::FILE_PREFIX_PATH . $source;
@@ -193,7 +197,7 @@ abstract class C4dMigrateImportBase extends Migration {
 
 
     // All other keys combined are the relative path from the root dir.
-    $rel_path     = $path_parts['dirname'];
+    $rel_path = $path_parts['dirname'];
 
     // Pass the filename.
     $row->{$file} = $path_parts['basename'];
@@ -236,12 +240,16 @@ abstract class C4dMigrateImportBase extends Migration {
     else {
       switch ($type) {
         case 'project_group':
-          $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeProject', $gid, NULL, $this);
+          $dest_id = $this->handleSourceMigration(
+            'C4dMigrateImportNodeProject', $gid, NULL, $this
+          );
           break;
 
         case 'group':
         default:
-          $dest_id = $this->handleSourceMigration('C4dMigrateImportNodeGroup', $gid, NULL, $this);
+          $dest_id = $this->handleSourceMigration(
+            'C4dMigrateImportNodeGroup', $gid, NULL, $this
+          );
           break;
       }
       $mapped_ids[$gid] = $dest_id;
@@ -252,7 +260,9 @@ abstract class C4dMigrateImportBase extends Migration {
     if ($cache_changed) {
       // Set temporary cache. If we do a rollback and import again, we have
       // new mappings.
-      cache_set('c4d_migrate_og_group_mappings', $mapped_ids, 'cache', CACHE_TEMPORARY);
+      cache_set(
+        'c4d_migrate_og_group_mappings', $mapped_ids, 'cache', CACHE_TEMPORARY
+      );
     }
 
     self::$groupMapping = $mapped_ids;
@@ -264,6 +274,7 @@ abstract class C4dMigrateImportBase extends Migration {
    * Helper to process a field containing HTML created with WYSIWYG editors.
    *
    * It will search for [tags] and process them into media, html, …
+   *
    * @see C4dMigrateProcessBodyMedia.
    *
    * @param string $field
@@ -282,5 +293,107 @@ abstract class C4dMigrateImportBase extends Migration {
     }
 
     return $processor->process($field);
+  }
+
+  /**
+   * Map terms to the existing (install hook) terms in the database for a specified taxonomy.
+
+   * @param $sourcefield
+   * @param $vocabname
+   *
+   * @return array
+   */
+  public function mapTaxonomyVocabRegionCountries($sourcefield, $vocabname) {
+    $vocab = taxonomy_vocabulary_machine_name_load($vocabname);
+
+    if (!empty($vocab)) {
+      $terms = $sourcefield;
+      if (!empty($terms)) {
+        $tids = array();
+        $mapping = $this->getMappingRegions();
+
+        foreach ($terms as $term_name) {
+          $term = taxonomy_get_term_by_name($term_name, $vocabname);
+
+          // Case 1: Term is available in the new platform with the exact same name.
+          if (!empty($term)) {
+            reset($term);
+            $tid = key($term);
+            $tids[] = $tid;
+          }
+          else {
+            if (!empty($mapping[$term_name])) {
+              $mapped_term = taxonomy_get_term_by_name($mapping[$term_name], $vocabname);
+              if (!empty($mapped_term)) {
+                reset($mapped_term);
+                $tid = key($mapped_term);
+                $tids[] = $tid;
+              }
+            }
+          }
+        }
+
+        return $tids;
+      }
+    }
+
+    return array();
+  }
+
+
+  /**
+   * @param $tids
+   *   Array of term ids content is tagged with.
+   *
+   * @return array
+   *   Array of term ids, including every term's parents.
+   */
+  public function mapTaxonomyVocabWithParent($tids) {
+    $all_tids = array();
+
+    if (empty($tids)) {
+      return array();
+    }
+
+    foreach ($tids as $tid) {
+      $parents = taxonomy_get_parents_all($tid);
+      $parent_tids = array_map(create_function('$term', 'return $term->tid;'), $parents);
+      // $tid is included in $parent_tids array.
+      $all_tids = array_merge($all_tids, $parent_tids);
+    }
+
+    $unique = array_unique($all_tids);
+    sort($unique);
+
+    return $unique;
+  }
+
+  /**
+   * Retrieve an array of mapped region values.
+   *
+   * @return array
+   *   Mapping between old and new region naming.
+   */
+  private function getMappingRegions() {
+    return array(
+      '1.Sub-Saharan Africa' => 'Sub-Saharan Africa',
+      'Sub-Saharan Africa' => 'Sub-Saharan Africa',
+      '2.European Neighbourhood & Russia' => 'Europe & Russia',
+      'European Neighbourhood & Russia' => 'Europe & Russia',
+      '3.Latin America & Caribbean' => 'Latin America & Caribbean',
+      'Latin America & Caribbean' => 'Latin America & Caribbean',
+      // Splits into different regions in the new platform? Asia vs Pacific (subregion of Oceania & Pacific) vs Gulf, not mapped
+//      '4.Asia, Gulf Region & Pacific' => '',
+//      'Asia, Gulf Region & Pacific' => '',
+      '5.EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
+      'EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
+      '6.OCTs (Overseas Countries and Territories)' => 'OCTs (Overseas Countries & Territories)',
+      'OCTs (Overseas Countries and Territories)' => 'OCTs (Overseas Countries & Territories)',
+      '7.EU Member States' => 'EU Member States',
+      'EU Member States' => 'EU Member States',
+      // Splits into multiple (sub)regions in the new platform, which don't match.
+//      '8.Other Countries' => '',
+//      'Other Countries' => '',
+    );
   }
 }

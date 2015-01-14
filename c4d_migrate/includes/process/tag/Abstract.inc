@@ -74,7 +74,7 @@ abstract class C4dMigrateProcessTagAbstract extends C4dMigrateProcessAbstract {
    */
   protected function getConfigValue($key) {
     if (!array_key_exists($key, $this->config)) {
-      return;
+      return NULL;
     }
 
     return $this->config[$key];
@@ -95,5 +95,6 @@ abstract class C4dMigrateProcessTagAbstract extends C4dMigrateProcessAbstract {
     if ($conn = $this->getConfigValue('db')) {
       return $conn->select($name, $alias);
     }
+    return FALSE;
   }
 }

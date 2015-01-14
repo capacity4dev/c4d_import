@@ -75,6 +75,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
    *
    * @param object $row
    *   The data row we are importing.
+   *
+   * @return bool
    */
   public function complete($entity, $row) {
     parent::complete($entity, $row);
