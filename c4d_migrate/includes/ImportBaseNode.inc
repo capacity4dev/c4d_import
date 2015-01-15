@@ -84,7 +84,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     parent::__construct($group);
 
     // Define the source table to import the data from.
-    $query        = $this->createSelect($this->getSourceTable(), 'node')
+    $query = $this->createSelect($this->getSourceTable(), 'node')
       ->fields('node');
     $this->source = new MigrateSourceSQL(
       $query,
@@ -97,14 +97,14 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $destination_handler = new MigrateDestinationNode($this->getTargetBundle());
 
     // Add map to track relationships between source & destination rows.
-    $key               = array(
+    $key = array(
       'nid' => array(
         'type' => 'int',
         'not null' => TRUE,
         'unsigned' => TRUE,
       ),
     );
-    $this->map         = new MigrateSQLMap(
+    $this->map = new MigrateSQLMap(
       $this->machineName,
       $key,
       $destination_handler->getKeySchema()
@@ -316,8 +316,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // Load the message(s).
     $message_type = 'c4m_insert__node__' . $node->type;
-    $query        = new EntityFieldQuery();
-    $result       = $query
+    $query = new EntityFieldQuery();
+    $result = $query
       ->entityCondition('entity_type', 'message')
       ->propertyCondition('type', $message_type)
       ->fieldCondition('field_node', 'target_id', $node->nid)
@@ -353,7 +353,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
-    if ($row->changed <= $row->created || $row->uid !== $row->changed_uid) {
+    if ($row->changed <= $row->created) {
       return;
     }
 
