@@ -375,6 +375,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $message = c4m_message__update__node($node, $account);
 
     $message->timestamp = $row->changed;
+    $message->user = $account;
+    $message->uid = $account->uid;
     message_save($message);
   }
 }
