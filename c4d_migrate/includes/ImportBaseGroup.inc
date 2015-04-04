@@ -41,6 +41,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Map the access (public/private).
     $this->addFieldMapping('group_access', 'og_private');
+
+    // Map the group status.
+    $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
   }
 
   /**
@@ -64,6 +67,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_og_image');
+
+    // Prepare the group status.
+    $this->prepareC4mOgStatus($row);
 
     return TRUE;
   }
@@ -136,5 +142,19 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     if ($pluggable_node_access) {
       $row->_pluggable_node_access = $pluggable_node_access->id;
     }
+  }
+
+  /**
+   * Helper to create a status record based on the published value.
+   *
+   * @param stdClass $row
+   */
+  public function prepareC4mOgStatus($row) {
+    // Mapping between C4D & C4M group statuses.
+    $status_map = array(
+      NODE_NOT_PUBLISHED => 'draft',
+      NODE_PUBLISHED => 'published',
+    );
+    $row->_c4m_og_status = $status_map[$row->status];
   }
 }
