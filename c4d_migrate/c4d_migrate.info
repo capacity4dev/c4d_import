@@ -25,9 +25,10 @@ files[] = includes/ImportCommentArticle.inc
 files[] = includes/ImportNodeBookPage.inc
 files[] = includes/ImportNodeHelpPage.inc
 
-; OG nodes + memberships + og vocab.
+; OG nodes + features + memberships + og vocab.
 files[] = includes/ImportNodeGroup.inc
 files[] = includes/ImportNodeProject.inc
+files[] = includes/ImportOGFeatures.inc
 files[] = includes/ImportOGMemberships.inc
 files[] = includes/ImportOGUserRoles.inc
 files[] = includes/ImportVocabOGCategories.inc
