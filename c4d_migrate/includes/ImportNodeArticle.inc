@@ -80,4 +80,17 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
 
     return TRUE;
   }
+
+  /**
+   * Actions after the data is saved in the database.
+   *
+   * @param object $entity
+   *   The entity that is saved into the platform.
+   * @param object $row
+   *   The data row we are importing.
+   */
+  public function complete($entity, $row) {
+    // Make sure the messages have the proper timestamp.
+    $this->messageInsertSave($entity, $row);
+  }
 }
