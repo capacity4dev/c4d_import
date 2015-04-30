@@ -43,8 +43,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('group_access', 'og_private');
 
     // Map the group status.
-    $this->removeFieldMapping('status', 'status');
-    $this->addFieldMapping('status', '_status');
+    $this->addFieldMapping('status')->defaultValue(NODE_PUBLISHED);
     $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
   }
 
@@ -152,9 +151,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * @param stdClass $row
    */
   public function prepareC4mOgStatus($row) {
-    // Group nodes are always published.
-    $row->_status = NODE_PUBLISHED;
-
     // Mapping between C4D & C4M group statuses.
     $status_map = array(
       NODE_NOT_PUBLISHED => 'requested',
