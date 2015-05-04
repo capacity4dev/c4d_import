@@ -86,5 +86,7 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
   public function complete($entity, $row) {
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
+
+    $this->messageUpdateSave($entity, $row);
   }
 }
