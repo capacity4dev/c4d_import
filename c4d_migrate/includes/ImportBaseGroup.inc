@@ -195,7 +195,12 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   public function postImport() {
     parent::postImport();
     watchdog('c4d Migrate', t('Node access rebuild + OG Restricted info reset'));
-    node_access_rebuild(TRUE);
+    
+    // Data is way too big to do node access rebuild via command line.
+    // As it does not support batch API.
+    // Therefore we set a flag that will indicate a rebuild is needed.
+    node_access_needs_rebuild(TRUE);
+
     c4m_og_reset_restricted_info();
   }
 }
