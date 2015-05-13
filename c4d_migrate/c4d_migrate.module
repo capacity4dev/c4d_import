@@ -36,7 +36,6 @@ function c4d_migrate_migrate_api() {
   $classes = array(
     'C4dMigrateImportRoles',
     'C4dMigrateImportUsers',
-    'C4dMigrateImportNodeRegion',
     'C4dMigrateImportNodeTopic',
     'C4dMigrateImportNodeBookPage',
     'C4dMigrateImportNodeHelpPage',

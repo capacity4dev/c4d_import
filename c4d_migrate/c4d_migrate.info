@@ -16,7 +16,6 @@ files[] = includes/ImportBaseComment.inc
 files[] = includes/ImportBaseCommentOg.inc
 
 ; Global content.
-files[] = includes/ImportNodeRegion.inc
 files[] = includes/ImportRoles.inc
 files[] = includes/ImportUsers.inc
 files[] = includes/ImportNodeTopic.inc
