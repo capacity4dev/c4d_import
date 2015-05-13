@@ -37,6 +37,9 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
       ->arguments(array('format' => 'full_html'));
+
+    $this->addFieldMapping('c4m_intro_text', 'teaser');
+
     $this->addFieldMapping('c4m_has_video', 'has_video')
       ->defaultValue(0);
     $this->addFieldMapping('c4m_related_topic', 'topics')
@@ -66,6 +69,9 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     $row->geo = $this->mapTaxonomyVocabWithParent(
       $this->mapTaxonomyVocabRegionCountries($row->geo, 'c4m_vocab_geo')
     );
+
+    // D6 teaser was full HTML, now plain_text.
+    $row->teaser = strip_tags($row->teaser);
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'teaser_image');
