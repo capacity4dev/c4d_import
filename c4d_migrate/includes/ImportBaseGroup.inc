@@ -13,10 +13,12 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    *
    * @var array
    */
-  public $dependencies = array(
-    'C4dMigrateImportUsers',
-    'C4dMigrateImportNodeTopic',
-  );
+  public $dependencies
+    = array(
+      'C4dMigrateImportUsers',
+      'C4dMigrateImportNodeTopic',
+      'C4dMigrateCreateCSVNodeOrganisations',
+    );
 
   /**
    * Add the mapping for the common node fields.
@@ -43,7 +45,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('group_access', 'og_private');
 
     // Map the group status.
-    $this->addFieldMapping('status')->defaultValue(NODE_PUBLISHED);
     $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
 
     $this->addFieldMapping('field_membership_open_request', '_c4m_og_selective')
@@ -118,37 +119,64 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * value.
    *
    * @param stdClass $row
+   *
+   * @param stdClass $entity
    */
-  public function preparePluggableNodeAccess($row) {
+  public function savePluggableNodeAccess(&$group, $row) {
     $row->_pluggable_node_access = NULL;
+
+    $organisation_eu = $this->handleSourceMigration(
+      'C4dMigrateCreateCSVNodeOrganisations',
+      'organisation_eu',
+      NULL,
+      $this
+    );
+    $organisation_ec = $this->handleSourceMigration(
+      'C4dMigrateCreateCSVNodeOrganisations',
+      'organisation_ec',
+      NULL,
+      $this
+    );
 
     // Mapping between C4D & C4M group access types.
     $organisations_map = array(
-      'ec_og' => 'ec',
-      'eu_og' => 'eu',
+      'ec_og' => array(
+        $organisation_ec
+      ),
+      'eu_og' => array(
+        $organisation_eu,
+        $organisation_ec
+      ),
     );
     if (!isset($organisations_map[$row->og_spaces_type])) {
       return;
     }
 
-    // Dummy node.
-    $values = array(
-      'type'    => $this->getTargetBundle(),
-      'uid'     => 1,
-      'status'  => 1,
-      'comment' => 1,
-      'promote' => 0,
-    );
-    $group = entity_create('node', $values);
-
     // Create the pluggable node access record.
     $pluggable_node_access = c4m_og_save_pluggable_node_access_restricted(
       $group,
-      array($organisations_map[$row->og_spaces_type])
+      $organisations_map[$row->og_spaces_type]
     );
 
     if ($pluggable_node_access) {
-      $row->_pluggable_node_access = $pluggable_node_access->id;
+      $group->group_access = array(
+        LANGUAGE_NONE => array(
+          0 => array(
+            'value' => 1
+          )
+        )
+      );
+
+      $group->pluggable_node_access = array(LANGUAGE_NONE => array());
+      foreach ($pluggable_node_access as $na) {
+        $group->pluggable_node_access[LANGUAGE_NONE][] = array(
+          'target_id' => $na->id
+        );
+      }
+
+      $group->revision = FALSE;
+
+      $this->nodeSave($group);
     }
   }
 
@@ -160,9 +188,24 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   public function prepareC4mOgStatus($row) {
     // Mapping between C4D & C4M group statuses.
     $status_map = array(
-      NODE_NOT_PUBLISHED => 'requested',
+      NODE_NOT_PUBLISHED => 'draft',
       NODE_PUBLISHED     => 'published',
     );
     $row->_c4m_og_status = $status_map[$row->status];
+  }
+
+  /**
+   * {inheritDoc}
+   */
+  public function postImport() {
+    parent::postImport();
+    watchdog('c4d Migrate', t('Node access rebuild + OG Restricted info reset'));
+    
+    // Data is way too big to do node access rebuild via command line.
+    // As it does not support batch API.
+    // Therefore we set a flag that will indicate a rebuild is needed.
+    node_access_needs_rebuild(TRUE);
+
+    c4m_og_reset_restricted_info();
   }
 }
