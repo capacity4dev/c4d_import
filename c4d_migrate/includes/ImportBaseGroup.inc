@@ -45,6 +45,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     // Map the group status.
     $this->addFieldMapping('status')->defaultValue(NODE_PUBLISHED);
     $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
+
+    $this->addFieldMapping('field_membership_open_request', '_c4m_og_selective')
+      ->defaultValue(0);
   }
 
   /**
@@ -71,6 +74,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Prepare the group status.
     $this->prepareC4mOgStatus($row);
+
+    $row->_c4m_og_selective = $row->og_selective == 0 ? 1 : 0;
 
     return TRUE;
   }
@@ -100,7 +105,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     db_update('node')->fields(array('changed' => $entity->created))
       ->condition('nid', $wiki->nid, '=')
       ->execute();
-    db_update('node_revision')->fields(array('timestamp' => $entity->created, 'uid' => $entity->uid))
+    db_update('node_revision')->fields(
+      array('timestamp' => $entity->created, 'uid' => $entity->uid)
+    )
       ->condition('nid', $wiki->nid, '=')
       ->condition('vid', $wiki->vid, '=')
       ->execute();
@@ -113,7 +120,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * @param stdClass $row
    */
   public function preparePluggableNodeAccess($row) {
-    $row->_pluggable_node_access = null;
+    $row->_pluggable_node_access = NULL;
 
     // Mapping between C4D & C4M group access types.
     $organisations_map = array(
@@ -126,9 +133,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Dummy node.
     $values = array(
-      'type' => $this->getTargetBundle(),
-      'uid' => 1,
-      'status' => 1,
+      'type'    => $this->getTargetBundle(),
+      'uid'     => 1,
+      'status'  => 1,
       'comment' => 1,
       'promote' => 0,
     );
@@ -154,7 +161,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     // Mapping between C4D & C4M group statuses.
     $status_map = array(
       NODE_NOT_PUBLISHED => 'requested',
-      NODE_PUBLISHED => 'published',
+      NODE_PUBLISHED     => 'published',
     );
     $row->_c4m_og_status = $status_map[$row->status];
   }
