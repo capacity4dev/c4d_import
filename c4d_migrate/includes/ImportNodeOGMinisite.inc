@@ -53,8 +53,6 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    */
   public function complete($node, $row) {
-    parent::complete($node, $row);
-
     // Books are not loaded by default.
     $node = node_load($node->nid);
 
@@ -87,6 +85,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
         $node->book = $book;
 
         $this->nodeSave($node, $row->changed);
+
       }
       else {
         // This is an update, so we retrieve the existing book.
@@ -96,7 +95,9 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
           $book['weight'] = $row->weight;
           $node->book     = $book;
           $this->nodeSave($node, $row->changed);
+
         }
+
       }
     }
     else {
@@ -122,7 +123,10 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
 
       _book_update_outline($node);
       $this->nodeSave($node, $row->changed);
+
     }
+
+    parent::complete($node, $row);
   }
 
   /**
