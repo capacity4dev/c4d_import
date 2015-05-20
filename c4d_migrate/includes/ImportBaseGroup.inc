@@ -46,6 +46,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Map the group status.
     $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
+
+    $this->addFieldMapping('field_membership_open_request', '_c4m_og_selective')
+      ->defaultValue(0);
   }
 
   /**
@@ -72,6 +75,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     // Prepare the group status.
     $this->prepareC4mOgStatus($row);
+
+    $row->_c4m_og_selective = $row->og_selective == 0 ? 1 : 0;
 
     return TRUE;
   }
