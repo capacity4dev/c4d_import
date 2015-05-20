@@ -126,6 +126,31 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   }
 
   /**
+   * Complete function to set missing aliases.
+   *
+   * @param object $user
+   * @param object $row
+   */
+  public function complete($node, $row) {
+    $query = $this->createSelect('url_alias', 'u')
+      ->orderBy('src', 'ASC')
+      ->fields('u')
+      ->condition('src', 'node/' . $row->nid)
+      ->execute();
+    $results = $query->fetchAll();
+
+    foreach($results as $result) {
+      // Create alias
+      $path = array(
+        'source' => 'node/' . $node->nid,
+        'alias' => $result->dst,
+        'language' => LANGUAGE_NONE,
+      );
+      path_save($path);
+    }
+  }
+
+  /**
    * Helper to disable revisions during node import.
    */
   public function disableRevisions() {
