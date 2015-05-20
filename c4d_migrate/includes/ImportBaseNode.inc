@@ -80,8 +80,12 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * @param MigrateGroup $group
    *   The migrate Group object.
    */
-  public function __construct($group = NULL) {
+  public function __construct($group = NULL, $skip_func = FALSE) {
     parent::__construct($group);
+
+    if ($skip_func) {
+      return;
+    }
 
     // Define the source table to import the data from.
     $query = $this->createSelect($this->getSourceTable(), 'node')

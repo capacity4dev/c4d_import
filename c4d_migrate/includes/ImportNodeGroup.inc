@@ -37,7 +37,6 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     // prepareRow method.
     // @TODO We should move this code to ImportBaseGroup::addDefaultFieldMapping()
     // once the projects content type has also the pluggable_node_access field.
-    $this->addFieldMapping('pluggable_node_access', '_pluggable_node_access');
 
     // @TODO field_article_suggestion_type
     // @TODO field_article_suggestions
@@ -69,6 +68,11 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     // Pluggable node access.
     // @TODO We should move this code to ImportBaseGroup::prepareRow() once the
     // projects content type has also the pluggable_node_access field.
-    $this->preparePluggableNodeAccess($row);
+  }
+
+  public function complete($entity, $row) {
+    $this->savePluggableNodeAccess($entity, $row);
+
+    parent::complete($entity, $row);
   }
 }

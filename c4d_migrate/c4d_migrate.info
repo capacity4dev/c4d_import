@@ -14,6 +14,10 @@ files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
 files[] = includes/ImportBaseComment.inc
 files[] = includes/ImportBaseCommentOg.inc
+files[] = includes/CreateBaseCSVNode.inc
+
+; Create static content
+files[] = includes/CreateCSVNodeOrganisation.inc
 
 ; Global content.
 files[] = includes/ImportRoles.inc
