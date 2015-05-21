@@ -7,19 +7,22 @@
 /**
  * Class to create the organisation entities from CSV
  */
-class C4dMigrateCreateCSVTermTopic extends C4dMigrateCreateBaseCSVVocabularyTerms {
+class C4dMigrateCreateCSVTermTopic
+  extends C4dMigrateCreateBaseCSVVocabularyTerms {
   /**
    * CSV column mapping.
    *
    * @var array
    */
-  public $csvColumns = array(
-    array('id', 'ID'),
-    array('parent', 'Parent'),
-    array('weight', 'Weight'),
-    array('title', 'Title'),
-    array('description', 'Description'),
-  );
+  public $csvColumns
+    = array(
+      array('id', 'ID'),
+      array('parent', 'Parent'),
+      array('weight', 'Weight'),
+      array('title', 'Title'),
+      array('description', 'Description'),
+      array('mapping', 'Mapping'),
+    );
 
   /**
    * Configure the object during creation.
@@ -38,5 +41,21 @@ class C4dMigrateCreateCSVTermTopic extends C4dMigrateCreateBaseCSVVocabularyTerm
     // Use the migration mapping to link child with parent.
     $this->addFieldMapping('parent', 'parent')
       ->sourceMigration($this->machineName);
+  }
+
+  /**
+   * Complete callback.
+   *
+   * @param object $term
+   * @param object $row
+   */
+  public function complete($term, $row) {
+    if ($term->tid && $row->mapping) {
+      c4m_vocab_topic_add_mapping(array(
+        'tid' => $term->tid,
+        'source' => $row->mapping,
+        'destination' => $row->title,
+      ));
+    }
   }
 }
