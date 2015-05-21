@@ -35,6 +35,7 @@ function c4d_migrate_migrate_api() {
 
   $classes = array(
     'C4dMigrateCreateCSVNodeOrganisations',
+    'C4dMigrateCreateCSVTermTopic',
     'C4dMigrateImportRoles',
     'C4dMigrateImportUsers',
     'C4dMigrateImportNodeTopic',
