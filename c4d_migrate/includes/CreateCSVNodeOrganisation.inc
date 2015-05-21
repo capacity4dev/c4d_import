@@ -13,14 +13,15 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
    *
    * @var array
    */
-  public $csvColumns = array(
-    array('id', 'ID'),
-    array('title', 'Title'),
-    array('body', 'Body'),
-    array('image', 'Icon'),
-    array('domain', 'Domain'),
-    array('uid', 'UID'),
-  );
+  public $csvColumns
+    = array(
+      array('id', 'ID'),
+      array('title', 'Title'),
+      array('body', 'Body'),
+      array('image', 'Icon'),
+      array('domain', 'Domain'),
+      array('uid', 'UID'),
+    );
 
   /**
    * Configure the object during creation.
@@ -47,6 +48,8 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
     $this->addFieldMapping('c4m_icon:file_replace')
       ->defaultValue(FILE_EXISTS_REPLACE);
     $this->addFieldMapping('c4m_icon:source_dir')
-      ->defaultValue(drupal_get_path('module', 'c4d_migrate') . '/includes/images');
+      ->defaultValue(
+        drupal_get_path('module', 'c4d_migrate') . '/includes/images'
+      );
   }
 }
