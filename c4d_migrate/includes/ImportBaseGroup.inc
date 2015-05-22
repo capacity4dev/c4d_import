@@ -69,8 +69,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
     );
 
-    //
-
     $topic_nids = unserialize($row->field_ref_topic);
     $topics = array();
 
@@ -85,6 +83,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     }
 
     $row->field_ref_topic = $topics;
+
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_og_image');
 
