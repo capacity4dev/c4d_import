@@ -396,4 +396,18 @@ abstract class C4dMigrateImportBase extends Migration {
 //      'Other Countries' => '',
     );
   }
+
+  /**
+   * Retrieve the title of the node in the old platform based on the nid.
+   *
+   * @param $nid
+   */
+  protected function getNodeTitleFromNid($nid) {
+    $title = $this->createSelect('node', 'n')
+      ->fields('n', array('title'))
+      ->condition('nid', $nid)
+      ->execute()
+      ->fetchField();
+    return $title;
+  }
 }
