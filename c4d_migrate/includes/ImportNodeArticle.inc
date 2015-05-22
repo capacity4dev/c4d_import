@@ -42,8 +42,9 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
 
     $this->addFieldMapping('c4m_has_video', 'has_video')
       ->defaultValue(0);
-    $this->addFieldMapping('c4m_related_topic', 'topics')
-      ->sourceMigration('C4dMigrateImportNodeTopic');
+
+    $this->addFieldMapping('c4m_vocab_topic', 'topics')
+      ->arguments(array('source_type' => 'tid'));
 
     $this->addFieldMapping('c4m_vocab_geo', 'geo')
       ->arguments(array('source_type' => 'tid'));
@@ -64,7 +65,6 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     // Unserialize data.
-    $row->topics = unserialize($row->topics);
     $row->geo = unserialize($row->geo);
     $row->geo = $this->mapTaxonomyVocabWithParent(
       $this->mapTaxonomyVocabRegionCountries($row->geo, 'c4m_vocab_geo')
@@ -77,6 +77,21 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     $this->prepareFileInRow($row, 'teaser_image');
 
     $row->body = $this->prepareHtml($row->body);
+
+    $topic_nids = unserialize($row->topics);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->topics = $topics;
 
     return TRUE;
   }
