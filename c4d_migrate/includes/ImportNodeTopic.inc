@@ -44,7 +44,7 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     $this->addFileFieldMapping('c4m_media', 'field_picture');
     // Other fields are not described yet for the Drupal 7 Content Type.
 
-    $this->addFieldMapping('c4m_vocab_topic', 'taxonomy')
+    $this->addFieldMapping('c4m_vocab_topic_mapping', 'taxonomy')
       ->arguments(array('source_type' => 'tid'));
   }
 
