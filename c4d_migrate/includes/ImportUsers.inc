@@ -155,6 +155,32 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     }
   }
 
+
+  /**
+   * Complete function to set missing aliases.
+   *
+   * @param object $user
+   * @param object $row
+   */
+  public function complete($user, $row) {
+    $query = $this->createSelect('url_alias', 'u')
+      ->orderBy('src', 'ASC')
+      ->fields('u')
+      ->condition('src', 'user/' . $row->uid)
+      ->execute();
+    $results = $query->fetchAll();
+
+    foreach($results as $result) {
+      // Create alias
+      $path = array(
+        'source' => 'user/' . $user->uid,
+        'alias' => $result->dst,
+        'language' => LANGUAGE_NONE,
+      );
+      path_save($path);
+    }
+  }
+
   /**
    * Perform a rollback operation - remove migrated items from the destination.
    */
@@ -316,4 +342,5 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     return $return;
   }
+
 }
