@@ -54,6 +54,9 @@ files[] = includes/ImportCommentOGMinisite.inc
 files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
 
+; Feeds.
+files[] = includes/ImportNodeFeed.inc
+
 ; Loggers.
 files[] = includes/logger/Interface.inc
 files[] = includes/logger/Drush.inc
