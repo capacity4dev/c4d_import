@@ -158,6 +158,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
     );
 
+    // Else login timestamp is set to <CURRENT> (timestamp of migration).
+    if ($row->login == 0) {
+      $row->login = $row->access;
+    }
+
     return TRUE;
   }
 
