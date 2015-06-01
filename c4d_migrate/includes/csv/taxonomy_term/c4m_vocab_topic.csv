@@ -6,7 +6,7 @@ fb34369d75850f95670125cb259dbd38,,3,Fishing,Fishing,Agriculture & Rural Developm
 fa680c59acd57572a1262569b9494f9a,,4,Food & Nutrition Security,Food & Nutrition Security,Food & Nutrition Security
 2bc694889ab1798e9a7f88740d8f81b7,,5,Democracy,Democracy,Democracy
 8cec7d6c891fc360bfd61e14b8512896,,6,Justice,Justice,"Security, Justice & Human Rights"
-76b3e11e66f1cd2d0824a05f42e9104c,,7,Human Rights,Human Rights,"Security, Justice & Human Rights"
+76b3e11e66f1cd2d0824a05f42e9104c,,7,Human Rights,Human Rights,Human Rights
 9111192aba512b83a3c85529c7f16fea,,8,Peace and Security,Peace and Security,"Security, Justice & Human Rights"
 019ec3132cdf8ee0f2e2a75cf5d3e459,,9,Gender,Gender,Gender
 cd16c10b97e3e24fe1ed43ad191818e0,,10,Public Sector Reform & Decentralisation,Public Sector Reform & Decentralisation,Public Sector Reform & Decentralisation
@@ -19,7 +19,7 @@ f5f0c488ed56cf789d19a13ffba8abe3,,16,Transport,Transport,Transport
 53bd8de66c82d00040956897b85f72f1,,17,Urban Development and housing,Urban Development and housing,Urban Development
 de7a22a0c94aa64ba2449e520aa20c99,,18,Education,Education,Education
 5cc28f31113ec7cd7e546b836ccae2b9,,19,Energy,Energy,Energy
-8f06f3b0c8fc6dd66c013e7b19f02ddd,,20,Climate change, disaster risk reduction & desertification,"Climate change, disaster risk reduction & desertification,Environment & Climate Change"
+8f06f3b0c8fc6dd66c013e7b19f02ddd,,20,"Climate change, disaster risk reduction & desertification","Climate change, disaster risk reduction & desertification",Environment & Climate Change
 440eea3be02999fe002e994eab57bd82,,20,Environment & green economy,Environment & green economy,Environment & Climate Change
 8eed59c161d545af872ce054464881ce,,21,Sustainable Forest Management,Sustainable Forest Management,Environment & Climate Change
 fb653c9f0a9da2435a668aeca904b418,,22,Biodiversity & Ecosystem services,Biodiversity & Ecosystem services,Environment & Climate Change
@@ -27,10 +27,10 @@ fb653c9f0a9da2435a668aeca904b418,,22,Biodiversity & Ecosystem services,Biodivers
 b63aa8308833f8e56acb34d67ce9667a,,24,Private Sector Development,Private Sector Development,"Private Sector, Trade & Regional Integration"
 5c1fbc29691902c6f9d9d04f9f30cb82,,25,Trade & Regional Integration,Trade & Regional Integration,"Private Sector, Trade & Regional Integration"
 845ea077f1e4410f1573a414ae70eaee,,26,Social Protection,Social Protection,"Employment, VET & Social Protection"
-31671e3c74e288125eb465889e82f3da,,27,Employment & VET,Employment & VET,"Employment, VET & Social "
+31671e3c74e288125eb465889e82f3da,,27,Employment & VET,Employment & VET,"Employment, VET & Social Protection"
 05cd313a8381104cad6446aca6d1b231,,28,Water & Sanitation,Water & Sanitation,Water & Sanitation
-a48fb181f7b4d22fc67389bcb186e98b,,29,Humanitarian Aid,Humanitarian Aid,
-ea9a7aad18a77ec8d4839d827677d9a7,,30,Research for Development,Research for Development,
+a48fb181f7b4d22fc67389bcb186e98b,,29,Humanitarian Aid,Humanitarian Aid,Humanitarian Aid
+ea9a7aad18a77ec8d4839d827677d9a7,,30,Research for Development,Research for Development,Research for Development - R4D
 d4775a1bd4555343b322546c905ed0c3,,31,Communicating Development Cooperation,Communicating Development Cooperation,Communicating Developement Cooperation
 22c40666c657c143cac87f8677419830,,32,Development Policy,Development Policy,Development Policy
 e9d7da5229fbff2bc0683d0fab6166b2,,33,Aid Effectiveness,Aid Effectiveness,Aid Effectiveness & Results
@@ -38,11 +38,11 @@ e9d7da5229fbff2bc0683d0fab6166b2,,33,Aid Effectiveness,Aid Effectiveness,Aid Eff
 be81b988949a0ecd7e043f942b441129,,35,Capacity Development,Capacity Development,Capacity Development & Knowledge Sharing
 fc896505376c598562867a25a4edec98,,36,Monitoring & Evaluation,Monitoring & Evaluation,"Design, Monitoring & Evaluation"
 1afa74da05ca145d3418aad9af510109,,37,Design,Design,"Design, Monitoring & Evaluation"
-5bc96d7c5acc9e6335ae76a02762f966,,38,Fragility, Crisis Situations & Resilience,"Fragility, Crisis Situations & Resilience,Fragility & Crisis Situations"
-8af0f5c3edad8d8e158ff27b9f03afac,,39,Learning,Learning,Learning
+5bc96d7c5acc9e6335ae76a02762f966,,38,"Fragility, Crisis Situations & Resilience","Fragility, Crisis Situations & Resilience",Fragility & Crisis Situations
+8af0f5c3edad8d8e158ff27b9f03afac,,39,Learning,Learning,Capacity Development & Knowledge Sharing
 75ec92fb26a6cbfa78e423a450d96708,,40,Aid procedures,Aid procedures,Aid Procedures
 fd7f32ffe3251d1bc216762bf94cccf1,,41,Innovative Financing for Development,Innovative Financing for Development,Microfinance
-a2c50cf0f06e44c61f7c36a7aebe3e2f,,42,Budget support,Budget support,
+a2c50cf0f06e44c61f7c36a7aebe3e2f,,42,Budget support,Budget support,"Economics, Public Finance & Budget Support"
 b641959f43b06326c6c9a477ded5d95a,c3ba1655c3b2253a757d9a5da484044e,0,Citizen participation,Citizen participation,
 b200bb1fb55113980eb6077a75f52a76,c3ba1655c3b2253a757d9a5da484044e,1,Human rights defenders,Human rights defenders,
 0bcf0e3cee1e5206974ac72dbb9e572b,c3ba1655c3b2253a757d9a5da484044e,2,Civil society against the corruption,Civil society against the corruption,
