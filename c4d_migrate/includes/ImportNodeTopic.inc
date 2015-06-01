@@ -46,6 +46,12 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
 
     $this->addFieldMapping('c4m_vocab_topic_mapping', 'taxonomy')
       ->arguments(array('source_type' => 'tid'));
+
+    $this->addFieldMapping('c4m_related_group_unlimited', 'field_group_suggestions')
+      ->sourceMigration('C4dMigrateImportNodeGroup');
+
+    $this->addFieldMapping('c4m_related_articles', 'field_topic_articles')
+      ->sourceMigration('C4dMigrateImportNodeArticle');
   }
 
   /**
@@ -74,6 +80,16 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
       }
       $row->taxonomy = $c4m_vocab_topic;
     }
+
+    if ($row->field_group_suggestion_type == 1) {
+      $row->field_group_suggestions = unserialize($row->field_group_suggestions);
+    }
+    else {
+      // Might be some leftover groups, but the type might be set to "auto".
+      $row->field_group_suggestions = array();
+    }
+
+    $row->field_topic_articles = unserialize($row->field_topic_articles);
 
     return TRUE;
   }
