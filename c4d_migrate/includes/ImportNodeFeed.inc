@@ -47,7 +47,7 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
       ->sourceMigration('C4dMigrateImportNodeArticle');
 
     $this->addFieldMapping('c4m_related_group', 'field_ref_related_groups')
-      ->sourceMigration('C4dMigrateImportNodeArticle');
+      ->sourceMigration('C4dMigrateImportNodeGroup');
   }
 
   /**
