@@ -16,8 +16,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   public $dependencies
     = array(
       'C4dMigrateImportUsers',
-      'C4dMigrateImportNodeTopic',
       'C4dMigrateCreateCSVNodeOrganisations',
+      'C4dMigrateCreateCSVTermTopic',
     );
 
   /**

@@ -19,6 +19,8 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
   public $dependencies = array(
     'C4dMigrateImportUsers',
     'C4dMigrateCreateCSVTermTopic',
+    'C4dMigrateImportNodeArticle',
+    'C4dMigrateImportNodeGroup',
   );
 
   /**
