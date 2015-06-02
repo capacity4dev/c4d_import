@@ -28,7 +28,7 @@ class C4dMigrateImportNodeBookPage extends C4dMigrateImportBaseNode {
           MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
     );
 
-    $this->description = t('Import topics from our Drupal 6 database.');
+    $this->description = t('Import pages from our Drupal 6 database.');
 
     $query = $this->createSelect('c4d_export_node_page', 't')
                   ->orderBy('nid', 'ASC')
