@@ -63,6 +63,7 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportCommentOGMinisite',
     'C4dMigrateImportNodeOGEvent',
     'C4dMigrateImportCommentOGEvent',
+    'C4dMigrateImportNodeFeed',
   );
 
   $group_name = 'c4d_migrate';
