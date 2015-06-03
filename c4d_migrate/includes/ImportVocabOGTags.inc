@@ -7,7 +7,7 @@
 /**
  * Class C4dMigrateImportVocabOGTags
  */
-class C4dMigrateImportVocabOGTags extends C4dMigrateImportBase {
+class C4dMigrateImportVocabOGTags extends C4dMigrateImportBaseVocabTerms {
   /**
    * Content creations need to be run before this one.
    *

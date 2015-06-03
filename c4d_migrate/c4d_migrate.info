@@ -12,6 +12,7 @@ files[] = includes/ImportBase.inc
 files[] = includes/ImportBaseNode.inc
 files[] = includes/ImportBaseNodeOG.inc
 files[] = includes/ImportBaseGroup.inc
+files[] = includes/ImportBaseVocabTerms.inc
 files[] = includes/ImportBaseComment.inc
 files[] = includes/ImportBaseCommentOg.inc
 files[] = includes/CreateBaseCSVNode.inc
@@ -54,6 +55,9 @@ files[] = includes/ImportNodeOGMinisite.inc
 files[] = includes/ImportCommentOGMinisite.inc
 files[] = includes/ImportNodeOGEvent.inc
 files[] = includes/ImportCommentOGEvent.inc
+
+; Feeds.
+files[] = includes/ImportNodeFeed.inc
 
 ; Loggers.
 files[] = includes/logger/Interface.inc
