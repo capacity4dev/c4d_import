@@ -140,13 +140,20 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $results = $query->fetchAll();
 
     foreach($results as $result) {
-      // Create alias
-      $path = array(
-        'source' => 'node/' . $node->nid,
-        'alias' => $result->dst,
-        'language' => LANGUAGE_NONE,
+      $redirect = new stdClass();
+
+      redirect_object_prepare(
+        $redirect,
+        array(
+          'source' => $result->dst,
+          'source_options' => array(),
+          'redirect' => 'node/' . $node->nid,
+          'redirect_options' => array(),
+          'language' => LANGUAGE_NONE,
+        )
       );
-      path_save($path);
+
+      redirect_save($redirect);
     }
   }
 

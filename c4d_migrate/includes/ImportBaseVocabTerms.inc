@@ -20,13 +20,20 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
     $results = $query->fetchAll();
 
     foreach($results as $result) {
-      // Create alias
-      $path = array(
-        'source' => 'taxonomy/term/' . $term->tid,
-        'alias' => $result->dst,
-        'language' => LANGUAGE_NONE,
+      $redirect = new stdClass();
+
+      redirect_object_prepare(
+        $redirect,
+        array(
+          'source' => $result->dst,
+          'source_options' => array(),
+          'redirect' => 'taxonomy/term//' . $term->tid,
+          'redirect_options' => array(),
+          'language' => LANGUAGE_NONE,
+        )
       );
-      path_save($path);
+
+      redirect_save($redirect);
     }
   }
 }
