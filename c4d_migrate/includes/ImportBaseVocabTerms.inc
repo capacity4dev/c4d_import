@@ -16,6 +16,7 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
       ->orderBy('src', 'ASC')
       ->fields('u')
       ->condition('src', 'taxonomy/term/' . $row->tid)
+      ->groupBy('dst')
       ->execute();
     $results = $query->fetchAll();
 
@@ -33,7 +34,10 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
         )
       );
 
-      redirect_save($redirect);
+      $rid = redirect_load_by_hash(redirect_hash($redirect));
+      if (empty($rid)) {
+        redirect_save($redirect);
+      }
     }
   }
 }
