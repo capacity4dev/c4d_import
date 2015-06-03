@@ -167,11 +167,13 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       ->orderBy('src', 'ASC')
       ->fields('u')
       ->condition('src', 'user/' . $row->uid)
+      ->groupBy('dst')
       ->execute();
     $results = $query->fetchAll();
 
     foreach($results as $result) {
       $redirect = new stdClass();
+
 
       redirect_object_prepare(
         $redirect,
@@ -184,7 +186,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         )
       );
 
-      redirect_save($redirect);
+      // db_merge directly.
+      db_merge('redirect')
+        ->key(array('hash' => $redirect->hash))
+        ->fields((array)$redirect)
+        ->execute();
     }
   }
 
