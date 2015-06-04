@@ -178,6 +178,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
       redirect_object_prepare(
         $redirect,
         array(
+          'uid' => $user->uid,
           'source' => $result->dst,
           'source_options' => array(),
           'redirect' => 'user/' . $user->uid,
@@ -186,11 +187,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         )
       );
 
-      // db_merge directly.
-      db_merge('redirect')
-        ->key(array('hash' => $redirect->hash))
-        ->fields((array)$redirect)
-        ->execute();
+      $rid = redirect_load_by_hash(redirect_hash($redirect));
+      if (empty($rid)) {
+        redirect_save($redirect);
+      }
+
     }
   }
 

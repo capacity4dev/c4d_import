@@ -34,11 +34,10 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
         )
       );
 
-      // db_merge directly.
-      db_merge('redirect')
-        ->key(array('hash' => $redirect->hash))
-        ->fields((array)$redirect)
-        ->execute();
+      $rid = redirect_load_by_hash(redirect_hash($redirect));
+      if (empty($rid)) {
+        redirect_save($redirect);
+      }
     }
   }
 }
