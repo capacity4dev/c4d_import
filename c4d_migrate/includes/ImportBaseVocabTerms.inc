@@ -28,7 +28,7 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
         array(
           'source' => $result->dst,
           'source_options' => array(),
-          'redirect' => 'taxonomy/term//' . $term->tid,
+          'redirect' => 'taxonomy/term/' . $term->tid,
           'redirect_options' => array(),
           'language' => LANGUAGE_NONE,
         )
