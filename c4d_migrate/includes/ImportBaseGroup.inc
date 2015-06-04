@@ -16,8 +16,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   public $dependencies
     = array(
       'C4dMigrateImportUsers',
-      'C4dMigrateImportNodeTopic',
       'C4dMigrateCreateCSVNodeOrganisations',
+      'C4dMigrateCreateCSVTermTopic',
     );
 
   /**
@@ -28,8 +28,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     $this->addFieldMapping('purl', 'purl');
 
-    $this->addFieldMapping('c4m_related_topic', 'field_ref_topic')
-      ->sourceMigration('C4dMigrateImportNodeTopic');
+
+    $this->addFieldMapping('c4m_vocab_topic', 'field_ref_topic')
+      ->arguments(array('source_type' => 'tid'));
 
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
       ->arguments(array('source_type' => 'tid'));
@@ -68,7 +69,20 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
     );
 
-    $row->field_ref_topic = unserialize($row->field_ref_topic);
+    $topic_nids = unserialize($row->field_ref_topic);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->field_ref_topic = $topics;
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_og_image');

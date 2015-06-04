@@ -16,7 +16,6 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
   public $dependencies
     = array(
       'C4dMigrateImportUsers',
-      'C4dMigrateImportNodeTopic',
       'C4dMigrateImportNodeArticle',
       'C4dMigrateImportNodeGroup',
     );
@@ -40,8 +39,8 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('c4m_body', 'body')
       ->arguments(array('format' => 'full_html'));
 
-    $this->addFieldMapping('c4m_related_topic', 'field_ref_related_topics')
-      ->sourceMigration('C4dMigrateImportNodeTopic');
+    $this->addFieldMapping('c4m_vocab_topic', 'topics')
+      ->arguments(array('source_type' => 'tid'));
 
     $this->addFieldMapping('c4m_related_articles', 'field_ref_related_articles')
       ->sourceMigration('C4dMigrateImportNodeArticle');
@@ -63,8 +62,20 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     // Unserialize data.
-    $row->field_ref_related_topics = unserialize($row->field_ref_related_topics);
-    $row->field_ref_related_articles = unserialize($row->field_ref_related_articles);
+    $topic_nids = unserialize($row->topics);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->topics = $topics;    $row->field_ref_related_articles = unserialize($row->field_ref_related_articles);
     $row->field_ref_related_groups = unserialize($row->field_ref_related_groups);
     $row->body = $this->prepareHtml($row->body);
 
