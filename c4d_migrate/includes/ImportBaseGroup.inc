@@ -112,6 +112,8 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * @param object $row
    */
   public function complete($entity, $row) {
+    parent::complete($entity, $row);
+
     $wiki = node_load($entity->nid);
 
     db_update('node')->fields(array('created' => $entity->created))

@@ -87,6 +87,8 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
    * @return bool
    */
   public function complete($node, $row) {
+    parent::complete($node, $row);
+
     if ($row->field_project_group_budget_amount == 0.00 || empty($row->field_project_group_budget_amount)) {
       return FALSE;
     }
