@@ -16,7 +16,7 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
   public $dependencies
     = array(
       'C4dMigrateImportUsers',
-      'C4dMigrateImportNodeTopic',
+      'C4dMigrateCreateCSVTermTopic',
     );
 
   /**
@@ -37,10 +37,14 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
       ->arguments(array('format' => 'full_html'));
+
+    $this->addFieldMapping('c4m_intro_text', 'teaser');
+
     $this->addFieldMapping('c4m_has_video', 'has_video')
       ->defaultValue(0);
-    $this->addFieldMapping('c4m_related_topic', 'topics')
-      ->sourceMigration('C4dMigrateImportNodeTopic');
+
+    $this->addFieldMapping('c4m_vocab_topic', 'topics')
+      ->arguments(array('source_type' => 'tid'));
 
     $this->addFieldMapping('c4m_vocab_geo', 'geo')
       ->arguments(array('source_type' => 'tid'));
@@ -61,16 +65,33 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     // Unserialize data.
-    $row->topics = unserialize($row->topics);
     $row->geo = unserialize($row->geo);
     $row->geo = $this->mapTaxonomyVocabWithParent(
       $this->mapTaxonomyVocabRegionCountries($row->geo, 'c4m_vocab_geo')
     );
 
+    // D6 teaser was full HTML, now plain_text.
+    $row->teaser = strip_tags($row->teaser);
+
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'teaser_image');
 
     $row->body = $this->prepareHtml($row->body);
+
+    $topic_nids = unserialize($row->topics);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->topics = $topics;
 
     return TRUE;
   }
@@ -84,7 +105,10 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
    *   The data row we are importing.
    */
   public function complete($entity, $row) {
+    parent::complete($entity, $row);
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
+
+    $this->messageUpdateSave($entity, $row);
   }
 }

@@ -18,6 +18,9 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
    */
   public $dependencies = array(
     'C4dMigrateImportUsers',
+    'C4dMigrateCreateCSVTermTopic',
+    'C4dMigrateImportNodeArticle',
+    'C4dMigrateImportNodeGroup',
   );
 
   /**
@@ -42,6 +45,15 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_picture');
     // Other fields are not described yet for the Drupal 7 Content Type.
+
+    $this->addFieldMapping('c4m_vocab_topic_mapping', 'taxonomy')
+      ->arguments(array('source_type' => 'tid'));
+
+    $this->addFieldMapping('c4m_related_group_unlimited', 'field_group_suggestions')
+      ->sourceMigration('C4dMigrateImportNodeGroup');
+
+    $this->addFieldMapping('c4m_related_articles', 'field_topic_articles')
+      ->sourceMigration('C4dMigrateImportNodeArticle');
   }
 
   /**
@@ -61,34 +73,26 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
 
     $row->body = $this->prepareHtml($row->body);
 
-    return TRUE;
-  }
+    $destination = c4m_vocab_topic_get_mapping_by_source(trim($row->title));
+    $c4m_vocab_topic = array();
 
-  /**
-   * Create stub Topics (when creating users), who will be replaced afterwards.
-   *
-   * @param Migration $migration
-   *   The migration that is being done to create this stub.
-   * @param array     $source_id
-   *   Array of strings with the source id(s).
-   *
-   * @return array|bool
-   *   Array with topic node id if term created, else FALSE.
-   */
-  public function createStub(Migration $migration, array $source_id) {
-    $node                         = new stdClass();
-    $node->title                  = t('Stub for @id', array('@id' => $source_id[0]));
-    $node->body[LANGUAGE_NONE][0] = t('Stub topic');
-    $node->type                   = $this->destination->getBundle();
-    $node->uid                    = 1;
-    $node->status                 = 0;
-    $node->revision               = FALSE;
-    node_save($node);
-    if (isset($node->nid)) {
-      return array($node->nid);
+    if (!empty($destination)) {
+      foreach ($destination as $key => $topic) {
+        $c4m_vocab_topic[] = $topic->tid;
+      }
+      $row->taxonomy = $c4m_vocab_topic;
+    }
+
+    if ($row->field_group_suggestion_type == 1) {
+      $row->field_group_suggestions = unserialize($row->field_group_suggestions);
     }
     else {
-      return FALSE;
+      // Might be some leftover groups, but the type might be set to "auto".
+      $row->field_group_suggestions = array();
     }
+
+    $row->field_topic_articles = unserialize($row->field_topic_articles);
+
+    return TRUE;
   }
 }

@@ -53,4 +53,11 @@ class C4dMigrateImportNodeOGTasklist extends C4dMigrateImportBaseNodeOG {
 
     $row->body = $this->prepareHtml($row->body);
   }
+
+  /**
+   * Calls parent complete function.
+   */
+  public function complete($entity, $row) {
+    return parent::complete($entity, $row);
+  }
 }

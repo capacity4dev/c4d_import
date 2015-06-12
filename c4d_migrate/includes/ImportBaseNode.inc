@@ -80,8 +80,12 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    * @param MigrateGroup $group
    *   The migrate Group object.
    */
-  public function __construct($group = NULL) {
+  public function __construct($group = NULL, $skip_func = FALSE) {
     parent::__construct($group);
+
+    if ($skip_func) {
+      return;
+    }
 
     // Define the source table to import the data from.
     $query = $this->createSelect($this->getSourceTable(), 'node')
@@ -119,6 +123,43 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     // make sure no revisions are created during import.
     $this->disableRevisions();
+  }
+
+  /**
+   * Complete function to set missing aliases.
+   *
+   * @param object $user
+   * @param object $row
+   */
+  public function complete($node, $row) {
+    $query = $this->createSelect('url_alias', 'u')
+      ->orderBy('src', 'ASC')
+      ->fields('u')
+      ->condition('src', 'node/' . $row->nid)
+      ->groupBy('dst')
+      ->execute();
+    $results = $query->fetchAll();
+
+    foreach($results as $result) {
+      $redirect = new stdClass();
+
+      redirect_object_prepare(
+        $redirect,
+        array(
+          'uid' => $node->uid,
+          'source' => $result->dst,
+          'source_options' => array(),
+          'redirect' => 'node/' . $node->nid,
+          'redirect_options' => array(),
+          'language' => LANGUAGE_NONE,
+        )
+      );
+
+      $rid = redirect_load_by_hash(redirect_hash($redirect));
+      if (empty($rid)) {
+        redirect_save($redirect);
+      }
+    }
   }
 
   /**

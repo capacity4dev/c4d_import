@@ -81,10 +81,10 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
     $this->addFieldMapping('c4m_organisation_type', 'field_organisation_type_of');
-    $this->addFieldMapping('c4m_related_topic', 'field_ref_topic')
-         ->sourceMigration('C4dMigrateImportNodeTopic');
-    $this->addFieldMapping('c4m_related_topic_expertise', 'field_ref_topic_expertise')
-         ->sourceMigration('C4dMigrateImportNodeTopic');
+    $this->addFieldMapping('c4m_vocab_topic', 'field_ref_topic')
+      ->arguments(array('source_type' => 'tid'));
+    $this->addFieldMapping('c4m_vocab_topic_expertise', 'field_ref_topic_expertise')
+      ->arguments(array('source_type' => 'tid'));
     $this->addFieldMapping('c4m_country', 'field_country');
     // geo_vocab was not added to the user profile in Drupal 6.
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
@@ -113,12 +113,35 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     $row->data = unserialize($row->data);
 
-    // Extract field_ref_topic
-    $ref_topic            = !empty($row->field_ref_topic) ? unserialize($row->field_ref_topic) : NULL;
-    $row->field_ref_topic = $ref_topic;
-    // Extract field_ref_topic_expertise
-    $ref_topic_exp                  = !empty($row->field_ref_topic_expertise) ? unserialize($row->field_ref_topic_expertise) : NULL;
-    $row->field_ref_topic_expertise = $ref_topic_exp;
+    $topic_nids = unserialize($row->field_ref_topic);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->field_ref_topic = $topics;
+
+    $topic_nids = unserialize($row->field_ref_topic_expertise);
+    $topics = array();
+
+    foreach($topic_nids as $nid) {
+      $title = $this->getNodeTitleFromNid($nid);
+
+      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
+
+      foreach($mapped as $term) {
+        $topics[] = $term->tid;
+      }
+    }
+
+    $row->field_ref_topic_expertise = $topics;
 
     // Add the picture file data.
     $this->prepareFileInRow($row, 'field_picture');
@@ -134,6 +157,11 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $row->taxonomy = $this->mapTaxonomyVocabWithParent(
       $this->mapTaxonomyVocabRegionCountries($row->taxonomy, 'c4m_vocab_geo')
     );
+
+    // Else login timestamp is set to <CURRENT> (timestamp of migration).
+    if ($row->login == 0) {
+      $row->login = $row->access;
+    }
 
     return TRUE;
   }
@@ -152,6 +180,46 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         $user->uid  = $destination_uid;
         $user->name = $destination_name;
       }
+    }
+  }
+
+
+  /**
+   * Complete function to set missing aliases.
+   *
+   * @param object $user
+   * @param object $row
+   */
+  public function complete($user, $row) {
+    $query = $this->createSelect('url_alias', 'u')
+      ->orderBy('src', 'ASC')
+      ->fields('u')
+      ->condition('src', 'user/' . $row->uid)
+      ->groupBy('dst')
+      ->execute();
+    $results = $query->fetchAll();
+
+    foreach($results as $result) {
+      $redirect = new stdClass();
+
+
+      redirect_object_prepare(
+        $redirect,
+        array(
+          'uid' => $user->uid,
+          'source' => $result->dst,
+          'source_options' => array(),
+          'redirect' => 'user/' . $user->uid,
+          'redirect_options' => array(),
+          'language' => LANGUAGE_NONE,
+        )
+      );
+
+      $rid = redirect_load_by_hash(redirect_hash($redirect));
+      if (empty($rid)) {
+        redirect_save($redirect);
+      }
+
     }
   }
 
@@ -316,4 +384,5 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     return $return;
   }
+
 }
