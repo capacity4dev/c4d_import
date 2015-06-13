@@ -62,20 +62,21 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
 
     // Unserialize data.
-    $topic_nids = unserialize($row->topics);
+    $topic_nids = unserialize($row->field_ref_related_topics);
     $topics = array();
 
-    foreach($topic_nids as $nid) {
+    foreach ($topic_nids as $nid) {
       $title = $this->getNodeTitleFromNid($nid);
 
       $mapped = c4m_vocab_topic_get_mapping_by_source($title);
 
-      foreach($mapped as $term) {
+      foreach ($mapped as $term) {
         $topics[] = $term->tid;
       }
     }
 
-    $row->topics = $topics;    $row->field_ref_related_articles = unserialize($row->field_ref_related_articles);
+    $row->topics = $topics;
+    $row->field_ref_related_articles = unserialize($row->field_ref_related_articles);
     $row->field_ref_related_groups = unserialize($row->field_ref_related_groups);
     $row->body = $this->prepareHtml($row->body);
 
