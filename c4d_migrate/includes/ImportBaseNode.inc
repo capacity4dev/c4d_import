@@ -141,23 +141,25 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $results = $query->fetchAll();
 
     foreach($results as $result) {
-      $redirect = new stdClass();
+      if ($result->dest != $row->path && !$this->getPathManual()) {
+        $redirect = new stdClass();
 
-      redirect_object_prepare(
-        $redirect,
-        array(
-          'uid' => $node->uid,
-          'source' => $result->dst,
-          'source_options' => array(),
-          'redirect' => 'node/' . $node->nid,
-          'redirect_options' => array(),
-          'language' => LANGUAGE_NONE,
-        )
-      );
+        redirect_object_prepare(
+          $redirect,
+          array(
+            'uid' => $node->uid,
+            'source' => $result->dst,
+            'source_options' => array(),
+            'redirect' => 'node/' . $node->nid,
+            'redirect_options' => array(),
+            'language' => LANGUAGE_NONE,
+          )
+        );
 
-      $rid = redirect_load_by_hash(redirect_hash($redirect));
-      if (empty($rid)) {
-        redirect_save($redirect);
+        $rid = redirect_load_by_hash(redirect_hash($redirect));
+        if (empty($rid)) {
+          redirect_save($redirect);
+        }
       }
     }
   }
