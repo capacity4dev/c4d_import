@@ -20,4 +20,5 @@ class C4dMigrateImportCommentOGDocument extends C4dMigrateImportBaseCommentOg {
 
     parent::__construct('document', 'document', 'c4d_export_node_document', $group);
   }
+
 }

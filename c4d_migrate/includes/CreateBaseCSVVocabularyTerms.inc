@@ -103,5 +103,4 @@ abstract class C4dMigrateCreateBaseCSVVocabularyTerms extends C4dMigrateImportBa
     $this->addFieldMapping('description', 'description');
   }
 
-
 }

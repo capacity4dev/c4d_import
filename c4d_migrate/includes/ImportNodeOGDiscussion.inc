@@ -63,4 +63,5 @@ class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
   public function complete($entity, $row) {
     return parent::complete($entity, $row);
   }
+
 }

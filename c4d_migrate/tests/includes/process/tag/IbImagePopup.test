@@ -75,4 +75,5 @@ class C4dMigrateTestProcessTagIbImagePopup extends C4dMigrateTestProcessTagIbIma
            'The replacement string was what we expected.'
     );
   }
+
 }

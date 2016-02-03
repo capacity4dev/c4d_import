@@ -15,7 +15,7 @@ define('C4D_MIGRATE_MIGRATION_GROUP', 'c4d_migrate');
 define('C4D_MIGRATE_DATABASE', 'c4d_migrate_database');
 
 /**
- * Database variables (settings form and used in migrations)
+ * Database variables (settings form and used in migrations).
  */
 define('C4D_MIGRATE_DB_HOST', 'c4d_migrate_db_hostname');
 define('C4D_MIGRATE_DB_USER', 'c4d_migrate_db_username');
@@ -23,7 +23,7 @@ define('C4D_MIGRATE_DB_PASS', 'c4d_migrate_db_password');
 define('C4D_MIGRATE_DB_NAME', 'c4d_migrate_db_database');
 
 /**
- * Files variables (settings form and used in migrations)
+ * Files variables (settings form and used in migrations).
  */
 define('C4D_MIGRATE_FILES_ROOT', 'c4d_migrate_files_root');
 

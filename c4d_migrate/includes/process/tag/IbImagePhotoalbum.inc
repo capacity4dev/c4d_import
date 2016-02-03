@@ -26,11 +26,11 @@ class C4dMigrateProcessTagIbImagePhotoalbum extends C4dMigrateProcessTagIbImage 
       '<span class="caption">%s</span>' .
       '</a>' .
       '</div>' .
-      '</div>'
-      ,
+      '</div>',
       $tag['style'],
       $tag['preset'],
-      $url, // @TODO LINK TO PHOTOALBUM!
+    // @TODO LINK TO PHOTOALBUM!
+      $url,
       $tag['target'] == '_blank' ? ' target="_blank"' : '',
       $url,
       $file->fid,
@@ -40,4 +40,5 @@ class C4dMigrateProcessTagIbImagePhotoalbum extends C4dMigrateProcessTagIbImage 
 
     return $replacement;
   }
+
 }

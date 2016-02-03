@@ -56,4 +56,5 @@ class C4dMigrateProcessTagEcMedia extends C4dMigrateProcessTagAbstractEmbed {
 
     return $info;
   }
+
 }

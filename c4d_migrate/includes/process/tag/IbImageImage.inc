@@ -24,8 +24,7 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
       '<img src="%s" class="img__fid__%d media-image" alt="%s" title="" />' .
       '<span class="caption">%s</span>' .
       '</div>' .
-      '</div>'
-      ,
+      '</div>',
       $tag['style'],
       $tag['preset'],
       $url,
@@ -36,4 +35,5 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
 
     return $replacement;
   }
+
 }

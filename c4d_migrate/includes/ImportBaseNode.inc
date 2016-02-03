@@ -123,7 +123,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
 
-    // make sure no revisions are created during import.
+    // Make sure no revisions are created during import.
     $this->disableRevisions();
   }
 
@@ -322,7 +322,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    *
    * @param object $node
    *   Node object we want to reset the changed date for.
-   * @param int    $changed
+   * @param int $changedTimestamp.
    *   Timestamp.
    */
   public function nodeSave($node, $changed = NULL) {
@@ -429,4 +429,5 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $message->uid = $account->uid;
     message_save($message);
   }
+
 }

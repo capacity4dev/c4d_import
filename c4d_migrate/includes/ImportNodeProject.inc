@@ -119,7 +119,8 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
    *
    * @param Migration $migration
    *   The migration that is being done to create this stub.
-   * @param array     $source_id
+   * @param array $source_idArray
+   *   of strings with the source id(s).
    *   Array of strings with the source id(s).
    *
    * @return array|bool
@@ -142,4 +143,5 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
       return FALSE;
     }
   }
+
 }

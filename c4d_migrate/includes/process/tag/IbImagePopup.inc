@@ -26,8 +26,7 @@ class C4dMigrateProcessTagIbImagePopup extends C4dMigrateProcessTagIbImage {
       '<span class="caption">%s</span>' .
       '</a>' .
       '</div>' .
-      '</div>'
-      ,
+      '</div>',
       $tag['style'],
       $tag['preset'],
       $url,
@@ -40,4 +39,5 @@ class C4dMigrateProcessTagIbImagePopup extends C4dMigrateProcessTagIbImage {
 
     return $replacement;
   }
+
 }

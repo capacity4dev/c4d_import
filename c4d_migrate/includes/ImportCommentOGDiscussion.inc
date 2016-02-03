@@ -21,4 +21,5 @@ class C4dMigrateImportCommentOGDiscussion extends C4dMigrateImportBaseCommentOg 
 
     parent::__construct('blog', 'discussion', 'c4d_export_node_blog', $group);
   }
+
 }

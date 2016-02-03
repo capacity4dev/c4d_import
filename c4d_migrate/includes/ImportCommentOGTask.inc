@@ -20,4 +20,5 @@ class C4dMigrateImportCommentOGTask extends C4dMigrateImportBaseCommentOg {
 
     parent::__construct('task', 'task', 'c4d_export_node_task', $group);
   }
+
 }

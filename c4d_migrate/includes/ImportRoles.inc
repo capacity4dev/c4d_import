@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportRoles
+ * Class C4dMigrateImportRoles.
  */
 class C4dMigrateImportRoles extends C4dMigrateImportBase {
   /**
@@ -170,4 +170,5 @@ class C4dMigrateImportRoles extends C4dMigrateImportBase {
 
     return $return;
   }
+
 }

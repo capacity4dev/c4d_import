@@ -189,4 +189,5 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
 
     $row->body = $this->prepareHtml($row->body);
   }
+
 }

@@ -46,4 +46,5 @@ class C4dMigrateImportNodeOGPhotoalbum extends C4dMigrateImportBaseNodeOG {
     parent::prepareRow($row);
     $row->body = $this->prepareHtml($row->body);
   }
+
 }

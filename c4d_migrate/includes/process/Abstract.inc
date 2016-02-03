@@ -66,4 +66,5 @@ abstract class C4dMigrateProcessAbstract {
       $logger->log($message, $variables, $severity);
     }
   }
+
 }

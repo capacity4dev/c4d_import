@@ -90,4 +90,5 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
       node_gallery_api_set_gallery_cover_item($node->nid, $gallery_id);
     }
   }
+
 }

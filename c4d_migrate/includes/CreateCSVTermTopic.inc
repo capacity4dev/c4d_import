@@ -5,10 +5,9 @@
  */
 
 /**
- * Class to create the organisation entities from CSV
+ * Class to create the organisation entities from CSV.
  */
-class C4dMigrateCreateCSVTermTopic
-  extends C4dMigrateCreateBaseCSVVocabularyTerms {
+class C4dMigrateCreateCSVTermTopic extends C4dMigrateCreateBaseCSVVocabularyTerms {
   /**
    * CSV column mapping.
    *
@@ -58,4 +57,5 @@ class C4dMigrateCreateCSVTermTopic
       ));
     }
   }
+
 }

@@ -91,4 +91,5 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
 
     return $this->source;
   }
+
 }

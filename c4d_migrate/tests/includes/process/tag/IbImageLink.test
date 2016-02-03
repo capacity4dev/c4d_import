@@ -74,4 +74,5 @@ class C4dMigrateTestProcessTagIbImageLink extends C4dMigrateTestProcessTagIbImag
            'The replacement string was what we expected.'
     );
   }
+
 }

@@ -15,7 +15,7 @@ class C4dMigrateProcessTagVideo extends C4dMigrateProcessTagAbstract {
    * {@inheritdoc}
    */
   public function process() {
-    // no processing needed :)
+    // No processing needed :).
     return TRUE;
   }
 
@@ -31,4 +31,5 @@ class C4dMigrateProcessTagVideo extends C4dMigrateProcessTagAbstract {
     );
     return $replacement;
   }
+
 }

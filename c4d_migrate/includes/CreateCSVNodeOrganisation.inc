@@ -5,7 +5,7 @@
  */
 
 /**
- * Class to create the organisation entities from CSV
+ * Class to create the organisation entities from CSV.
  */
 class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
   /**
@@ -86,7 +86,8 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
           'icon'    => $domain_data[0],
           'domain'  => $domain_data[1],
         );
-      } else {
+      }
+      else {
         $entity->c4m_domain[LANGUAGE_NONE][] = array(
           'icon'    => 0,
           'domain'  => $domain_data[0],
@@ -94,4 +95,5 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
       }
     }
   }
+
 }

@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportVocabOGCategories
+ * Class C4dMigrateImportVocabOGCategories.
  */
 class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabTerms {
   /**
@@ -86,4 +86,5 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabTerms {
 
     $row->vocabulary_name_mapped = $vocab_name;
   }
+
 }

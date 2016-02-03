@@ -119,7 +119,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     $mapping = array(
       'UK' => 'GB',
-      'uk' => 'gb'
+      'uk' => 'gb',
     );
 
     if (!empty($location['latitude']) && $location['latitude'] != 0.000000) {
@@ -151,4 +151,5 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
 
     parent::complete($entity, $row);
   }
+
 }

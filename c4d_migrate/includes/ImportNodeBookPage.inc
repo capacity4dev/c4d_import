@@ -100,4 +100,5 @@ class C4dMigrateImportNodeBookPage extends C4dMigrateImportBaseNode {
     parent::prepareRow($row);
     $row->body = $this->prepareHtml($row->body);
   }
+
 }

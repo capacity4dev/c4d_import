@@ -28,7 +28,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     $this->addFieldMapping('purl', 'purl');
 
-
     $this->addFieldMapping('c4m_vocab_topic', 'field_ref_topic')
       ->arguments(array('source_type' => 'tid'));
 
@@ -72,12 +71,12 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     $topic_nids = unserialize($row->field_ref_topic);
     $topics = array();
 
-    foreach($topic_nids as $nid) {
+    foreach ($topic_nids as $nid) {
       $title = $this->getNodeTitleFromNid($nid);
 
       $mapped = c4m_vocab_topic_get_mapping_by_source($title);
 
-      foreach($mapped as $term) {
+      foreach ($mapped as $term) {
         $topics[] = $term->tid;
       }
     }
@@ -134,9 +133,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * Helper to create a pluggable node access record based on the og_spaces_type
    * value.
    *
-   * @param stdClass $row
+   * @param object $row
    *
-   * @param stdClass $entity
+   * @param object $entity
    */
   public function savePluggableNodeAccess(&$group, $row) {
     $row->_pluggable_node_access = NULL;
@@ -157,11 +156,11 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     // Mapping between C4D & C4M group access types.
     $organisations_map = array(
       'ec_og' => array(
-        $organisation_ec
+        $organisation_ec,
       ),
       'eu_og' => array(
         $organisation_eu,
-        $organisation_ec
+        $organisation_ec,
       ),
     );
     if (!isset($organisations_map[$row->og_spaces_type])) {
@@ -178,15 +177,15 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       $group->group_access = array(
         LANGUAGE_NONE => array(
           0 => array(
-            'value' => 1
-          )
-        )
+            'value' => 1,
+          ),
+        ),
       );
 
       $group->pluggable_node_access = array(LANGUAGE_NONE => array());
       foreach ($pluggable_node_access as $na) {
         $group->pluggable_node_access[LANGUAGE_NONE][] = array(
-          'target_id' => $na->id
+          'target_id' => $na->id,
         );
       }
 
@@ -199,7 +198,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   /**
    * Helper to create a status record based on the published value.
    *
-   * @param stdClass $row
+   * @param object $row
    */
   public function prepareC4mOgStatus($row) {
     // Mapping between C4D & C4M group statuses.
@@ -211,7 +210,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   }
 
   /**
-   * {inheritDoc}
+   * {inheritDoc}.
    */
   public function postImport() {
     parent::postImport();
@@ -223,4 +222,5 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
 
     c4m_og_reset_restricted_info();
   }
+
 }

@@ -78,7 +78,8 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
    *
    * @param string $body
    *   The body where the tags needs to be replaced.
-   * @param array  $replacements
+   * @param array $replacementsThe
+   *   replacements array.
    *   The replacements array.
    *
    * @return string
@@ -98,7 +99,6 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
       array('@count' => count($replacements)),
       $severity
     );
-
 
     return $body;
   }
@@ -158,4 +158,5 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
   protected function createCommentTag($tag) {
     return '<!--' . $tag . '-->';
   }
+
 }

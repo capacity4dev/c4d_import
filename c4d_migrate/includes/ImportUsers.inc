@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportUsers
+ * Class C4dMigrateImportUsers.
  */
 class C4dMigrateImportUsers extends C4dMigrateImportBase {
   public $entityType = 'user';
@@ -116,12 +116,12 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $topic_nids = unserialize($row->field_ref_topic);
     $topics = array();
 
-    foreach($topic_nids as $nid) {
+    foreach ($topic_nids as $nid) {
       $title = $this->getNodeTitleFromNid($nid);
 
       $mapped = c4m_vocab_topic_get_mapping_by_source($title);
 
-      foreach($mapped as $term) {
+      foreach ($mapped as $term) {
         $topics[] = $term->tid;
       }
     }
@@ -131,12 +131,12 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $topic_nids = unserialize($row->field_ref_topic_expertise);
     $topics = array();
 
-    foreach($topic_nids as $nid) {
+    foreach ($topic_nids as $nid) {
       $title = $this->getNodeTitleFromNid($nid);
 
       $mapped = c4m_vocab_topic_get_mapping_by_source($title);
 
-      foreach($mapped as $term) {
+      foreach ($mapped as $term) {
         $topics[] = $term->tid;
       }
     }
@@ -205,7 +205,6 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
 
     foreach ($results as $result) {
       $redirect = new stdClass();
-
 
       redirect_object_prepare(
         $redirect,

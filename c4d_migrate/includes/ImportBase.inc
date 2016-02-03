@@ -131,7 +131,8 @@ abstract class C4dMigrateImportBase extends Migration {
    * @param string $source
    *   The name of the field that holds the file ID (fid) in the data row from
    *   the source table.
-   * @param int    $file_exists
+   * @param int $file_existsWhat
+   *   to do when a file already exists with the same name.
    *   What to do when a file already exists with the same name.
    *   Options:
    *   - FILE_EXISTS_RENAME  : (default) Appends number until name is unique.
@@ -195,7 +196,6 @@ abstract class C4dMigrateImportBase extends Migration {
 
     $path_parts = pathinfo($result->filepath);
 
-
     // All other keys combined are the relative path from the root dir.
     $rel_path = $path_parts['dirname'];
 
@@ -211,7 +211,8 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * @param string $type
    *   String containing the group type (machine name).
-   * @param int    $gid
+   * @param int $gidThe
+   *   nid of the term's group we are importing.
    *   The nid of the term's group we are importing.
    *
    * @return int
@@ -297,8 +298,8 @@ abstract class C4dMigrateImportBase extends Migration {
 
   /**
    * Map terms to the existing (install hook) terms in the database for a specified taxonomy.
-
-   * @param $sourcefield
+   *    * @param $sourcefield.
+   *
    * @param $vocabname
    *
    * @return array
@@ -383,8 +384,8 @@ abstract class C4dMigrateImportBase extends Migration {
       '3.Latin America & Caribbean' => 'Latin America & Caribbean',
       'Latin America & Caribbean' => 'Latin America & Caribbean',
       // Splits into different regions in the new platform? Asia vs Pacific (subregion of Oceania & Pacific) vs Gulf, not mapped
-//      '4.Asia, Gulf Region & Pacific' => '',
-//      'Asia, Gulf Region & Pacific' => '',
+    //      '4.Asia, Gulf Region & Pacific' => '',
+    //      'Asia, Gulf Region & Pacific' => '',.
       '5.EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
       'EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
       '6.OCTs (Overseas Countries and Territories)' => 'OCTs (Overseas Countries & Territories)',
@@ -392,8 +393,8 @@ abstract class C4dMigrateImportBase extends Migration {
       '7.EU Member States' => 'EU Member States',
       'EU Member States' => 'EU Member States',
       // Splits into multiple (sub)regions in the new platform, which don't match.
-//      '8.Other Countries' => '',
-//      'Other Countries' => '',
+    //      '8.Other Countries' => '',
+    //      'Other Countries' => '',.
     );
   }
 
@@ -410,4 +411,5 @@ abstract class C4dMigrateImportBase extends Migration {
       ->fetchField();
     return $title;
   }
+
 }

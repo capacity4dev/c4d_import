@@ -119,7 +119,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
   protected function fileCreateUrl($uri) {
     global $base_url;
     $url = file_create_url($uri);
-    return str_replace($base_url .'/', '/', $url);
+    return str_replace($base_url . '/', '/', $url);
   }
 
   /**
@@ -155,7 +155,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
   protected function loadFileFromMigrateMapping($source) {
     $map = db_select('migrate_map_c4d_inline_media', 'm')
       ->fields('m')
-      ->condition('source_path', $source,'=')
+      ->condition('source_path', $source, '=')
       ->execute()
       ->fetch();
 
@@ -176,7 +176,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    *
    * @param string $source
    *   The source path.
-   * @param stdClass $file
+   * @param object $file
    *   The file objects
    */
   protected function saveMigrateMapping($source, $file) {
@@ -186,4 +186,5 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
 
     drupal_write_record('migrate_map_c4d_inline_media', $data);
   }
+
 }

@@ -3,7 +3,9 @@
  * @file
  * Migrate class to import Vocabulary Tags.
  */
-
+/**
+ *
+ */
 abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
   /**
    * Complete function to set missing aliases.
@@ -44,4 +46,5 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
       }
     }
   }
+
 }

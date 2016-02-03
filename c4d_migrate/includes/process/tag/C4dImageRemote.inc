@@ -78,4 +78,5 @@ class C4dMigrateProcessTagC4dImageRemote extends C4dMigrateProcessTagC4dImageLoc
 
     return $file;
   }
+
 }

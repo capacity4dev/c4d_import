@@ -35,4 +35,5 @@ class C4dMigrateImportCommentArticle extends C4dMigrateImportBaseComment {
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
   }
+
 }

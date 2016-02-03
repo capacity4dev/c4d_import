@@ -75,4 +75,5 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
            'The replacement string was what we expected.'
     );
   }
+
 }

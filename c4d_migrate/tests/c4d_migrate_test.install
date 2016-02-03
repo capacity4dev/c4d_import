@@ -36,7 +36,7 @@ function c4d_migrate_test_install_files() {
 function c4d_migrate_test_install_ec_media_code() {
   $youtube = (object) array(
     'cid'  => 101,
-    'code' => '<iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>'
+    'code' => '<iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>',
   );
   $googlemaps = (object) array(
     'cid'  => 202,
@@ -202,4 +202,3 @@ function c4d_migrate_test_schema_ec_media_code() {
   );
   return $schema;
 }
-

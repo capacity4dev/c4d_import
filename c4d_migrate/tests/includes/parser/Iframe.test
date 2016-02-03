@@ -41,7 +41,7 @@ class C4dMigrateTestParserIframe extends DrupalUnitTestCase {
 EOT;
 
   /**
-   * Expected result
+   * Expected result.
    *
    * @var array
    */
@@ -49,13 +49,13 @@ EOT;
     '<iframe src="http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube vf-o2afmjzwafy" frameborder="0"></iframe>' => array(
       'type' => 'iframe',
       'tag' => '<iframe src="http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque" width="500" height="320" class="video-filter video-youtube vf-o2afmjzwafy" frameborder="0"></iframe>',
-      'src' =>  'http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque',
+      'src' => 'http://www.youtube.com/embed/O2AfmjzwAFY?rel=1&amp;autoplay=0&amp;wmode=opaque',
       'width' => 500,
       'height' => 320,
       'class' => 'video-filter video-youtube vf-o2afmjzwafy',
       'style' => NULL,
     ),
-    '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>' => array (
+    '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>' => array(
       'type' => 'iframe',
       'tag' => '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="500" height="320" frameborder="0" scrolling="no"></iframe>',
       'src' => 'https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels',
@@ -107,4 +107,5 @@ EOT;
     $this->assertEqual(3, count($tags));
     $this->assertEqual($this->expectedTags, $tags);
   }
+
 }

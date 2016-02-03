@@ -202,7 +202,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
 
-    // make sure the update message also exists.
+    // Make sure the update message also exists.
     $this->messageUpdateSave($entity, $row);
   }
+
 }

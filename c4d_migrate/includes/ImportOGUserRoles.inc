@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportOGUserRoles
+ * Class C4dMigrateImportOGUserRoles.
  */
 class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
   /**
@@ -158,4 +158,5 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
 
     parent::prepareRow($row);
   }
+
 }

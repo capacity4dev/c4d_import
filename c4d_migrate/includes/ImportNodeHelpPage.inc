@@ -209,4 +209,5 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
 
     $row->body = $this->prepareHtml($row->body);
   }
+
 }

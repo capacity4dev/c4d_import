@@ -10,7 +10,7 @@
  */
 abstract class C4dMigrateCreateBaseCSVNode extends C4dMigrateImportBaseNode {
   // Define source ID's so we can retrieve them later on to map them.
-  // Needs to be
+  // Needs to be.
   const C4D_MIGRATE_ORGANISATION_EC_ID = 0641547101;
   const C4D_MIGRATE_ORGANISATION_EU_ID = 0641547102;
 
@@ -58,7 +58,8 @@ abstract class C4dMigrateCreateBaseCSVNode extends C4dMigrateImportBaseNode {
     $this->addDefaultFieldMapping();
     $this->addCustomFieldMapping();
 
-    // make sure no revisions are created during import.
+    // Make sure no revisions are created during import.
     $this->disableRevisions();
   }
+
 }
