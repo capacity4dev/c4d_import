@@ -79,6 +79,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    *
    * @param MigrateGroup $group
    *   The migrate Group object.
+   * @param bool $skip_func
+   *   Skip function.
    */
   public function __construct($group = NULL, $skip_func = FALSE) {
     parent::__construct($group);
@@ -128,20 +130,24 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   /**
    * Complete function to set missing aliases.
    *
-   * @param object $user
+   * @param object $node
+   *   Drupal node object.
    * @param object $row
+   *   Migration source row object.
    */
   public function complete($node, $row) {
     $query = $this->createSelect('url_alias', 'u')
       ->orderBy('src', 'ASC')
-      ->fields('u')
+      ->fields('u', array('pid', 'src', 'dst'))
       ->condition('src', 'node/' . $row->nid)
       ->groupBy('dst')
+      ->groupBy('src')
+      ->groupBy('pid')
       ->execute();
     $results = $query->fetchAll();
 
-    foreach($results as $result) {
-      if ($result->dest != $row->path && !$this->getPathManual()) {
+    foreach ($results as $result) {
+      if ($result->dst != $row->path && !$this->getPathManual()) {
         $redirect = new stdClass();
 
         redirect_object_prepare(
@@ -175,7 +181,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     $key = array_search('revision', $variable);
     if ($key !== FALSE) {
-      unset ($variable[$key]);
+      unset($variable[$key]);
       variable_set('node_options_' . $this->getTargetBundle(), $variable);
 
       drupal_flush_all_caches();
@@ -197,7 +203,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
-    unset ($variable[$key]);
+    unset($variable[$key]);
     variable_set('node_options_' . $this->getTargetBundle(), $variable);
 
     drupal_flush_all_caches();
@@ -323,7 +329,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     $node->revision = FALSE;
 
     if (empty($node->migrate)) {
-      $node->migrate = TRUE; // Flag to set revisions to false in hook_presave.
+      // Flag to set revisions to false in hook_presave.
+      $node->migrate = TRUE;
     }
 
     node_save($node);

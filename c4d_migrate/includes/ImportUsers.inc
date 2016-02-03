@@ -188,18 +188,22 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
    * Complete function to set missing aliases.
    *
    * @param object $user
+   *   Drupal user object.
    * @param object $row
+   *   Migration source row object.
    */
   public function complete($user, $row) {
     $query = $this->createSelect('url_alias', 'u')
       ->orderBy('src', 'ASC')
-      ->fields('u')
+      ->fields('u', array('pid', 'src', 'dst'))
       ->condition('src', 'user/' . $row->uid)
       ->groupBy('dst')
+      ->groupBy('src')
+      ->groupBy('pid')
       ->execute();
     $results = $query->fetchAll();
 
-    foreach($results as $result) {
+    foreach ($results as $result) {
       $redirect = new stdClass();
 
 
