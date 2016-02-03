@@ -33,7 +33,7 @@ class C4dMigrateImportNodeOGTask extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {

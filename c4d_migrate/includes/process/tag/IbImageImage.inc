@@ -19,12 +19,12 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
-      '<div class="ibimage %s ibimage-preset-%s">' .
-      '<div class="ibimage-inner">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="%s" title="" />' .
-      '<span class="caption">%s</span>' .
-      '</div>' .
-      '</div>',
+      '<div class="ibimage %s ibimage-preset-%s">
+        <div class="ibimage-inner">
+          <img src="%s" class="img__fid__%d media-image" alt="%s" title="" />
+          <span class="caption">%s</span>
+        </div>
+      </div>',
       $tag['style'],
       $tag['preset'],
       $url,

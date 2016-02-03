@@ -11,7 +11,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -188,6 +188,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
     parent::prepareRow($row);
 
     $row->body = $this->prepareHtml($row->body);
+    return TRUE;
   }
 
 }

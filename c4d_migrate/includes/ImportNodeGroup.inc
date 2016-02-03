@@ -12,7 +12,7 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -67,15 +67,23 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     // Pluggable node access.
     // @TODO We should move this code to ImportBaseGroup::prepareRow() once the
     // projects content type has also the pluggable_node_access field.
+    return TRUE;
   }
 
   /**
+   * Review a data row after fetch, returning FALSE to skip it.
    *
+   * @param object $row
+   *   The data row we are importing.
+   *
+   * @return bool
+   *   Successfully completed or not.
    */
   public function complete($entity, $row) {
     $this->savePluggableNodeAccess($entity, $row);
 
     parent::complete($entity, $row);
+    return TRUE;
   }
 
 }

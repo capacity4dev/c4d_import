@@ -46,7 +46,9 @@ class C4dMigrateCreateCSVTermTopic extends C4dMigrateCreateBaseCSVVocabularyTerm
    * Complete callback.
    *
    * @param object $term
+   *   Drupal taxonomy term object.
    * @param object $row
+   *   Source row object.
    */
   public function complete($term, $row) {
     if ($term->tid && $row->mapping) {

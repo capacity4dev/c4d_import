@@ -20,6 +20,7 @@ abstract class C4dMigrateProcessTagAbstractEmbed extends C4dMigrateProcessTagAbs
    * Set the info received from the DB.
    *
    * @param object $info
+   *   Information object.
    */
   protected function setInfo($info) {
     $this->info = $info;
@@ -29,6 +30,7 @@ abstract class C4dMigrateProcessTagAbstractEmbed extends C4dMigrateProcessTagAbs
    * Get the info as retrieved from the DB.
    *
    * @return object
+   *   Information object.
    */
   public function getInfo() {
     return $this->info;
@@ -55,7 +57,8 @@ abstract class C4dMigrateProcessTagAbstractEmbed extends C4dMigrateProcessTagAbs
    * @param array $tag
    *   The tag information.
    *
-   * @return stdClass
+   * @return object
+   *   Information object about the processor.
    */
   abstract protected function loadInfo($tag);
 

@@ -12,7 +12,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateProject $project
+   * @param object $project
    *   The migrate Project object.
    */
   public function __construct($project = NULL) {
@@ -85,6 +85,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
    *   The data row we are importing.
    *
    * @return bool
+   *   Successfully finished complete or not.
    */
   public function complete($node, $row) {
     parent::complete($node, $row);
@@ -119,8 +120,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
    *
    * @param Migration $migration
    *   The migration that is being done to create this stub.
-   * @param array $source_idArray
-   *   of strings with the source id(s).
+   * @param array $source_id
    *   Array of strings with the source id(s).
    *
    * @return array|bool

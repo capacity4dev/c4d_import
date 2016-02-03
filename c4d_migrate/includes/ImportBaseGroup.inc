@@ -108,7 +108,9 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * Review a data row after fetch, returning FALSE to skip it.
    *
    * @param object $entity
+   *   Drupal group node entity.
    * @param object $row
+   *   Source row object.
    */
   public function complete($entity, $row) {
     parent::complete($entity, $row);
@@ -130,12 +132,15 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   }
 
   /**
+   * Helper to create a pluggable node access record.
+   *
    * Helper to create a pluggable node access record based on the og_spaces_type
    * value.
    *
+   * @param object $group
+   *   Drupal group entity object.
    * @param object $row
-   *
-   * @param object $entity
+   *   Source migration row object.
    */
   public function savePluggableNodeAccess(&$group, $row) {
     $row->_pluggable_node_access = NULL;
@@ -199,6 +204,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    * Helper to create a status record based on the published value.
    *
    * @param object $row
+   *   Source row object.
    */
   public function prepareC4mOgStatus($row) {
     // Mapping between C4D & C4M group statuses.
@@ -210,7 +216,7 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
   }
 
   /**
-   * {inheritDoc}.
+   * {@inheritdoc}
    */
   public function postImport() {
     parent::postImport();

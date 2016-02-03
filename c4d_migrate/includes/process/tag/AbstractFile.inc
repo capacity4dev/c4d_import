@@ -51,7 +51,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    * @param string $target_folder
    *   The target directory URI where the file should be copied to.
    *
-   * @return stdClass|bool
+   * @return object|bool
    *   A file object if the copy was successful.
    *   FALSE if the file could not be copied.
    */
@@ -148,7 +148,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    * @param string $source
    *   The source path of the file to copy.
    *
-   * @return bool|stdClass
+   * @return object|bool
    *   False if not already migrated.
    *   The file object of migrated.
    */
@@ -177,7 +177,7 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    * @param string $source
    *   The source path.
    * @param object $file
-   *   The file objects
+   *   The file object.
    */
   protected function saveMigrateMapping($source, $file) {
     $data = new stdClass();

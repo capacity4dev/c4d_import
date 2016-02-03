@@ -9,7 +9,7 @@
  */
 class C4dMigrateLoggerMigrate implements C4dMigrateLoggerInterface {
   /**
-   * {inheritdoc}.
+   * {@inheritdoc}
    */
   public function log($message, $variables = array(), $severity = self::INFO) {
     // We do not keep debug data in the message table.
@@ -49,7 +49,7 @@ class C4dMigrateLoggerMigrate implements C4dMigrateLoggerInterface {
         break;
     }
 
-    $migration->queueMessage(t($message, $variables), $migrate_severity);
+    $migration->queueMessage(format_string($message, $variables), $migrate_severity);
   }
 
 }

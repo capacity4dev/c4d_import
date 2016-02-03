@@ -32,6 +32,7 @@ abstract class C4dMigrateProcessAbstract {
    * Get all attached loggers.
    *
    * @return array
+   *   Array of attached loggers.
    */
   public function getLoggers() {
     return $this->loggers;

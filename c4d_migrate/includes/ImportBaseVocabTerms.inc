@@ -3,8 +3,9 @@
  * @file
  * Migrate class to import Vocabulary Tags.
  */
+
 /**
- *
+ * Base class to import vocab data (terms) from capacity4dev into capacity4more.
  */
 abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
   /**

@@ -139,6 +139,7 @@ function c4d_migrate_set_up_db_connection() {
  *   The Database connection object.
  *
  * @throws Exception
+ *   Throws database connection Exception.
  */
 function c4d_migrate_get_db_connection() {
   try {
@@ -167,6 +168,7 @@ function c4d_migrate_get_db_connection() {
  * This will be the path to sites/default/files.
  *
  * @return string
+ *   Path of the files in the old platform.
  */
 function c4d_migrate_get_files_root() {
   return variable_get(C4D_MIGRATE_FILES_ROOT, NULL);

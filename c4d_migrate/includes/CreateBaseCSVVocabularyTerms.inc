@@ -4,7 +4,6 @@
  * Base class to create Entities from CSV.
  */
 
-
 /**
  * Class C4dMigrateCreateBaseCSV.
  */
@@ -19,9 +18,6 @@ abstract class C4dMigrateCreateBaseCSVVocabularyTerms extends C4dMigrateImportBa
    * General initialization of a Migration object.
    *
    * This implements the common functionality to import taxonomy terms via CSV.
-   *
-   * @param MigrateGroup $group
-   *   The migrate Group object.
    */
   public function __construct() {
     parent::__construct(

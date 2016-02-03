@@ -56,14 +56,14 @@ class C4dMigrateTestProcessTagIbImagePhotoalbum extends C4dMigrateTestProcessTag
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(
-      '<div class="ibimage ibimage-left ibimage-preset-large">' .
-      '<div class="ibimage-inner">' .
-      '<a href="%s" class="ibimage-link photo-album-link">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="Teaser to album" title="" />' .
-      '<span class="caption">Teaser to album</span>' .
-      '</a>' .
-      '</div>' .
-      '</div>',
+      '<div class="ibimage ibimage-left ibimage-preset-large">
+        <div class="ibimage-inner">
+          <a href="%s" class="ibimage-link photo-album-link">
+            <img src="%s" class="img__fid__%d media-image" alt="Teaser to album" title="" />
+            <span class="caption">Teaser to album</span>
+          </a>
+        </div>
+      </div>',
       $expected_path,
       $expected_path,
       (int) $processor->getFile()->fid

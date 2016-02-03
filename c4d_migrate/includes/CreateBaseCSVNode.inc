@@ -4,7 +4,6 @@
  * Base class to create Entities from CSV.
  */
 
-
 /**
  * Class C4dMigrateCreateBaseCSV.
  */
@@ -19,7 +18,7 @@ abstract class C4dMigrateCreateBaseCSVNode extends C4dMigrateImportBaseNode {
    *
    * This implements the common functionality to import nodes from a flat table.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {

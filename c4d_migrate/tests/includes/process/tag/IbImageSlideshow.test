@@ -56,14 +56,14 @@ class C4dMigrateTestProcessTagIbImageSlideshow extends C4dMigrateTestProcessTagI
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(
-      '<div class="ibimage ibimage-right-clear ibimage-preset-original">' .
-      '<div class="ibimage-inner">' .
-      '<a href="%s" target="_blank" class="ibimage-link photo-album-slideshow popup lightbox">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="Linked album in slideshow" title="" />' .
-      '<span class="caption">Linked album in slideshow</span>' .
-      '</a>' .
-      '</div>' .
-      '</div>',
+      '<div class="ibimage ibimage-right-clear ibimage-preset-original">
+        <div class="ibimage-inner">
+            <a href="%s" target="_blank" class="ibimage-link photo-album-slideshow popup lightbox">
+                <img src="%s" class="img__fid__%d media-image" alt="Linked album in slideshow" title="" />
+                <span class="caption">Linked album in slideshow</span>
+            </a>
+        </div>
+      </div>',
       $expected_path,
       $expected_path,
       (int) $processor->getFile()->fid

@@ -77,7 +77,7 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    *
    * This implements the common functionality to import nodes from a flat table.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    * @param bool $skip_func
    *   Skip function.
@@ -322,8 +322,8 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
    *
    * @param object $node
    *   Node object we want to reset the changed date for.
-   * @param int $changedTimestamp.
-   *   Timestamp.
+   * @param int $changed
+   *   Optional timestamp.
    */
   public function nodeSave($node, $changed = NULL) {
     $node->revision = FALSE;

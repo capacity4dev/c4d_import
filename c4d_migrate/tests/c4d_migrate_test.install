@@ -53,14 +53,6 @@ function c4d_migrate_test_install_ec_media_code() {
   drupal_write_record('ec_media_code', $flickr);
 }
 
-/**
- * Implements hook_uninstall().
- */
-function c4d_migrate_test_uninstall() {
-
-}
-
-
 /******************************************************************************
  * Schema.
  ******************************************************************************/

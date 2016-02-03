@@ -11,7 +11,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -77,6 +77,7 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    *
    * @return bool
+   *   Successfully completed or not.
    */
   public function complete($entity, $row) {
     if ($row->field_event_location == '' || empty($row->field_event_location)) {
@@ -150,6 +151,8 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     }
 
     parent::complete($entity, $row);
+
+    return TRUE;
   }
 
 }

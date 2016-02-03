@@ -52,6 +52,7 @@ class C4dMigrateParserIframe extends C4dMigrateParserAbstract {
    *   The iframe tag.
    *
    * @return int|NULL
+   *   Width or null.
    */
   protected function parseTagWidth($tag) {
     $width = $this->parseTagByPattern($tag, '/width="([0-9]+)"/iSu');
@@ -68,6 +69,7 @@ class C4dMigrateParserIframe extends C4dMigrateParserAbstract {
    *   The iframe tag.
    *
    * @return int|NULL
+   *   Height or null.
    */
   protected function parseTagHeight($tag) {
     $height = $this->parseTagByPattern($tag, '/height="([0-9]+)"/iSu');
@@ -83,7 +85,8 @@ class C4dMigrateParserIframe extends C4dMigrateParserAbstract {
    * @param string $tag
    *   The iframe tag.
    *
-   * @return int|NULL
+   * @return string|NULL
+   *   Class name or null.
    */
   protected function parseTagClass($tag) {
     return $this->parseTagByPattern($tag, '/class="([^"]*)"/iSu');
@@ -95,7 +98,8 @@ class C4dMigrateParserIframe extends C4dMigrateParserAbstract {
    * @param string $tag
    *   The iframe tag.
    *
-   * @return int|NULL
+   * @return string|NULL
+   *   Style or null.
    */
   protected function parseTagStyle($tag) {
     return $this->parseTagByPattern($tag, '/style="([^"]*)"/iSu');
@@ -110,6 +114,7 @@ class C4dMigrateParserIframe extends C4dMigrateParserAbstract {
    *   The pattern to parse the value from the tag.
    *
    * @return string|NULL
+   *   Tag by pattern or null.
    */
   protected function parseTagByPattern($tag, $pattern) {
     if (!preg_match($pattern, $tag, $result)) {

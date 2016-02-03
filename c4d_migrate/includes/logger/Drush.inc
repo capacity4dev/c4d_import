@@ -45,7 +45,7 @@ class C4dMigrateLoggerDrush implements C4dMigrateLoggerInterface {
         break;
     }
 
-    drush_log(t($message, $variables), $type);
+    drush_log(format_string($message, $variables), $type);
   }
 
 }

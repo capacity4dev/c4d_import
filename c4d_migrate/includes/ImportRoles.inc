@@ -9,8 +9,11 @@
  */
 class C4dMigrateImportRoles extends C4dMigrateImportBase {
   /**
-   * Allow the implementor to map roles by name (e.g., map the legacy "Fan Club"
-   * role to the destination "fan club member" role).
+   * Allow the implementor to map roles by name.
+   *
+   * Allow the implementor to map roles by name;
+   * e.g., map the legacy "Fan Club" role to the destination
+   * "fan club member" role.
    *
    * @var array
    */

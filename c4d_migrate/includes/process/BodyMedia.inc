@@ -78,8 +78,7 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
    *
    * @param string $body
    *   The body where the tags needs to be replaced.
-   * @param array $replacementsThe
-   *   replacements array.
+   * @param array $replacements
    *   The replacements array.
    *
    * @return string
@@ -107,7 +106,7 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
    * Get the processor object based on the tag type and mapping.
    *
    * @param array $tag
-   *   The tag to process
+   *   The tag to process.
    *
    * @return C4dMigrateProcessTagAbstract
    *   Instanciated processor object.
@@ -132,6 +131,7 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
    * Create the config array.
    *
    * @return array
+   *   Configuration array.
    */
   protected function getConfig() {
     static $config;
