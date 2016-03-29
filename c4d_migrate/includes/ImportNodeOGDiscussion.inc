@@ -5,14 +5,15 @@
  */
 
 /**
- * Class to import the Blog group nodes from the Drupal 6 platform
- * as Discussion nodes.
+ * Class to import the Blog group nodes from the Drupal 6 platform.
+ *
+ * Import Blog group nodes as Discussion nodes.
  */
 class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -63,4 +64,5 @@ class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
   public function complete($entity, $row) {
     return parent::complete($entity, $row);
   }
+
 }

@@ -20,4 +20,5 @@ class C4dMigrateImportCommentOGPhotoalbum extends C4dMigrateImportBaseCommentOg 
 
     parent::__construct('node_gallery_gallery', 'photoalbum', 'c4d_export_node_node_gallery_gallery', $group);
   }
+
 }

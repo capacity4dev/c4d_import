@@ -111,13 +111,16 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
         $row->tags = array($row->tags);
       }
     }
+    return TRUE;
   }
 
   /**
    * Review a data row after fetch, returning FALSE to skip it.
    *
-   * @param object $entity
+   * @param object $node
+   *   The drupal node entity object.
    * @param object $row
+   *   The source row object.
    */
   public function prepare($node, $row) {
     if (!$this->hasCategories()) {
@@ -202,7 +205,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
 
-    // make sure the update message also exists.
+    // Make sure the update message also exists.
     $this->messageUpdateSave($entity, $row);
   }
+
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Logger interface
+ * Logger interface.
  */
 
 /**
@@ -28,4 +28,5 @@ interface C4dMigrateLoggerInterface {
    *   The severity of the logged message.
    */
   public function log($message, $variables = array(), $severity = self::INFO);
+
 }

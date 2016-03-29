@@ -82,4 +82,5 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
 
     return TRUE;
   }
+
 }

@@ -90,4 +90,5 @@ class C4dMigrateTestProcessTagC4dImageLocal extends C4dMigrateTestProcessTagBase
       );
     }
   }
+
 }

@@ -5,8 +5,9 @@
  */
 
 /**
- * Class to import the Blog comments from the Drupal 6 platform
- * as Discussion comments.
+ * Class to import the Blog comments from the Drupal 6 platform.
+ *
+ * Import blog comments as Discussion comments.
  */
 class C4dMigrateImportCommentOGDiscussion extends C4dMigrateImportBaseCommentOg {
 
@@ -21,4 +22,5 @@ class C4dMigrateImportCommentOGDiscussion extends C4dMigrateImportBaseCommentOg 
 
     parent::__construct('blog', 'discussion', 'c4d_export_node_blog', $group);
   }
+
 }

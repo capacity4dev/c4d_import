@@ -5,10 +5,9 @@
  */
 
 /**
- * Class to create the organisation entities from CSV
+ * Class to create the organisation entities from CSV.
  */
-class C4dMigrateCreateCSVTermTopic
-  extends C4dMigrateCreateBaseCSVVocabularyTerms {
+class C4dMigrateCreateCSVTermTopic extends C4dMigrateCreateBaseCSVVocabularyTerms {
   /**
    * CSV column mapping.
    *
@@ -47,7 +46,9 @@ class C4dMigrateCreateCSVTermTopic
    * Complete callback.
    *
    * @param object $term
+   *   Drupal taxonomy term object.
    * @param object $row
+   *   Source row object.
    */
   public function complete($term, $row) {
     if ($term->tid && $row->mapping) {
@@ -58,4 +59,5 @@ class C4dMigrateCreateCSVTermTopic
       ));
     }
   }
+
 }

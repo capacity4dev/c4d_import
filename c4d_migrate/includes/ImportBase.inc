@@ -25,7 +25,8 @@ abstract class C4dMigrateImportBase extends Migration {
 
   /**
    * The search indexes that were disabled when the process started.
-   * endProcess will use these to re-enable them.
+   *
+   * Process will use these to re-enable them.
    */
   static protected $searchIndexDisabled = array();
 
@@ -34,7 +35,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * This implements the common functionality to import nodes from a flat table.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -55,13 +56,10 @@ abstract class C4dMigrateImportBase extends Migration {
   }
 
   /**
-   * Begin a process, disable all search indexes so they don't slow down the
-   * process.
-   *
-   * {@inheritDoc}
+   * {@inheritdoc}
    */
-  protected function beginProcess($newStatus) {
-    parent::beginProcess($newStatus);
+  protected function beginProcess($new_status) {
+    parent::beginProcess($new_status);
 
     if (module_exists('search_api')) {
       $indexes = search_api_index_load_multiple(FALSE);
@@ -99,6 +97,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *   The Database connection object.
    *
    * @throws Exception
+   *   Throws database connection Exception.
    */
   public function getConnection() {
     return c4d_migrate_get_db_connection();
@@ -131,7 +130,7 @@ abstract class C4dMigrateImportBase extends Migration {
    * @param string $source
    *   The name of the field that holds the file ID (fid) in the data row from
    *   the source table.
-   * @param int    $file_exists
+   * @param int $file_exists
    *   What to do when a file already exists with the same name.
    *   Options:
    *   - FILE_EXISTS_RENAME  : (default) Appends number until name is unique.
@@ -195,7 +194,6 @@ abstract class C4dMigrateImportBase extends Migration {
 
     $path_parts = pathinfo($result->filepath);
 
-
     // All other keys combined are the relative path from the root dir.
     $rel_path = $path_parts['dirname'];
 
@@ -211,7 +209,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * @param string $type
    *   String containing the group type (machine name).
-   * @param int    $gid
+   * @param int $gid
    *   The nid of the term's group we are importing.
    *
    * @return int
@@ -275,10 +273,10 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * It will search for [tags] and process them into media, html, …
    *
-   * @see C4dMigrateProcessBodyMedia.
-   *
    * @param string $field
    *   The field that needs to be processed.
+   *
+   * @see C4dMigrateProcessBodyMedia
    *
    * @return string
    *   The processed field.
@@ -296,12 +294,18 @@ abstract class C4dMigrateImportBase extends Migration {
   }
 
   /**
-   * Map terms to the existing (install hook) terms in the database for a specified taxonomy.
-
-   * @param $sourcefield
-   * @param $vocabname
+   * Map terms to the existing terms in the database for a specified taxonomy.
+   *
+   * Map terms to the existing terms in the database for a specified taxonomy.
+   * Existing terms are provided by an install hook.
+   *
+   * @param array $sourcefield
+   *   Array of terms from the sourcefield.
+   * @param string $vocabname
+   *   Name of the vocabulary.
    *
    * @return array
+   *   Array of new term ids.
    */
   public function mapTaxonomyVocabRegionCountries($sourcefield, $vocabname) {
     $vocab = taxonomy_vocabulary_machine_name_load($vocabname);
@@ -315,7 +319,8 @@ abstract class C4dMigrateImportBase extends Migration {
         foreach ($terms as $term_name) {
           $term = taxonomy_get_term_by_name($term_name, $vocabname);
 
-          // Case 1: Term is available in the new platform with the exact same name.
+          // Case 1: Term is available in the new platform,
+          // with the exact same name.
           if (!empty($term)) {
             reset($term);
             $tid = key($term);
@@ -342,7 +347,9 @@ abstract class C4dMigrateImportBase extends Migration {
 
 
   /**
-   * @param $tids
+   * Retrieve mappings between terms and their parents.
+   *
+   * @param array $tids
    *   Array of term ids content is tagged with.
    *
    * @return array
@@ -382,25 +389,28 @@ abstract class C4dMigrateImportBase extends Migration {
       'European Neighbourhood & Russia' => 'Europe & Russia',
       '3.Latin America & Caribbean' => 'Latin America & Caribbean',
       'Latin America & Caribbean' => 'Latin America & Caribbean',
-      // Splits into different regions in the new platform? Asia vs Pacific (subregion of Oceania & Pacific) vs Gulf, not mapped
-//      '4.Asia, Gulf Region & Pacific' => '',
-//      'Asia, Gulf Region & Pacific' => '',
+      // Splits into different regions in the new platform?
+      // Asia vs Pacific (subregion of Oceania & Pacific) vs Gulf, not mapped.
+      /*'4.Asia, Gulf Region & Pacific' => '',
+      'Asia, Gulf Region & Pacific' => '',*/
       '5.EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
       'EU candidate and potential candidate countries' => 'EU Candidate & Potential candidate countries',
       '6.OCTs (Overseas Countries and Territories)' => 'OCTs (Overseas Countries & Territories)',
       'OCTs (Overseas Countries and Territories)' => 'OCTs (Overseas Countries & Territories)',
       '7.EU Member States' => 'EU Member States',
       'EU Member States' => 'EU Member States',
-      // Splits into multiple (sub)regions in the new platform, which don't match.
-//      '8.Other Countries' => '',
-//      'Other Countries' => '',
+      // Splits into multiple (sub)regions in the new platform,
+      // which don't match.
+      /*'8.Other Countries' => '',
+      'Other Countries' => '',*/
     );
   }
 
   /**
    * Retrieve the title of the node in the old platform based on the nid.
    *
-   * @param $nid
+   * @param int $nid
+   *   Drupal node id (source).
    */
   protected function getNodeTitleFromNid($nid) {
     $title = $this->createSelect('node', 'n')
@@ -410,4 +420,5 @@ abstract class C4dMigrateImportBase extends Migration {
       ->fetchField();
     return $title;
   }
+
 }

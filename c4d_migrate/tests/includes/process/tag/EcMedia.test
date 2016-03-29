@@ -14,44 +14,44 @@ class C4dMigrateTestProcessTagEcMedia extends C4dMigrateTestProcessTagBase {
    * @var array
    */
   private $tags = array(
-      'youtube' => array(
-        'tag' => array(
-          'type'     => 'ec_media',
-          'tag'      => '[ec_media:101 width:501 height:321 autoplay:0 align:left-clear]',
-          'id'       => 101,
-          'width'    => 501,
-          'height'   => 321,
-          'autoplay' => 0,
-          'align'    => 'left-clear',
-        ),
-        'expected' => '<iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="501" height="321" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>',
+    'youtube' => array(
+      'tag' => array(
+        'type'     => 'ec_media',
+        'tag'      => '[ec_media:101 width:501 height:321 autoplay:0 align:left-clear]',
+        'id'       => 101,
+        'width'    => 501,
+        'height'   => 321,
+        'autoplay' => 0,
+        'align'    => 'left-clear',
       ),
-      'googlemaps' => array(
-        'tag' => array(
-          'type'     => 'ec_media',
-          'tag'      => '[ec_media:202 width:502 height:322 autoplay:0 align:left-clear]',
-          'id'       => 202,
-          'width'    => 502,
-          'height'   => 322,
-          'autoplay' => 0,
-          'align'    => 'left-clear',
-        ),
-        'expected' => '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="502" height="322" frameborder="0" scrolling="no"></iframe>',
+      'expected' => '<iframe src="http://www.youtube.com/embed/videoseries?list=UUEdVD3q7YIDiWU-VkEhfOuA&amp;rel=1&amp;autoplay=0&amp;wmode=opaque" width="501" height="321" class="video-filter video-youtube_playlist vf-uuedvd3q7yidiwuvkehfoua" frameborder="0"></iframe>',
+    ),
+    'googlemaps' => array(
+      'tag' => array(
+        'type'     => 'ec_media',
+        'tag'      => '[ec_media:202 width:502 height:322 autoplay:0 align:left-clear]',
+        'id'       => 202,
+        'width'    => 502,
+        'height'   => 322,
+        'autoplay' => 0,
+        'align'    => 'left-clear',
       ),
-      'flickr' => array(
-        'tag' => array(
-          'type'     => 'ec_media',
-          'tag'      => '[ec_media:203 width:503 height:323 autoplay:0 align:left-clear]',
-          'id'       => 303,
-          'width'    => 503,
-          'height'   => 323,
-          'autoplay' => 0,
-          'align'    => 'left-clear',
-        ),
-        'expected' => '<object class="video-filter video-flickr_slideshows vf-capacity4dev vf-72157637834755414" type="application/x-shockwave-flash" width="503" height="323" data="http://www.flickr.com/apps/slideshow/show.swf?v=67348">
+      'expected' => '<iframe src="https://maps.google.com/mapscalendar/embed?src=1du7itc7knjdj1puces275171o%40group.calendar.google.com&amp;ctz=Europe/Brussels" style="border: 0" width="502" height="322" frameborder="0" scrolling="no"></iframe>',
+    ),
+    'flickr' => array(
+      'tag' => array(
+        'type'     => 'ec_media',
+        'tag'      => '[ec_media:203 width:503 height:323 autoplay:0 align:left-clear]',
+        'id'       => 303,
+        'width'    => 503,
+        'height'   => 323,
+        'autoplay' => 0,
+        'align'    => 'left-clear',
+      ),
+      'expected' => '<object class="video-filter video-flickr_slideshows vf-capacity4dev vf-72157637834755414" type="application/x-shockwave-flash" width="503" height="323" data="http://www.flickr.com/apps/slideshow/show.swf?v=67348">
   <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=67348"></param><param name="wmode" value="transparent"></param><param name="allowFullScreen" value="true"></param><param name="flashvars" value="&amp;offsite=true&amp;lang=en-us&amp;page_show_url=%2Fphotos%2Fcapacity4dev%2Fsets%2F72157637834755414%2Fshow%2F&amp;page_show_back_url=%2Fphotos%2Fcapacity4dev%2Fsets%2F72157637834755414%2F&amp;set_id=72157637834755414&amp;jump_to="></param></object>',
-      ),
-    );
+    ),
+  );
 
   /**
    * {@inheritdoc}
@@ -90,4 +90,5 @@ class C4dMigrateTestProcessTagEcMedia extends C4dMigrateTestProcessTagBase {
       );
     }
   }
+
 }

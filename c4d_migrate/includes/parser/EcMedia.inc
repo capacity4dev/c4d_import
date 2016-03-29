@@ -53,4 +53,5 @@ class C4dMigrateParserEcMedia extends C4dMigrateParserAbstract {
 
     return $data;
   }
+
 }

@@ -11,7 +11,7 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -90,4 +90,5 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
       node_gallery_api_set_gallery_cover_item($node->nid, $gallery_id);
     }
   }
+
 }

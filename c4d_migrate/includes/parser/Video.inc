@@ -45,4 +45,5 @@ class C4dMigrateParserVideo extends C4dMigrateParserAbstract {
 
     return $data;
   }
+
 }

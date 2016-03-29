@@ -19,4 +19,5 @@ class C4dMigrateLoggerWatchdog implements C4dMigrateLoggerInterface {
 
     watchdog('c4d_migrate', $message, $variables, $severity);
   }
+
 }

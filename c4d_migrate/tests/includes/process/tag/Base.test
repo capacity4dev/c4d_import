@@ -54,4 +54,5 @@ class C4dMigrateTestProcessTagBase extends DrupalWebTestCase {
     );
     return $config;
   }
+
 }

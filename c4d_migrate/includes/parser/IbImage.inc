@@ -70,12 +70,16 @@ class C4dMigrateParserIbImage extends C4dMigrateParserAbstract {
     switch ($link) {
       case 'photo_album_link':
         return 'photoalbum';
+
       case 'photo_album_slideshow':
         return 'slideshow';
+
       case 'popup':
         return 'popup';
+
       case 'none':
         return 'image';
+
       default:
         return 'link';
     }

@@ -68,4 +68,5 @@ class C4dMigrateProcessTagC4dImageLocal extends C4dMigrateProcessTagAbstractFile
     );
     return $replacement;
   }
+
 }
