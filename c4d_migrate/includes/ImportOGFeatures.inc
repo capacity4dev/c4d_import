@@ -92,7 +92,6 @@ class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
       'c4m_features_og_discussions' => 'c4m_features_og_discussions',
       'c4m_features_og_documents' => 'c4m_features_og_documents',
       'c4m_features_og_events' => 'c4m_features_og_events',
-      'c4m_features_og_tasklists' => 'c4m_features_og_tasklists',
       'c4m_features_og_members' => 'c4m_features_og_members',
     );
   }
