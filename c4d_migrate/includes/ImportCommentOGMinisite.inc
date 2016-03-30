@@ -20,4 +20,5 @@ class C4dMigrateImportCommentOGMinisite extends C4dMigrateImportBaseCommentOg {
 
     parent::__construct('minisite_page', 'wiki_page', 'c4d_export_node_minisite_page', $group);
   }
+
 }

@@ -11,7 +11,7 @@ class C4dMigrateImportNodeOGPhotoalbum extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
-   * @param MigrateGroup $group
+   * @param object $group
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
@@ -45,5 +45,7 @@ class C4dMigrateImportNodeOGPhotoalbum extends C4dMigrateImportBaseNodeOG {
   public function prepareRow($row) {
     parent::prepareRow($row);
     $row->body = $this->prepareHtml($row->body);
+    return TRUE;
   }
+
 }

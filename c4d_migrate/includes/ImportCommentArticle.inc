@@ -11,8 +11,6 @@ class C4dMigrateImportCommentArticle extends C4dMigrateImportBaseComment {
 
   /**
    * Configure the object during creation.
-   *
-   * @param object|NULL $group
    */
   public function __construct($group = NULL) {
     $this->description = t('Import Article comments.');
@@ -35,4 +33,5 @@ class C4dMigrateImportCommentArticle extends C4dMigrateImportBaseComment {
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
   }
+
 }

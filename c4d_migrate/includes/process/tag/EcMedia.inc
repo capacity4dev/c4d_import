@@ -33,7 +33,7 @@ class C4dMigrateProcessTagEcMedia extends C4dMigrateProcessTagAbstractEmbed {
    * @param array $tag
    *   The tag we need to load the info for.
    *
-   * @return stdClass|bool
+   * @return object|bool
    *   The retrieved information or FALSE.
    */
   protected function loadInfo($tag) {
@@ -56,4 +56,5 @@ class C4dMigrateProcessTagEcMedia extends C4dMigrateProcessTagAbstractEmbed {
 
     return $info;
   }
+
 }

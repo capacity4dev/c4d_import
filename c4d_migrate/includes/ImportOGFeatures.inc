@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportOGFeatures
+ * Class C4dMigrateImportOGFeatures.
  */
 class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
 
@@ -132,7 +132,7 @@ class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
     $features = $this->defaultFeatures;
 
     // Convert feature settings.
-    foreach($sourceFeatures as $feature => $enabled) {
+    foreach ($sourceFeatures as $feature => $enabled) {
       $key = $features[$this->featureMappings[$feature]];
       if (empty($key)) {
         // @todo: Group feature not yet available.
@@ -156,4 +156,5 @@ class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
 
     return TRUE;
   }
+
 }

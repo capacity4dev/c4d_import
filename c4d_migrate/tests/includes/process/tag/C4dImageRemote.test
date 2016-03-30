@@ -70,4 +70,5 @@ class C4dMigrateTestProcessTagC4dImageRemote extends DrupalWebTestCase {
            'The replacement string was what we expected.'
     );
   }
+
 }

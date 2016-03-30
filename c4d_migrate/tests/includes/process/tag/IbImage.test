@@ -32,7 +32,7 @@ abstract class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagB
    *
    * @param string $type_name
    *   Type of file to generate.
-   * @param int    $size
+   * @param int $size
    *   Optional filesize to generate.
    *
    * @return mixed
@@ -47,4 +47,5 @@ abstract class C4dMigrateTestProcessTagIbImage extends C4dMigrateTestProcessTagB
 
     return $file;
   }
+
 }

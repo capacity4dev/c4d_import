@@ -56,14 +56,14 @@ class C4dMigrateTestProcessTagIbImagePopup extends C4dMigrateTestProcessTagIbIma
 
     // @TODO: Need to work on the output. Classes etc...
     $expected_replacement = sprintf(
-      '<div class="ibimage ibimage-left ibimage-preset-large">' .
-      '<div class="ibimage-inner">' .
-      '<a href="%s" class="ibimage-link popup lightbox">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="Popup image in lightbox" title="" />' .
-      '<span class="caption">Popup image in lightbox</span>' .
-      '</a>' .
-      '</div>' .
-      '</div>',
+      '<div class="ibimage ibimage-left ibimage-preset-large">
+        <div class="ibimage-inner">
+            <a href="%s" class="ibimage-link popup lightbox">
+                <img src="%s" class="img__fid__%d media-image" alt="Popup image in lightbox" title="" />
+                <span class="caption">Popup image in lightbox</span>
+            </a>
+        </div>
+      </div>',
       $expected_path,
       $expected_path,
       (int) $processor->getFile()->fid
@@ -75,4 +75,5 @@ class C4dMigrateTestProcessTagIbImagePopup extends C4dMigrateTestProcessTagIbIma
            'The replacement string was what we expected.'
     );
   }
+
 }

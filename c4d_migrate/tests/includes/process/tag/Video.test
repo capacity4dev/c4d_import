@@ -14,23 +14,23 @@ class C4dMigrateTestProcessTagVideo extends DrupalUnitTestCase {
    * @var array
    */
   private $tags = array(
-      'youtube' => array(
-        'tag' => array(
-          'type' => "video",
-          'tag'  => '[video:http://www.youtube.com/v/_IFglfiI2bQ]',
-          'url'  => "http://www.youtube.com/v/_IFglfiI2bQ",
-        ),
-        'expected' => '<iframe src="http://www.youtube.com/v/_IFglfiI2bQ?autoplay=0" width="520" height="450" frameborder="0"></iframe>',
+    'youtube' => array(
+      'tag' => array(
+        'type' => "video",
+        'tag'  => '[video:http://www.youtube.com/v/_IFglfiI2bQ]',
+        'url'  => "http://www.youtube.com/v/_IFglfiI2bQ",
       ),
-      'vimeo' => array(
-        'tag' => array(
-          'type' => "video",
-          'tag'  => '[video:http://vimeo.com/50678094#at=0]',
-          'url'  => "http://vimeo.com/50678094#at=0",
-        ),
-        'expected' => '<iframe src="http://vimeo.com/50678094#at=0?autoplay=0" width="520" height="450" frameborder="0"></iframe>',
+      'expected' => '<iframe src="http://www.youtube.com/v/_IFglfiI2bQ?autoplay=0" width="520" height="450" frameborder="0"></iframe>',
+    ),
+    'vimeo' => array(
+      'tag' => array(
+        'type' => "video",
+        'tag'  => '[video:http://vimeo.com/50678094#at=0]',
+        'url'  => "http://vimeo.com/50678094#at=0",
       ),
-    );
+      'expected' => '<iframe src="http://vimeo.com/50678094#at=0?autoplay=0" width="520" height="450" frameborder="0"></iframe>',
+    ),
+  );
 
   /**
    * {@inheritdoc}
@@ -69,4 +69,5 @@ class C4dMigrateTestProcessTagVideo extends DrupalUnitTestCase {
       );
     }
   }
+
 }

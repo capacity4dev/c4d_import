@@ -28,7 +28,7 @@ class C4dMigrateTestParserVideo extends DrupalUnitTestCase {
 EOT;
 
   /**
-   * Expected result
+   * Expected result.
    *
    * @var array
    */
@@ -87,4 +87,5 @@ EOT;
     $this->assertEqual(4, count($tags), 'Expected to get 4 unique tags.');
     $this->assertEqual($this->expectedTags, $tags);
   }
+
 }

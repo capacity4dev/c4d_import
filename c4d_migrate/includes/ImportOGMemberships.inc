@@ -5,7 +5,7 @@
  */
 
 /**
- * Class C4dMigrateImportOGMemberships
+ * Class C4dMigrateImportOGMemberships.
  */
 class C4dMigrateImportOGMemberships extends C4dMigrateImportBase {
   /**
@@ -111,4 +111,5 @@ class C4dMigrateImportOGMemberships extends C4dMigrateImportBase {
 
     parent::prepareRow($row);
   }
+
 }

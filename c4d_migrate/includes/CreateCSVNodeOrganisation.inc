@@ -5,7 +5,7 @@
  */
 
 /**
- * Class to create the organisation entities from CSV
+ * Class to create the organisation entities from CSV.
  */
 class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
   /**
@@ -64,7 +64,10 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
   }
 
   /**
-   * Helper method to combine a domain icon state and domain values for a "domain" field.
+   * Helper method to combine a domain icon state and domain values.
+   *
+   * Helper method to combine a domain icon state and domain values
+   * for a "domain" field.
    *
    * @param object $entity
    *   The entity object AFTER it has been saved (nid available).
@@ -72,6 +75,9 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
    *   The source row we are processing.
    * @param string $domainfield
    *   Name of the field holding the domain data.
+   *
+   * @return bool
+   *   Returns success indication.
    */
   public function extractDomain($entity, $row, $domainfield) {
     $domains = explode(',', $row->$domainfield);
@@ -86,12 +92,15 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
           'icon'    => $domain_data[0],
           'domain'  => $domain_data[1],
         );
-      } else {
+      }
+      else {
         $entity->c4m_domain[LANGUAGE_NONE][] = array(
           'icon'    => 0,
           'domain'  => $domain_data[0],
         );
       }
     }
+    return TRUE;
   }
+
 }

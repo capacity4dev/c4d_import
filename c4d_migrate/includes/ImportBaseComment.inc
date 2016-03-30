@@ -55,10 +55,14 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
    *
    * This implements the common functionality to import nodes from a flat table.
    *
-   * @param MigrateGroup|null $source_node_type
-   * @param                   $destination_node_type
-   * @param                   $base_node_export_table
-   * @param null              $group
+   * @param string $source_node_type
+   *   Source node bundle.
+   * @param string $destination_node_type
+   *   Destination node bundle.
+   * @param string $base_node_export_table
+   *   Database table to export from.
+   * @param object $group
+   *   The migrate Group object.
    */
   public function __construct($source_node_type, $destination_node_type, $base_node_export_table, $group = NULL) {
     $this->description = t('Import Comments.');
@@ -273,4 +277,5 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
       message_save($message);
     }
   }
+
 }

@@ -27,20 +27,25 @@ class C4dMigrateLoggerDrush implements C4dMigrateLoggerInterface {
       case self::ERROR:
         $type = 'error';
         break;
+
       case self::WARNING:
         $type = 'warning';
         break;
+
       case self::NOTICE:
         $type = 'notice';
         break;
+
       case self::INFO:
         $type = 'info';
         break;
+
       case self::DEBUG:
         $type = 'debug';
         break;
     }
 
-    drush_log(t($message, $variables), $type);
+    drush_log(format_string($message, $variables), $type);
   }
+
 }

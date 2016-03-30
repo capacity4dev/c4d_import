@@ -71,7 +71,6 @@ files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
 files[] = includes/parser/EcMedia.inc
 files[] = includes/parser/Video.inc
-files[] = includes/parser/Embed.inc
 
 ; Processors.
 files[] = includes/process/Abstract.inc

@@ -81,12 +81,12 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
     $topic_nids = unserialize($row->topics);
     $topics = array();
 
-    foreach($topic_nids as $nid) {
+    foreach ($topic_nids as $nid) {
       $title = $this->getNodeTitleFromNid($nid);
 
       $mapped = c4m_vocab_topic_get_mapping_by_source($title);
 
-      foreach($mapped as $term) {
+      foreach ($mapped as $term) {
         $topics[] = $term->tid;
       }
     }
@@ -111,4 +111,5 @@ class C4dMigrateImportNodeArticle extends C4dMigrateImportBaseNode {
 
     $this->messageUpdateSave($entity, $row);
   }
+
 }

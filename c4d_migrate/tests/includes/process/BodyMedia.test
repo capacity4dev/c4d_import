@@ -9,7 +9,7 @@
  */
 class C4dMigrateTestProcessBodyMedia extends C4dMigrateTestProcessTagBase {
   /**
-   * The test body
+   * The test body.
    *
    * @var string
    */
@@ -97,4 +97,5 @@ EOL;
     $result = $processor->process($this->testBody);
     $this->assertEqual($expected, $result);
   }
+
 }

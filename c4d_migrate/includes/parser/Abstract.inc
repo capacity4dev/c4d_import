@@ -109,4 +109,5 @@ abstract class C4dMigrateParserAbstract {
   private function getPattern() {
     return $this->pattern;
   }
+
 }

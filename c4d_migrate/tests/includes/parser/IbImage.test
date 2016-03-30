@@ -30,7 +30,7 @@ class C4dMigrateTestParserIbImage extends DrupalUnitTestCase {
 EOT;
 
   /**
-   * Expected result
+   * Expected result.
    *
    * @var array
    */
@@ -120,4 +120,5 @@ EOT;
 
     $this->assertEqual($this->expectedTags, $tags);
   }
+
 }

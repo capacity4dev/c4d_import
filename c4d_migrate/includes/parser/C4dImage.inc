@@ -130,4 +130,5 @@ class C4dMigrateParserC4dImage extends C4dMigrateParserAbstract {
 
     return $source;
   }
+
 }

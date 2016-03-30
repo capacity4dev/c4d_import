@@ -19,18 +19,18 @@ class C4dMigrateProcessTagIbImageSlideshow extends C4dMigrateProcessTagIbImage {
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
-      '<div class="ibimage %s ibimage-preset-%s">' .
-      '<div class="ibimage-inner">' .
-      '<a href="%s"%s class="ibimage-link photo-album-slideshow popup lightbox">' .
-      '<img src="%s" class="img__fid__%d media-image" alt="%s" title="" />' .
-      '<span class="caption">%s</span>' .
-      '</a>' .
-      '</div>' .
-      '</div>'
-      ,
+      '<div class="ibimage %s ibimage-preset-%s">
+        <div class="ibimage-inner">
+          <a href="%s"%s class="ibimage-link photo-album-slideshow popup lightbox">
+            <img src="%s" class="img__fid__%d media-image" alt="%s" title="" />
+            <span class="caption">%s</span>
+          </a>
+        </div>
+      </div>',
       $tag['style'],
       $tag['preset'],
-      $url, // @TODO LINK TO PHOTOALBUM!
+    // @TODO LINK TO PHOTOALBUM!
+      $url,
       $tag['target'] == '_blank' ? ' target="_blank"' : '',
       $url,
       $file->fid,
@@ -40,4 +40,5 @@ class C4dMigrateProcessTagIbImageSlideshow extends C4dMigrateProcessTagIbImage {
 
     return $replacement;
   }
+
 }
