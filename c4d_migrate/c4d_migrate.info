@@ -3,9 +3,27 @@ description = Import data from Capacity4Dev
 core = 7.x
 package = capacity4more - Migrate
 version = 7.x-1.x-dev
-dependencies[] = location
 dependencies[] = migrate
 dependencies[] = migrate_extras
+
+; Content type dependencies
+dependencies[] = c4m_content
+dependencies[] = c4m_content_article
+dependencies[] = c4m_content_banner
+dependencies[] = c4m_content_book
+dependencies[] = c4m_content_discussion
+dependencies[] = c4m_content_document
+dependencies[] = c4m_content_event
+dependencies[] = c4m_content_featured
+dependencies[] = c4m_content_feed
+dependencies[] = c4m_content_group
+dependencies[] = c4m_content_inthe_picture
+dependencies[] = c4m_content_organisation
+dependencies[] = c4m_content_photo
+dependencies[] = c4m_content_photoalbum
+dependencies[] = c4m_content_project
+dependencies[] = c4m_content_topic
+dependencies[] = c4m_content_wiki_page
 
 ; Classes to migrate the content.
 files[] = includes/ImportBase.inc
@@ -43,9 +61,6 @@ files[] = includes/ImportVocabOGTags.inc
 ; Group content nodes + comments.
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportCommentOGDocument.inc
-files[] = includes/ImportNodeOGTasklist.inc
-files[] = includes/ImportNodeOGTask.inc
-files[] = includes/ImportCommentOGTask.inc
 files[] = includes/ImportNodeOGDiscussion.inc
 files[] = includes/ImportCommentOGDiscussion.inc
 files[] = includes/ImportNodeOGPhotoalbum.inc
