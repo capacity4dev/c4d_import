@@ -43,9 +43,6 @@ files[] = includes/ImportVocabOGTags.inc
 ; Group content nodes + comments.
 files[] = includes/ImportNodeOGDocument.inc
 files[] = includes/ImportCommentOGDocument.inc
-files[] = includes/ImportNodeOGTasklist.inc
-files[] = includes/ImportNodeOGTask.inc
-files[] = includes/ImportCommentOGTask.inc
 files[] = includes/ImportNodeOGDiscussion.inc
 files[] = includes/ImportCommentOGDiscussion.inc
 files[] = includes/ImportNodeOGPhotoalbum.inc
