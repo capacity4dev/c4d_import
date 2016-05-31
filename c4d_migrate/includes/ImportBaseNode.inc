@@ -73,6 +73,20 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
   private $pathManual = FALSE;
 
   /**
+   * The legacy Flag ID for nodes.
+   *
+   * @var bool
+   */
+  private $legacyFlagId = FALSE;
+
+  /**
+   * The Flag ID for nodes.
+   *
+   * @var bool
+   */
+  private $flagId = FALSE;
+
+  /**
    * General initialization of a Migration object.
    *
    * This implements the common functionality to import nodes from a flat table.
@@ -166,6 +180,62 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
         if (empty($rid)) {
           redirect_save($redirect);
         }
+      }
+    }
+
+    // Find the legacy flag ID.
+    $legacy_flag_id = $this->getLegacyFlagId();
+    // Find the flag ID.
+    $flag_id = $this->getFlagId();
+
+    // Find if the current legacy node has flags.
+    if ($legacy_flag_id && $flag_id) {
+      // Flagging.
+      $query = $this->createSelect('flag_content', 'fc')
+        ->orderBy('fcid', 'ASC')
+        ->fields('fc', array('content_id', 'uid', 'sid', 'timestamp'))
+        ->condition('fid', $legacy_flag_id)
+        ->condition('content_type', 'node')
+        ->condition('content_id', $row->nid)
+        ->execute();
+      $results = $query->fetchAll();
+
+      foreach ($results as $result) {
+        $uid = $this->handleSourceMigration(
+          'C4dMigrateImportUsers',
+          $result->uid,
+          NULL,
+          $this
+        );
+        $flagging = flagging_create(array(
+          'fid'         => $flag_id,
+          'entity_type' => 'node',
+          'entity_id'   => $node->nid,
+          'uid'         => $uid,
+          'sid'         => $result->sid,
+          'timestamp'   => $result->timestamp,
+        ));
+        flagging_save($flagging);
+      }
+
+      // Flag counts.
+      $query = $this->createSelect('flag_counts', 'fc')
+        ->fields('fc', array('count', 'last_updated'))
+        ->condition('fid', $legacy_flag_id)
+        ->condition('content_type', 'node')
+        ->condition('content_id', $row->nid)
+        ->execute();
+      $results = $query->fetchAll();
+
+      foreach ($results as $result) {
+        $record = array(
+          'fid' => $flag_id,
+          'entity_type' => 'node',
+          'entity_id' => $node->nid,
+          'count' => $result->count,
+          'last_updated' => $result->last_updated,
+        );
+        drupal_write_record('flag_counts', $record);
       }
     }
   }
@@ -316,6 +386,44 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
     return $this->pathManual;
   }
 
+  /**
+   * Returns the legacy Flag ID for nodes.
+   *
+   * @return bool | integer
+   */
+  public function getLegacyFlagId() {
+    if (!$this->legacyFlagId) {
+      $query = $this->createSelect('flags', 'f')
+        ->fields('f', array('fid'))
+        ->condition('content_type', 'node')
+        ->condition('name', 'recommend_content')
+        ->execute();
+      $results = $query->fetchAll();
+
+      if (count($results) && isset($results[0]) && isset($results[0]->fid)) {
+        $this->legacyFlagId = $results[0]->fid;
+      }
+    }
+
+    return $this->legacyFlagId;
+  }
+
+  /**
+   * Returns the legacy Flag ID for nodes.
+   *
+   * @return bool | integer
+   */
+  public function getFlagId() {
+    if (!$this->flagId) {
+      $flag = flag_get_flag('c4m_og_content_recommend');
+
+      if ($flag) {
+        $this->flagId = $flag->fid;
+      }
+    }
+
+    return $this->flagId;
+  }
 
   /**
    * Reset the $node->changed timestamp.
