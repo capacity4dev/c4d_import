@@ -207,15 +207,15 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
           NULL,
           $this
         );
-        $flagging = flagging_create(array(
+        $record = array(
           'fid'         => $flag_id,
           'entity_type' => 'node',
           'entity_id'   => $node->nid,
           'uid'         => $uid,
           'sid'         => $result->sid,
           'timestamp'   => $result->timestamp,
-        ));
-        flagging_save($flagging);
+        );
+        drupal_write_record('flagging', $record);
       }
 
       // Flag counts.
