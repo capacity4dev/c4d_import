@@ -183,7 +183,21 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       }
     }
 
-    // Find the legacy flag ID.
+    // Add view counter.
+    $count_total = $row->count_total;
+    $count_last = $row->count_last;
+
+    db_merge('node_counter')
+      ->key(array('nid' => $node->nid))
+      ->fields(
+        array(
+          'totalcount' => $count_total,
+          'timestamp' => $count_last,
+        )
+      )
+      ->execute();
+
+    // Find the legacy flag ID (recommendations).
     $legacy_flag_id = $this->getLegacyFlagId();
     // Find the flag ID.
     $flag_id = $this->getFlagId();
@@ -208,12 +222,12 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
           $this
         );
         $record = array(
-          'fid'         => $flag_id,
+          'fid' => $flag_id,
           'entity_type' => 'node',
-          'entity_id'   => $node->nid,
-          'uid'         => $uid,
-          'sid'         => $result->sid,
-          'timestamp'   => $result->timestamp,
+          'entity_id' => $node->nid,
+          'uid' => $uid,
+          'sid' => $result->sid,
+          'timestamp' => $result->timestamp,
         );
         drupal_write_record('flagging', $record);
       }
