@@ -28,6 +28,16 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
   /**
    * {@inheritdoc}
    */
+  public function addDefaultFieldMapping() {
+    parent::addDefaultFieldMapping();
+
+    // Custom status mapping.
+    $this->addFieldMapping('status', '_status', FALSE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
@@ -75,6 +85,9 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
 
     $row->body = $this->prepareHtml($row->body);
 
+    // Prepare the status of the project.
+    $this->prepareStatus($row);
+
     return TRUE;
   }
 
@@ -104,6 +117,22 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
     $this->nodeSave($node, $row->changed);
 
     return TRUE;
+  }
+
+  /**
+   * Helper to create a status record.
+   *
+   * @param object $row
+   *   Source row object.
+   */
+  public function prepareStatus($row) {
+    // First set the new status to the original status value.
+    $row->_status = ($row->status) ? NODE_PUBLISHED : NODE_NOT_PUBLISHED;
+
+    // If the node is private, it must be unpublished anyway.
+    if (isset($row->og_private) && $row->og_private) {
+      $row->_status = NODE_NOT_PUBLISHED;
+    }
   }
 
   /**

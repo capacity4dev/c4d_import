@@ -26,6 +26,16 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
   /**
    * {@inheritdoc}
    */
+  public function addDefaultFieldMapping() {
+    parent::addDefaultFieldMapping();
+
+    // Map the access (public/private).
+    $this->addFieldMapping('group_access', 'og_private');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'field_group_description')
