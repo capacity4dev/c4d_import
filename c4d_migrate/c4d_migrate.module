@@ -109,7 +109,7 @@ function c4d_migrate_menu() {
     'access arguments' => array('administer c4d import'),
     'file'             => 'c4d_migrate.converter.inc',
     'file path'        => drupal_get_path('module', 'c4d_migrate'),
-    'type'             => MENU_LOCAL_TASK,
+    'type'             => MENU_CALLBACK,
     'weight'           => 30,
   );
 
