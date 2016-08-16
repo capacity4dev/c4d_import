@@ -4,6 +4,8 @@
  * Base class to import OG content data from capacity4dev into capacity4more.
  */
 
+module_load_include('inc', 'c4d_migrate', 'c4d_migrate.converter');
+
 /**
  * Base class to import OG content data from capacity4dev into capacity4more.
  */
@@ -17,8 +19,6 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     'C4dMigrateImportNodeGroup',
     'C4dMigrateImportNodeProject',
     'C4dMigrateImportUsers',
-    'C4dMigrateImportVocabOGCategories',
-    'C4dMigrateImportVocabOGTags',
     'C4dMigrateCreateCSVTermTopic',
   );
 
@@ -28,12 +28,20 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    * @var bool
    */
   private $hasCategories = FALSE;
+
   /**
    * Flag whether this content type has tags enabled.
    *
    * @var bool
    */
   private $hasTags = FALSE;
+
+  /**
+   * Categories & Tags mapping array.
+   *
+   * @var array
+   */
+  private $mappingCategoriesAndTags = NULL;
 
   /**
    * Configure the migration class during creation.
@@ -43,16 +51,28 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
 
     $this->addFieldMapping(OG_AUDIENCE_FIELD, OG_AUDIENCE_FIELD);
 
-    if ($this->hasCategories()) {
-      $this->addFieldMapping('c4m_vocab_categories', 'categories')
-           ->sourceMigration('C4dMigrateImportVocabOGCategories')
-           ->arguments(array('source_type' => 'tid'));
-    }
-    if ($this->hasTags()) {
-      $this->addFieldMapping('c4m_vocab_tags', 'tags')
-           ->sourceMigration('C4dMigrateImportVocabOGTags')
-           ->arguments(array('source_type' => 'tid'));
-    }
+    // Initialize the Categories & Tags mapping array.
+    $this->getMappingCategoriesAndTags();
+
+    $this->addFieldMapping('c4m_vocab_date', 'c4m_vocab_date');
+    $this->addFieldMapping('c4m_vocab_date:create_term')
+      ->defaultValue(TRUE);
+
+    $this->addFieldMapping('c4m_vocab_document_type', 'c4m_vocab_document_type');
+    $this->addFieldMapping('c4m_vocab_document_type:create_term')
+      ->defaultValue(TRUE);
+
+    $this->addFieldMapping('c4m_vocab_geo', 'c4m_vocab_geo');
+    $this->addFieldMapping('c4m_vocab_geo:create_term')
+      ->defaultValue(TRUE);
+
+    $this->addFieldMapping('c4m_vocab_language', 'c4m_vocab_language');
+    $this->addFieldMapping('c4m_vocab_language:create_term')
+      ->defaultValue(TRUE);
+
+    $this->addFieldMapping('c4m_vocab_topic', 'c4m_vocab_topic');
+    $this->addFieldMapping('c4m_vocab_topic:create_term')
+      ->defaultValue(TRUE);
   }
 
   /**
@@ -77,41 +97,55 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
 
     $row->{OG_AUDIENCE_FIELD} = $og_groups;
 
-    // @TODO: og_public?
-
     if ($this->hasCategories()) {
-      $row->categories = unserialize($row->categories);
-      $row->categories = $this->handleSourceMigration(
-                              'C4dMigrateImportVocabOGCategories',
-                                $row->categories,
-                                NULL,
-                                $this);
-      // handleSourceMigration can return NULL, a single value or an array.
-      // We need an array, even if it's empty.
-      if (empty($row->categories)) {
-        $row->categories = array();
-      }
-      if (!is_array($row->categories)) {
-        $row->categories = array($row->categories);
-      }
+      $this->prepareRowCategoriesAndTags($row, 'categories');
     }
+
     if ($this->hasTags()) {
-      $row->tags = unserialize($row->tags);
-      $row->tags = $this->handleSourceMigration(
-                        'C4dMigrateImportVocabOGTags',
-                          $row->tags,
-                          NULL,
-                          $this);
-      // handleSourceMigration can return NULL, a single value or an array.
-      // We need an array, even if it's empty.
-      if (empty($row->tags)) {
-        $row->tags = array();
-      }
-      if (!is_array($row->tags)) {
-        $row->tags = array($row->tags);
+      $this->prepareRowCategoriesAndTags($row, 'tags');
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Helper function to prepare the specific term fields (categories & tags).
+   *
+   * @param $source_field
+   *   The unserialized source field with term IDs.
+   */
+  private function prepareRowCategoriesAndTags(&$row, $source_field) {
+    if (!isset($row->{$source_field})) {
+      return;
+    }
+
+    $row->{$source_field} = unserialize($row->{$source_field});
+
+    // We need an array, even if it's empty.
+    if (empty($row->{$source_field})) {
+      $row->{$source_field} = array();
+    }
+    if (!is_array($row->{$source_field})) {
+      $row->{$source_field} = array($row->{$source_field});
+    }
+
+    foreach ($row->{$source_field} as $index => $term_id) {
+      $query = $this->createSelect('term_data', 'td');
+      $query->addField('td', 'name');
+      $query->condition('td.tid', $term_id);
+      $results = $query->execute();
+
+      while ($record = $results->fetchField()) {
+        $termName = $record;
+
+        if ($mapping = $this->mappingCategoriesAndTagsContainsTermName($termName)) {
+          $vocabulary_field = $mapping['vocabulary'];
+          $row->{$vocabulary_field} = $mapping['terms'];
+          // Remove this entry from the initial field.
+          unset($row->{$source_field}[$index]);
+        }
       }
     }
-    return TRUE;
   }
 
   /**
@@ -122,7 +156,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    * @param object $row
    *   The source row object.
    */
-  public function prepare($node, $row) {
+  public function prepare($node, $row) {dd($row);
     if (!$this->hasCategories()) {
       $row->categories = array();
     }
@@ -191,6 +225,43 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    */
   public function hasTags() {
     return $this->hasTags;
+  }
+
+  /**
+   * Retrieve the Categories & Tags mapping array.
+   */
+  public function getMappingCategoriesAndTags() {
+    if (is_null($this->mappingCategoriesAndTags)) {
+      $mapping = c4d_migrate_categories_tags_csv_converter_get_mapping_array();
+      $this->mappingCategoriesAndTags = $mapping;
+    }
+
+    if (empty($this->mappingCategoriesAndTags)) {
+      $this->mappingCategoriesAndTags = array();
+    }
+
+    return $this->mappingCategoriesAndTags;
+  }
+
+  /**
+   * Retrieves the entry in the Categories & Tags mapping array
+   * with the given term name.
+   *
+   * @param string $termName
+   *   The term name to search for.
+   *
+   * @return bool|array
+   *   Returns the value of the mapping item with the given term name or
+   *   FALSE if none is found.
+   */
+  public function mappingCategoriesAndTagsContainsTermName($termName) {
+    $mapping = $this->getMappingCategoriesAndTags();
+
+    if (isset($mapping[$termName]) && !empty($mapping[$termName])) {
+      return $mapping[$termName];
+    }
+
+    return FALSE;
   }
 
   /**
