@@ -73,7 +73,7 @@ function _c4d_migrate_categories_tags_csv_converter_helper(&$mapping, $filename,
     $row = fgetcsv($file, 0, ';');
 
     if (isset($row[0]) && !empty($row[0])) {
-      $key = trim($row[0]);
+      $key = trim(htmlspecialchars($row[0]));
 
       $mapping[$key] = array(
         'vocabulary' => $vocabulary,

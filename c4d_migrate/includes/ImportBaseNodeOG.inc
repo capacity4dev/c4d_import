@@ -111,8 +111,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   /**
    * Helper function to prepare the specific term fields (categories & tags).
    *
-   * @param $source_field
-   *   The unserialized source field with term IDs.
+   * @param string $source_field
+   *   The name of the source field.
    */
   private function prepareRowCategoriesAndTags(&$row, $source_field) {
     if (!isset($row->{$source_field})) {
@@ -130,6 +130,10 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     }
 
     foreach ($row->{$source_field} as $index => $term_id) {
+      // Remove this entry from the initial field.
+      // Will be either moved to another field or replaced by a term name.
+      unset($row->{$source_field}[$index]);
+
       $query = $this->createSelect('term_data', 'td');
       $query->addField('td', 'name');
       $query->condition('td.tid', $term_id);
@@ -138,11 +142,14 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
       while ($record = $results->fetchField()) {
         $termName = $record;
 
+        // Remove term from original field and map to specific field instead.
         if ($mapping = $this->mappingCategoriesAndTagsContainsTermName($termName)) {
           $vocabulary_field = $mapping['vocabulary'];
           $row->{$vocabulary_field} = $mapping['terms'];
-          // Remove this entry from the initial field.
-          unset($row->{$source_field}[$index]);
+        }
+        // Else, store the term name in the array instead of the original tid.
+        else {
+          $row->{$source_field}[$index] = $termName;
         }
       }
     }
@@ -156,20 +163,43 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    * @param object $row
    *   The source row object.
    */
-  public function prepare($node, $row) {dd($row);
-    if (!$this->hasCategories()) {
-      $row->categories = array();
-    }
-    if (!$this->hasTags()) {
-      $row->tags = array();
-    }
+  public function prepare($node, $row) {
+    // Categories.
+    $this->prepareCategoriesAndTags($node, $row, 'categories');
 
-    $terms = array_merge($row->categories, $row->tags);
-    if (!empty($terms)) {
-      foreach ($terms as $key => $term) {
-        $terms[$key] = array('target_id' => $term);
+    // Tags.
+    $this->prepareCategoriesAndTags($node, $row, 'tags');
+  }
+
+  /**
+   * Helper function to review a "categories" or "tags" data row after fetch.
+   *
+   * @param object $node
+   *   The drupal node entity object.
+   * @param object $row
+   *   The source row object.
+   * @param string $source_field
+   *   The name of the source field.
+   */
+  private function prepareCategoriesAndTags(&$node, &$row, $source_field) {
+    if (!empty($row->{$source_field})) {
+      foreach ($row->{$source_field} as $term_name) {
+        $term = taxonomy_get_term_by_name($term_name);
+
+        if (empty($term)) {
+          $term = new stdClass();
+          $term->name = $term_name;
+          $term->vocabulary_machine_name = 1;
+          taxonomy_term_save($term);
+        }
+        else {
+          $term = reset($term);
+        }
+
+        if (isset($term->tid) && is_numeric($term->tid)) {
+          $node->og_vocabulary[LANGUAGE_NONE][] = array('target_id' => $term->tid);
+        }
       }
-      $node->og_vocabulary[LANGUAGE_NONE] = $terms;
     }
   }
 
@@ -255,6 +285,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   FALSE if none is found.
    */
   public function mappingCategoriesAndTagsContainsTermName($termName) {
+    $termName = htmlspecialchars_decode($termName);
     $mapping = $this->getMappingCategoriesAndTags();
 
     if (isset($mapping[$termName]) && !empty($mapping[$termName])) {
