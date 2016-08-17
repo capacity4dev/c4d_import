@@ -182,14 +182,26 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   The name of the source field.
    */
   private function prepareCategoriesAndTags(&$node, &$row, $source_field) {
+    $node->og_vocabulary[LANGUAGE_NONE] = array();
+
     if (!empty($row->{$source_field})) {
+      $vocabulary_type = ($source_field == 'tags') ? 'c4m_vocab_tag' : 'c4m_vocab_category';
+
       foreach ($row->{$source_field} as $term_name) {
-        $term = taxonomy_get_term_by_name($term_name);
+        $term = NULL;
+        $vocabulary_name = NULL;
+
+        if ($group_id = $this->getGroupIdOfContent($node->nid)) {
+          $vocabulary_name = $this->getGroupVocabularyName($group_id, $vocabulary_type);
+          $term = taxonomy_get_term_by_name($term_name, $vocabulary_name);
+        }
 
         if (empty($term)) {
+          $vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary_name);
           $term = new stdClass();
           $term->name = $term_name;
-          $term->vocabulary_machine_name = 1;
+          $term->vid = $vocabulary->vid;
+          $term->vocabulary_machine_name = $vocabulary_name;
           taxonomy_term_save($term);
         }
         else {
@@ -309,6 +321,43 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
 
     // Make sure the update message also exists.
     $this->messageUpdateSave($entity, $row);
+  }
+
+  /**
+   * Returns the group ID of the group the node is associated with.
+   *
+   * @param object $node
+   *   The node object.
+   *
+   * @return bool|mixed
+   *   Returns the Group ID or FALSE if not found.
+   */
+  protected function getGroupIdOfContent($node) {
+    if (isset($node->og_group_ref[LANGUAGE_NONE][0]) && is_null($node->og_group_ref[LANGUAGE_NONE][0])) {
+      return $node->og_group_ref[LANGUAGE_NONE][0];
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Returns the vocabulary name associated with the given group.
+   *
+   * @param object $group
+   *   The group to filter for.
+   * @param $vocabulary_type
+   *   The vocabulary type to search for.
+   *
+   * @return string
+   *   The vocabulary machine name.
+   */
+  protected function getGroupVocabularyName($group, $vocabulary_type) {
+    if (is_numeric($group)) {
+      $group = node_load($group);
+    }
+
+    $vocabulary = c4m_og_vocab_load_group_vocabulary($group, $vocabulary_type);
+    return $vocabulary->machine_name;
   }
 
 }
