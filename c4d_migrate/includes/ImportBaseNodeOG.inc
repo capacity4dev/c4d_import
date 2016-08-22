@@ -202,6 +202,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   The data row we are importing.
    */
   public function complete($entity, $row) {
+    parent::complete($entity, $row);
+
     // Make sure the messages have the proper timestamp.
     $this->messageInsertSave($entity, $row);
 
