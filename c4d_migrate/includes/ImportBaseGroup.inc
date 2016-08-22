@@ -41,9 +41,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
     $this->addFileFieldMapping('c4m_media', 'field_og_image');
     // @TODO Hide EC Field not mapped (field_hide_ec_disclaimer).
 
-    // Map the access (public/private).
-    $this->addFieldMapping('group_access', 'og_private');
-
     // Map the group status.
     $this->addFieldMapping('c4m_og_status', '_c4m_og_status');
 
