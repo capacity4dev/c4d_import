@@ -18,6 +18,7 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
       'C4dMigrateImportUsers',
       'C4dMigrateImportNodeArticle',
       'C4dMigrateImportNodeGroup',
+      'C4dMigrateImportNodeTopic',
     );
 
   /**
@@ -39,14 +40,14 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
     $this->addFieldMapping('c4m_body', 'body')
       ->arguments(array('format' => 'full_html'));
 
-    $this->addFieldMapping('c4m_vocab_topic', 'topics')
-      ->arguments(array('source_type' => 'tid'));
-
-    $this->addFieldMapping('c4m_related_articles', 'field_ref_related_articles')
+    $this->addFieldMapping('c4m_related_articles_unlimited', 'field_ref_related_articles')
       ->sourceMigration('C4dMigrateImportNodeArticle');
 
-    $this->addFieldMapping('c4m_related_group', 'field_ref_related_groups')
+    $this->addFieldMapping('c4m_related_group_unlimited', 'field_ref_related_groups')
       ->sourceMigration('C4dMigrateImportNodeGroup');
+
+    $this->addFieldMapping('c4m_related_topic', 'field_ref_related_topics')
+      ->sourceMigration('C4dMigrateImportNodeTopic');
   }
 
   /**
@@ -61,24 +62,12 @@ class C4dMigrateImportNodeFeed extends C4dMigrateImportBaseNode {
   public function prepareRow($row) {
     parent::prepareRow($row);
 
+    $row->body = $this->prepareHtml($row->body);
+
     // Unserialize data.
-    $topic_nids = unserialize($row->field_ref_related_topics);
-    $topics = array();
-
-    foreach ($topic_nids as $nid) {
-      $title = $this->getNodeTitleFromNid($nid);
-
-      $mapped = c4m_vocab_topic_get_mapping_by_source($title);
-
-      foreach ($mapped as $term) {
-        $topics[] = $term->tid;
-      }
-    }
-
-    $row->topics = $topics;
     $row->field_ref_related_articles = unserialize($row->field_ref_related_articles);
     $row->field_ref_related_groups = unserialize($row->field_ref_related_groups);
-    $row->body = $this->prepareHtml($row->body);
+    $row->field_ref_related_topics = unserialize($row->field_ref_related_topics);
 
     return TRUE;
   }
