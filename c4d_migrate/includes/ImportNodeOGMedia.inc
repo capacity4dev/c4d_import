@@ -54,13 +54,12 @@ class C4dMigrateImportNodeOGMedia extends C4dMigrateImportBaseNodeOG {
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'file_field');
-dd('---------------------------');
-dd($row);
+    
     // Skip this row if it's not an image.
     if (!$this->isImageField($row, 'file_field')) {
       return FALSE;
     }
-dd('IMAGE FIELD');
+
     return TRUE;
   }
 
