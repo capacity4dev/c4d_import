@@ -52,6 +52,8 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabOGTags',
     'C4dMigrateImportNodeOGDocument',
     'C4dMigrateImportCommentOGDocument',
+    'C4dMigrateImportNodeOGMedia',
+    'C4dMigrateImportCommentOGMedia',
     'C4dMigrateImportNodeOGDiscussion',
     'C4dMigrateImportCommentOGDiscussion',
     'C4dMigrateImportNodeOGPhotoalbum',

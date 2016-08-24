@@ -1,13 +1,15 @@
 <?php
 /**
  * @file
- * Migrate class to import the Document group nodes.
+ * Migrate class to import the Media group nodes.
  */
 
 /**
- * Class to import the Document group nodes from the Drupal 6 platform.
+ * Class to import the Media group nodes from the Drupal 6 platform.
+ *
+ * Media refers to documents which are actually photos.
  */
-class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
+class C4dMigrateImportNodeOGMedia extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
@@ -15,11 +17,11 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
-    $this->description = t('Import Document group nodes.');
+    $this->description = t('Import Media group nodes.');
     $this->setSourceTable('c4d_export_node_document');
-    $this->setTargetBundle('document');
+    $this->setTargetBundle('photo');
 
-    $this->setCategoriesAndTags(TRUE);
+    $this->setCategoriesAndTags(FALSE);
 
     parent::__construct($group);
   }
@@ -30,10 +32,10 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+      ->arguments(array('format' => 'full_html'));
 
     // Map the picture field.
-    $this->addFileFieldMapping('c4m_document', 'file_field');
+    $this->addFileFieldMapping('c4m_media', 'file_field');
   }
 
   /**
@@ -43,21 +45,22 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
    *   The data from the table.
    *
    * @return bool
-   *   Success or FALSE if it must be skipped.
+   *   Success.
    */
   public function prepareRow($row) {
     parent::prepareRow($row);
 
-    // Prepare the picture data.
-    $this->prepareFileInRow($row, 'file_field');
-
     $row->body = $this->prepareHtml($row->body);
 
-    // Skip this row if it's an image.
-    if ($this->isImageField($row, 'file_field')) {
+    // Prepare the picture data.
+    $this->prepareFileInRow($row, 'file_field');
+dd('---------------------------');
+dd($row);
+    // Skip this row if it's not an image.
+    if (!$this->isImageField($row, 'file_field')) {
       return FALSE;
     }
-
+dd('IMAGE FIELD');
     return TRUE;
   }
 

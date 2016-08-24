@@ -13,6 +13,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *
    * @var string
    */
+  const FILE_PREFIX_EXTENSION = 'C4D_MIGRATE_FILE_EXTENSION_';
   const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
   const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
 
@@ -173,12 +174,14 @@ abstract class C4dMigrateImportBase extends Migration {
     $row, $source, $table = 'c4d_export_other_files'
   ) {
     // File info is passed trough temporary variables.
-    $file = self::FILE_PREFIX_FILE . $source;
-    $path = self::FILE_PREFIX_PATH . $source;
+    $extension = self::FILE_PREFIX_EXTENSION . $source;
+    $file      = self::FILE_PREFIX_FILE . $source;
+    $path      = self::FILE_PREFIX_PATH . $source;
 
     // Prepare with empty values.
-    $row->{$file} = NULL;
-    $row->{$path} = NULL;
+    $row->{$extension} = NULL;
+    $row->{$file}      = NULL;
+    $row->{$path}      = NULL;
 
     // Check if any file data in the platform.
     if (empty($row->{$source})) {
@@ -198,8 +201,9 @@ abstract class C4dMigrateImportBase extends Migration {
     $rel_path = $path_parts['dirname'];
 
     // Pass the filename.
-    $row->{$file} = $path_parts['basename'];
-    $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
+    $row->{$extension} = strtolower($path_parts['extension']);
+    $row->{$file}      = $path_parts['basename'];
+    $row->{$path}      = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
       . DIRECTORY_SEPARATOR
       . $rel_path;
   }
