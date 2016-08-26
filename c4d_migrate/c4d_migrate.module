@@ -52,6 +52,8 @@ function c4d_migrate_migrate_api() {
     'C4dMigrateImportVocabOGTags',
     'C4dMigrateImportNodeOGDocument',
     'C4dMigrateImportCommentOGDocument',
+    'C4dMigrateImportNodeOGMedia',
+    'C4dMigrateImportCommentOGMedia',
     'C4dMigrateImportNodeOGDiscussion',
     'C4dMigrateImportCommentOGDiscussion',
     'C4dMigrateImportNodeOGPhotoalbum',
@@ -100,6 +102,17 @@ function c4d_migrate_menu() {
     'file path'        => drupal_get_path('module', 'c4d_migrate'),
     'type'             => MENU_LOCAL_TASK,
     'weight'           => 20,
+  );
+
+  $items['admin/content/migrate/categories-tags/csv-converter'] = array(
+    'title'            => 'Categories & Tags CSV converter',
+    'description'      => 'Converts the CSV with the categories & tags.',
+    'page callback'    => 'c4d_migrate_categories_tags_csv_converter',
+    'access arguments' => array('administer c4d import'),
+    'file'             => 'c4d_migrate.converter.inc',
+    'file path'        => drupal_get_path('module', 'c4d_migrate'),
+    'type'             => MENU_CALLBACK,
+    'weight'           => 30,
   );
 
   return $items;

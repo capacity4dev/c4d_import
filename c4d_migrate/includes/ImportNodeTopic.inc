@@ -43,7 +43,8 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
          ->arguments(array('format' => 'full_html'));
 
     // Map the picture field.
-    $this->addFileFieldMapping('c4m_media', 'field_picture');
+    $this->addFileFieldMapping('c4m_media', 'field_picture', FILE_EXISTS_REPLACE);
+
     // Other fields are not described yet for the Drupal 7 Content Type.
     $this->addFieldMapping('c4m_vocab_topic_mapping', 'taxonomy')
       ->arguments(array('source_type' => 'tid'));
@@ -72,7 +73,7 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
 
     $row->body = $this->prepareHtml($row->body);
 
-    $destination = c4m_vocab_topic_get_mapping_by_source(trim($row->title));
+    $destination = c4m_vocab_topic_get_mapping_by_destination(trim($row->title));
     $c4m_vocab_topic = array();
 
     if (!empty($destination)) {
