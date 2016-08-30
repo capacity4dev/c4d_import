@@ -114,7 +114,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    * @param string $source_field
    *   The name of the source field.
    */
-  private function prepareRowCategoriesAndTags(&$row, $source_field) {
+  protected function prepareRowCategoriesAndTags(&$row, $source_field) {
     if (!isset($row->{$source_field})) {
       return;
     }
@@ -165,10 +165,14 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    */
   public function prepare($node, $row) {
     // Categories.
-    $this->prepareCategoriesAndTags($node, $row, 'categories');
+    if ($this->hasCategories()) {
+      $this->prepareCategoriesAndTags($node, $row, 'categories');
+    }
 
     // Tags.
-    $this->prepareCategoriesAndTags($node, $row, 'tags');
+    if ($this->hasTags()) {
+      $this->prepareCategoriesAndTags($node, $row, 'tags');
+    }
   }
 
   /**
@@ -181,7 +185,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    * @param string $source_field
    *   The name of the source field.
    */
-  private function prepareCategoriesAndTags(&$node, &$row, $source_field) {
+  protected function prepareCategoriesAndTags(&$node, &$row, $source_field) {
     $node->og_vocabulary[LANGUAGE_NONE] = array();
 
     if (!empty($row->{$source_field})) {
@@ -191,24 +195,26 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
         $term = NULL;
         $vocabulary_name = NULL;
 
-        if ($group_id = $this->getGroupIdOfContent($node->nid)) {
+        if ($group_id = $this->getGroupIdOfContent($node)) {
           $vocabulary_name = $this->getGroupVocabularyName($group_id, $vocabulary_type);
           $term = taxonomy_get_term_by_name($term_name, $vocabulary_name);
         }
 
         if (empty($term)) {
-          $vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary_name);
-          $term = new stdClass();
-          $term->name = $term_name;
-          $term->vid = $vocabulary->vid;
-          $term->vocabulary_machine_name = $vocabulary_name;
-          taxonomy_term_save($term);
+          if (!empty($vocabulary_name)) {
+            $vocabulary = taxonomy_vocabulary_machine_name_load($vocabulary_name);
+            $term = new stdClass();
+            $term->name = $term_name;
+            $term->vid = $vocabulary->vid;
+            $term->vocabulary_machine_name = $vocabulary_name;
+            taxonomy_term_save($term);
+          }
         }
         else {
           $term = reset($term);
         }
 
-        if (isset($term->tid) && is_numeric($term->tid)) {
+        if ($term && isset($term->tid) && is_numeric($term->tid)) {
           $node->og_vocabulary[LANGUAGE_NONE][] = array('target_id' => $term->tid);
         }
       }
@@ -333,7 +339,12 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   Returns the Group ID or FALSE if not found.
    */
   protected function getGroupIdOfContent($node) {
-    if (isset($node->og_group_ref[LANGUAGE_NONE][0]) && is_null($node->og_group_ref[LANGUAGE_NONE][0])) {
+    if (
+      isset($node->og_group_ref[LANGUAGE_NONE][0]) &&
+      !is_null($node->og_group_ref[LANGUAGE_NONE][0]) &&
+      isset($node->og_group_ref[LANGUAGE_NONE][0]['target_id']) &&
+      is_numeric($node->og_group_ref[LANGUAGE_NONE][0]['target_id'])
+    ) {
       return $node->og_group_ref[LANGUAGE_NONE][0];
     }
 
