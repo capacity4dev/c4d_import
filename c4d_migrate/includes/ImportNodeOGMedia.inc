@@ -21,7 +21,7 @@ class C4dMigrateImportNodeOGMedia extends C4dMigrateImportBaseNodeOG {
     $this->setSourceTable('c4d_export_node_document');
     $this->setTargetBundle('photo');
 
-    $this->setCategoriesAndTags(FALSE);
+    $this->setCategoriesAndTags(TRUE);
 
     parent::__construct($group);
   }
