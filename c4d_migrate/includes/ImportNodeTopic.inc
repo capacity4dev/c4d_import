@@ -96,4 +96,31 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     return TRUE;
   }
 
+  /**
+   * Review a data row after fetch, returning FALSE to skip it.
+   *
+   * @param object $node
+   *   The drupal node entity object.
+   * @param object $row
+   *   The source row object.
+   */
+  public function prepare($node, $row) {
+    $query = $this->createSelect('c4d_export_node_topic', 't');
+    $query->addField('t', 'nid');
+    // Search for duplicate paths.
+    $query->condition('path', $row->path, '=');
+    // The possible "parental" topic node always has a lower node ID than the
+    // derived topic nodes, so we just set a condition on node IDs which are
+    // lower than the current one.
+    // This way we also exclude querying the current node, so no need for:
+    //   $query->condition('nid', $row->nid, '<>');
+    $query->condition('nid', $row->nid, '<');
+    $results = $query->execute();
+
+    if ($results->rowCount()) {
+      // Oops, we found a duplicate path, so disable this one.
+      $node->path = NULL;
+    }
+  }
+
 }
