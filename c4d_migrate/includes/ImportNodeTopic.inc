@@ -41,6 +41,7 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('c4m_body:summary', 'field_brief');
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_picture', FILE_EXISTS_REPLACE);
@@ -91,6 +92,13 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     else {
       // Might be some leftover groups, but the type might be set to "auto".
       $row->field_group_suggestions = array();
+    }
+
+    // Also add the topic group variable to the groups mapping.
+    if (isset($row->field_topic_group) && is_numeric($row->field_topic_group)) {
+      if (!in_array($row->field_topic_group, $row->field_group_suggestions)) {
+        $row->field_group_suggestions[] = $row->field_topic_group;
+      }
     }
 
     $row->field_topic_articles = unserialize($row->field_topic_articles);
