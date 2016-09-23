@@ -112,4 +112,32 @@ class C4dMigrateImportOGMemberships extends C4dMigrateImportBase {
     parent::prepareRow($row);
   }
 
+
+  /**
+   * The entity has been created and saved.
+   *
+   * @param object $entity
+   *   The entity object that was created.
+   * @param object $row
+   *   The CSV row we are manipulating.
+   */
+  public function complete($entity, $row) {
+    if ($entity->state != OG_STATE_ACTIVE) {
+      return;
+    }
+
+    if (!function_exists('flag_get_flag')) {
+      return;
+    }
+
+    $user = user_load($entity->etid);
+    $flag = flag_get_flag('subscribe_c4m_follow_group');
+
+    if (!$flag) {
+      return;
+    }
+
+    $flag->flag('flag', $entity->gid, $user, TRUE);
+  }
+
 }

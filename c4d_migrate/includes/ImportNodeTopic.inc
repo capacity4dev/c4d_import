@@ -41,9 +41,11 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('c4m_body:summary', 'field_brief');
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_picture', FILE_EXISTS_REPLACE);
+    $this->addFileFieldMapping('c4m_banner', 'field_picture_topics_page', FILE_EXISTS_REPLACE);
 
     // Other fields are not described yet for the Drupal 7 Content Type.
     $this->addFieldMapping('c4m_vocab_topic_mapping', 'taxonomy')
@@ -70,6 +72,7 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
 
     // Prepare the picture data.
     $this->prepareFileInRow($row, 'field_picture');
+    $this->prepareFileInRow($row, 'field_picture_topics_page');
 
     $row->body = $this->prepareHtml($row->body);
 
@@ -91,9 +94,43 @@ class C4dMigrateImportNodeTopic extends C4dMigrateImportBaseNode {
       $row->field_group_suggestions = array();
     }
 
+    // Also add the topic group variable to the groups mapping.
+    if (isset($row->field_topic_group) && is_numeric($row->field_topic_group)) {
+      if (!in_array($row->field_topic_group, $row->field_group_suggestions)) {
+        $row->field_group_suggestions[] = $row->field_topic_group;
+      }
+    }
+
     $row->field_topic_articles = unserialize($row->field_topic_articles);
 
     return TRUE;
+  }
+
+  /**
+   * Review a data row after fetch, returning FALSE to skip it.
+   *
+   * @param object $node
+   *   The drupal node entity object.
+   * @param object $row
+   *   The source row object.
+   */
+  public function prepare($node, $row) {
+    $query = $this->createSelect('c4d_export_node_topic', 't');
+    $query->addField('t', 'nid');
+    // Search for duplicate paths.
+    $query->condition('path', $row->path, '=');
+    // The possible "parental" topic node always has a lower node ID than the
+    // derived topic nodes, so we just set a condition on node IDs which are
+    // lower than the current one.
+    // This way we also exclude querying the current node, so no need for:
+    //   $query->condition('nid', $row->nid, '<>');
+    $query->condition('nid', $row->nid, '<');
+    $results = $query->execute();
+
+    if ($results->rowCount()) {
+      // Oops, we found a duplicate path, so disable this one.
+      $node->path = NULL;
+    }
   }
 
 }
