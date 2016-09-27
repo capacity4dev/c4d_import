@@ -62,27 +62,6 @@ class C4dMigrateImportNodeOGDocument extends C4dMigrateImportBaseNodeOG {
   }
 
   /**
-   * Helper function to check if this row's field is an image field.
-   *
-   * @param object $row
-   *   The data from the table.
-   * @param string $field_name
-   *   The name of the field to check.
-   *
-   * @return bool
-   *   TRUE or FALSE whether it's an image or not.
-   */
-  protected function isImageField($row, $field_name) {
-    $extension = self::FILE_PREFIX_EXTENSION . $field_name;
-
-    if (isset($row->{$extension}) && in_array($row->{$extension}, array('gif', 'jpeg', 'png'))) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /**
    * Calls parent complete function.
    */
   public function complete($entity, $row) {
