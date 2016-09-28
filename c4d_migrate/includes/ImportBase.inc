@@ -17,7 +17,14 @@ abstract class C4dMigrateImportBase extends Migration {
   const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
   const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
   const FILE_PREFIX_FILEMIME = 'C4D_MIGRATE_FILE_FILEMIME_';
-  const FILE_IMAGES = array(
+
+  /**
+   * Defined array of filemimes as class const variable.
+   *
+   * @var array
+   *   List of mimetypes (string) of images.
+   */
+  private static $fileImages = array(
     'image/jpeg',
     'image/gif',
     'image/png',
@@ -238,7 +245,7 @@ abstract class C4dMigrateImportBase extends Migration {
   protected function isImageField($row, $field_name) {
     $filemime = self::FILE_PREFIX_FILEMIME . $field_name;
 
-    if (isset($row->{$filemime}) && in_array($row->{$filemime}, self::FILE_IMAGES)) {
+    if (isset($row->{$filemime}) && in_array($row->{$filemime}, self::$fileImages)) {
       return TRUE;
     }
 
