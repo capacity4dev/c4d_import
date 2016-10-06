@@ -24,6 +24,8 @@ class C4dMigrateImportNodeOGMedia extends C4dMigrateImportBaseNodeOG {
     $this->setCategoriesAndTags(TRUE);
 
     parent::__construct($group);
+
+    $this->setPathManual(FALSE);
   }
 
   /**
