@@ -89,6 +89,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     // geo_vocab was not added to the user profile in Drupal 6.
     $this->addFieldMapping('c4m_vocab_geo', 'taxonomy')
          ->arguments(array('source_type' => 'tid'));
+    $this->addFieldmapping('content_status', 'content_status');
 
     // Special field mapping for files.
     $this->addFileFieldMapping('c4m_media', 'field_picture');
@@ -181,8 +182,13 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
         $user->name = $destination_name;
       }
     }
-  }
 
+    // If content_status == 1, we preserve the user entity status,
+    // which could be already 0).
+    if ($row->content_status == 0) {
+      $user->status = 0;
+    }
+  }
 
   /**
    * Complete function to set missing aliases.
