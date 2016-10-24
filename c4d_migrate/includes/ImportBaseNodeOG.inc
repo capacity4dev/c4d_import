@@ -145,7 +145,14 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
         // Remove term from original field and map to specific field instead.
         if ($mapping = $this->mappingCategoriesAndTagsContainsTermName($termName)) {
           $vocabulary_field = $mapping['vocabulary'];
-          $row->{$vocabulary_field} = $mapping['terms'];
+          if (is_array($row->{$vocabulary_field})) {
+            $row->{$vocabulary_field} = array_merge($row->{$vocabulary_field}, $mapping['terms']);
+            // Remove possible duplicates + reset associative keys if array_unique removed values.
+            $row->{$vocabulary_field} = array_values(array_unique($row->{$vocabulary_field}));
+          }
+          else {
+            $row->{$vocabulary_field} = $mapping['terms'];
+          }
         }
         // Else, store the term name in the array instead of the original tid.
         else {
