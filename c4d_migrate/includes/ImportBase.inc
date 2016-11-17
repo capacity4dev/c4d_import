@@ -16,6 +16,22 @@ abstract class C4dMigrateImportBase extends Migration {
   const FILE_PREFIX_EXTENSION = 'C4D_MIGRATE_FILE_EXTENSION_';
   const FILE_PREFIX_FILE = 'C4D_MIGRATE_FILE_FILE_';
   const FILE_PREFIX_PATH = 'C4D_MIGRATE_FILE_PATH_';
+  const FILE_PREFIX_FILEMIME = 'C4D_MIGRATE_FILE_FILEMIME_';
+
+  /**
+   * Defined array of filemimes as class const variable.
+   *
+   * @var array
+   *   List of mimetypes (string) of images.
+   */
+  private static $fileImages = array(
+    'image/jpeg',
+    'image/gif',
+    'image/png',
+    'image/svg+xml',
+    'image/tiff',
+    'image/x-ms-bmp',
+  );
 
   /**
    * Static mapping of groups (source to destination).
@@ -139,7 +155,9 @@ abstract class C4dMigrateImportBase extends Migration {
    *   - FILE_EXISTS_ERROR   : Do nothing and return FALSE.
    */
   public function addFileFieldMapping(
-    $target, $source, $file_exists = FILE_EXISTS_RENAME
+    $target,
+    $source,
+    $file_exists = FILE_EXISTS_RENAME
   ) {
     // File info is passed trough temporary variables.
     $file = self::FILE_PREFIX_FILE . $source;
@@ -171,17 +189,21 @@ abstract class C4dMigrateImportBase extends Migration {
    *   The table to use to lookup the file data.
    */
   public function prepareFileInRow(
-    $row, $source, $table = 'c4d_export_other_files'
+    $row,
+    $source,
+    $table = 'c4d_export_other_files'
   ) {
     // File info is passed trough temporary variables.
     $extension = self::FILE_PREFIX_EXTENSION . $source;
-    $file      = self::FILE_PREFIX_FILE . $source;
-    $path      = self::FILE_PREFIX_PATH . $source;
+    $file = self::FILE_PREFIX_FILE . $source;
+    $path = self::FILE_PREFIX_PATH . $source;
+    $filemime = self::FILE_PREFIX_FILEMIME . $source;
 
     // Prepare with empty values.
     $row->{$extension} = NULL;
-    $row->{$file}      = NULL;
-    $row->{$path}      = NULL;
+    $row->{$file} = NULL;
+    $row->{$path} = NULL;
+    $row->{$filemime} = NULL;
 
     // Check if any file data in the platform.
     if (empty($row->{$source})) {
@@ -192,7 +214,7 @@ abstract class C4dMigrateImportBase extends Migration {
     $f_select = $this->getConnection()->select($table, 'f');
     $f_select->fields('f');
     $f_select->condition('f.fid', (int) $row->{$source});
-    $res    = $f_select->execute();
+    $res = $f_select->execute();
     $result = $res->fetchObject();
 
     $path_parts = pathinfo($result->filepath);
@@ -202,10 +224,32 @@ abstract class C4dMigrateImportBase extends Migration {
 
     // Pass the filename.
     $row->{$extension} = strtolower($path_parts['extension']);
-    $row->{$file}      = $path_parts['basename'];
-    $row->{$path}      = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
+    $row->{$file} = $path_parts['basename'];
+    $row->{$filemime} = $result->filemime;
+    $row->{$path} = variable_get(C4D_MIGRATE_FILES_ROOT, '/')
       . DIRECTORY_SEPARATOR
       . $rel_path;
+  }
+
+  /**
+   * Helper function to check if this row's field is an image field.
+   *
+   * @param object $row
+   *   The data from the table.
+   * @param string $field_name
+   *   The name of the field to check.
+   *
+   * @return bool
+   *   TRUE or FALSE whether it's an image or not.
+   */
+  protected function isImageField($row, $field_name) {
+    $filemime = self::FILE_PREFIX_FILEMIME . $field_name;
+
+    if (isset($row->{$filemime}) && in_array($row->{$filemime}, self::$fileImages)) {
+      return TRUE;
+    }
+
+    return FALSE;
   }
 
   /**
@@ -243,14 +287,20 @@ abstract class C4dMigrateImportBase extends Migration {
       switch ($type) {
         case 'project_group':
           $dest_id = $this->handleSourceMigration(
-            'C4dMigrateImportNodeProject', $gid, NULL, $this
+            'C4dMigrateImportNodeProject',
+            $gid,
+            NULL,
+            $this
           );
           break;
 
         case 'group':
         default:
           $dest_id = $this->handleSourceMigration(
-            'C4dMigrateImportNodeGroup', $gid, NULL, $this
+            'C4dMigrateImportNodeGroup',
+            $gid,
+            NULL,
+            $this
           );
           break;
       }
@@ -263,7 +313,10 @@ abstract class C4dMigrateImportBase extends Migration {
       // Set temporary cache. If we do a rollback and import again, we have
       // new mappings.
       cache_set(
-        'c4d_migrate_og_group_mappings', $mapped_ids, 'cache', CACHE_TEMPORARY
+        'c4d_migrate_og_group_mappings',
+        $mapped_ids,
+        'cache',
+        CACHE_TEMPORARY
       );
     }
 
@@ -332,7 +385,10 @@ abstract class C4dMigrateImportBase extends Migration {
           }
           else {
             if (!empty($mapping[$term_name])) {
-              $mapped_term = taxonomy_get_term_by_name($mapping[$term_name], $vocabname);
+              $mapped_term = taxonomy_get_term_by_name(
+                $mapping[$term_name],
+                $vocabname
+              );
               if (!empty($mapped_term)) {
                 reset($mapped_term);
                 $tid = key($mapped_term);
@@ -368,7 +424,10 @@ abstract class C4dMigrateImportBase extends Migration {
 
     foreach ($tids as $tid) {
       $parents = taxonomy_get_parents_all($tid);
-      $parent_tids = array_map(create_function('$term', 'return $term->tid;'), $parents);
+      $parent_tids = array_map(
+        create_function('$term', 'return $term->tid;'),
+        $parents
+      );
       // $tid is included in $parent_tids array.
       $all_tids = array_merge($all_tids, $parent_tids);
     }

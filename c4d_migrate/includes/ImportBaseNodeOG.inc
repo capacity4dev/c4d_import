@@ -145,7 +145,14 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
         // Remove term from original field and map to specific field instead.
         if ($mapping = $this->mappingCategoriesAndTagsContainsTermName($termName)) {
           $vocabulary_field = $mapping['vocabulary'];
-          $row->{$vocabulary_field} = $mapping['terms'];
+          if (is_array($row->{$vocabulary_field})) {
+            $row->{$vocabulary_field} = array_merge($row->{$vocabulary_field}, $mapping['terms']);
+            // Remove possible duplicates + reset associative keys if array_unique removed values.
+            $row->{$vocabulary_field} = array_values(array_unique($row->{$vocabulary_field}));
+          }
+          else {
+            $row->{$vocabulary_field} = $mapping['terms'];
+          }
         }
         // Else, store the term name in the array instead of the original tid.
         else {
@@ -358,7 +365,7 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *
    * @param object $group
    *   The group to filter for.
-   * @param $vocabulary_type
+   * @param string $vocabulary_type
    *   The vocabulary type to search for.
    *
    * @return string
@@ -367,6 +374,10 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   protected function getGroupVocabularyName($group, $vocabulary_type) {
     if (is_numeric($group)) {
       $group = node_load($group);
+    }
+
+    if (is_array($group) && array_key_exists('target_id', $group)) {
+      $group = node_load($group['target_id']);
     }
 
     $vocabulary = c4m_og_vocab_load_group_vocabulary($group, $vocabulary_type);

@@ -33,6 +33,13 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
 
     // Custom status mapping.
     $this->addFieldMapping('status', '_status', FALSE);
+
+
+    $this->addFieldMapping('c4m_project_type')
+      ->defaultValue('project');
+
+    $this->addFieldMapping('c4m_is_template')
+      ->defaultValue(0);
   }
 
   /**
