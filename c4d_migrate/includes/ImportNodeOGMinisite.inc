@@ -42,6 +42,8 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'full_html'));
+
+    $this->addFieldMapping('c4m_edit_by_members', 'grant_all');
   }
 
   /**
