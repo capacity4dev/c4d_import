@@ -195,7 +195,12 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   The name of the source field.
    */
   protected function prepareCategoriesAndTags(&$node, &$row, $source_field) {
-    $node->og_vocabulary[LANGUAGE_NONE] = array();
+    // Set variable to check if taxonomy array was emptied.
+    // Prevents emptying it again when we process tags after categories.
+    if (!$row->taxonomy_initiated) {
+      $row->taxonomy_initiated = TRUE;
+      $node->og_vocabulary[LANGUAGE_NONE] = array();
+    }
 
     if (!empty($row->{$source_field})) {
       $vocabulary_type = ($source_field == 'tags') ? 'c4m_vocab_tag' : 'c4m_vocab_category';
