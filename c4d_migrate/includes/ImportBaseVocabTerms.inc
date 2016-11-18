@@ -48,4 +48,24 @@ abstract class C4dMigrateImportBaseVocabTerms extends C4dMigrateImportBase {
     }
   }
 
+  /**
+   * Review a data row after fetch, returning FALSE to skip it.
+   *
+   * @param object $row
+   *   The data row we are importing.
+   *
+   * @return bool
+   *   TRUE to process this row, FALSE to skip it.
+   */
+  public function prepareRow($row) {
+    parent::prepareRow($row);
+
+    // Don't create it if this term name is meant to be mapped to a global term.
+    if ($mapping = $this->mappingCategoriesAndTagsContainsTermName($row->name)) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
 }
