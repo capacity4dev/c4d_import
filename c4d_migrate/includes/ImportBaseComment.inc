@@ -129,7 +129,7 @@ abstract class C4dMigrateImportBaseComment extends C4dMigrateImportBase {
     $this->addFieldMapping('created', 'timestamp');
 
     $this->addFieldMapping('comment_body', 'comment')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
 
     $this->addFieldMapping('status', 'status')
          ->defaultValue(COMMENT_PUBLISHED);

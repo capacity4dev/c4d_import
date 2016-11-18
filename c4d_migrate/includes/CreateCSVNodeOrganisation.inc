@@ -40,7 +40,7 @@ class C4dMigrateCreateCSVNodeOrganisations extends C4dMigrateCreateBaseCSVNode {
    */
   public function addCustomFieldMapping() {
     $this->addFieldMapping('c4m_body', 'body')
-      ->arguments(array('format' => 'full_html'));
+      ->arguments(array('format' => 'filtered_html'));
     $this->addFieldMapping('c4m_link', 'link');
     $this->addFieldMapping('c4m_icon', 'image');
     $this->addFieldMapping('c4m_icon:file_replace')

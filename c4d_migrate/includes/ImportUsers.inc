@@ -76,7 +76,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $this->addFieldMapping('init', 'init');
     $this->addFieldMapping('data', 'data');
     $this->addFieldMapping('c4m_body', 'field_description')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
     $this->addFieldMapping('c4m_first_name', 'field_firstname');
     $this->addFieldMapping('c4m_last_name', 'field_lastname');
     $this->addFieldMapping('c4m_organisation', 'field_organisation');
