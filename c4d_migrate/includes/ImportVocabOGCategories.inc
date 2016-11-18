@@ -83,7 +83,11 @@ class C4dMigrateImportVocabOGCategories extends C4dMigrateImportBaseVocabTerms {
    *   TRUE to process this row, FALSE to skip it.
    */
   public function prepareRow($row) {
-    parent::prepareRow($row);
+    $status = parent::prepareRow($row);
+
+    if ($status === FALSE) {
+      return FALSE;
+    }
 
     $vocab_name = 'c4m_vocab_category_' . $this->getMappedGroupGid($row->type, $row->gid);
 
