@@ -20,6 +20,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     'C4dMigrateImportNodeProject',
     'C4dMigrateImportUsers',
     'C4dMigrateCreateCSVTermTopic',
+    'C4dMigrateImportVocabOGCategories',
+    'C4dMigrateImportVocabOGTags',
   );
 
   /**
