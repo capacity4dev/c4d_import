@@ -60,10 +60,10 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
    */
   public function addCustomFieldMapping() {
     // Map the custom fields.
-    $this->addFieldMapping('c4m_body', 'field_event_full_description')
-      ->arguments(array('format' => 'full_html'));
-    $this->addFieldMapping('c4m_body:summary', 'body')
-      ->arguments(array('format' => 'full_html'));
+    $this->addFieldMapping('c4m_body', 'body')
+      ->arguments(array('format' => 'filtered_html'));
+    $this->addFieldMapping('c4m_body:summary', 'field_event_full_description')
+      ->arguments(array('format' => 'filtered_html'));
 
     $this->addFieldMapping('c4m_organised_by', 'field_event_organiser');
 
