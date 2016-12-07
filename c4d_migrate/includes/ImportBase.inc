@@ -44,8 +44,10 @@ abstract class C4dMigrateImportBase extends Migration {
    * The search indexes that were disabled when the process started.
    *
    * Process will use these to re-enable them.
+   *
+   * @var array
    */
-  static protected $searchIndexDisabled = array();
+  protected $searchIndexDisabled = array();
 
   /**
    * General initialization of a Migration object.
