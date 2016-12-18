@@ -39,13 +39,6 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   private $hasTags = FALSE;
 
   /**
-   * Categories & Tags mapping array.
-   *
-   * @var array
-   */
-  private $mappingCategoriesAndTags = NULL;
-
-  /**
    * Configure the migration class during creation.
    */
   public function __construct() {

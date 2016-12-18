@@ -50,6 +50,13 @@ abstract class C4dMigrateImportBase extends Migration {
   protected $searchIndexDisabled = array();
 
   /**
+   * Categories & Tags mapping array.
+   *
+   * @var array
+   */
+  private $mappingCategoriesAndTags = NULL;
+
+  /**
    * General initialization of a Migration object.
    *
    * This implements the common functionality to import nodes from a flat table.
