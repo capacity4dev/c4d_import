@@ -544,7 +544,13 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
 
     $account = user_load($new_user_id);
 
+    // Omit the message module checks on revisions.
+    $origin_revision = $node->revision;
+    $node->revision = TRUE;
+
     $message = c4m_message__update__node($node, $account);
+
+    $node->revision = $origin_revision;
 
     $message->timestamp = $row->changed;
     $message->user = $account;
