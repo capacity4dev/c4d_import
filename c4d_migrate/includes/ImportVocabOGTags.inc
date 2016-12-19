@@ -77,7 +77,11 @@ class C4dMigrateImportVocabOGTags extends C4dMigrateImportBaseVocabTerms {
    *   The data row we are importing.
    */
   public function prepareRow($row) {
-    parent::prepareRow($row);
+    $status = parent::prepareRow($row);
+
+    if ($status === FALSE) {
+      return FALSE;
+    }
 
     $vocab_name = 'c4m_vocab_tag_' . $this->getMappedGroupGid($row->type, $row->gid);
 

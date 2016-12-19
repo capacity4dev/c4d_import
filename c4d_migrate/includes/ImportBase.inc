@@ -44,8 +44,17 @@ abstract class C4dMigrateImportBase extends Migration {
    * The search indexes that were disabled when the process started.
    *
    * Process will use these to re-enable them.
+   *
+   * @var array
    */
-  static protected $searchIndexDisabled = array();
+  protected $searchIndexDisabled = array();
+
+  /**
+   * Categories & Tags mapping array.
+   *
+   * @var array
+   */
+  private $mappingCategoriesAndTags = NULL;
 
   /**
    * General initialization of a Migration object.
@@ -482,6 +491,44 @@ abstract class C4dMigrateImportBase extends Migration {
       ->execute()
       ->fetchField();
     return $title;
+  }
+
+  /**
+   * Retrieves the entry in the Categories & Tags mapping array
+   * with the given term name.
+   *
+   * @param string $termName
+   *   The term name to search for.
+   *
+   * @return bool|array
+   *   Returns the value of the mapping item with the given term name or
+   *   FALSE if none is found.
+   */
+  public function mappingCategoriesAndTagsContainsTermName($termName) {
+    $termName = htmlspecialchars_decode($termName);
+    $mapping = $this->getMappingCategoriesAndTags();
+
+    if (isset($mapping[$termName]) && !empty($mapping[$termName])) {
+      return $mapping[$termName];
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Retrieve the Categories & Tags mapping array.
+   */
+  public function getMappingCategoriesAndTags() {
+    if (is_null($this->mappingCategoriesAndTags)) {
+      $mapping = c4d_migrate_categories_tags_csv_converter_get_mapping_array();
+      $this->mappingCategoriesAndTags = $mapping;
+    }
+
+    if (empty($this->mappingCategoriesAndTags)) {
+      $this->mappingCategoriesAndTags = array();
+    }
+
+    return $this->mappingCategoriesAndTags;
   }
 
 }

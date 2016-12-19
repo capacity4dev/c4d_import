@@ -20,6 +20,8 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
     'C4dMigrateImportNodeProject',
     'C4dMigrateImportUsers',
     'C4dMigrateCreateCSVTermTopic',
+    'C4dMigrateImportVocabOGCategories',
+    'C4dMigrateImportVocabOGTags',
   );
 
   /**
@@ -37,11 +39,9 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   private $hasTags = FALSE;
 
   /**
-   * Categories & Tags mapping array.
-   *
-   * @var array
+   * @var bool
    */
-  private $mappingCategoriesAndTags = NULL;
+  private $taxonomy_initiated = FALSE;
 
   /**
    * Configure the migration class during creation.
@@ -193,7 +193,12 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    *   The name of the source field.
    */
   protected function prepareCategoriesAndTags(&$node, &$row, $source_field) {
-    $node->og_vocabulary[LANGUAGE_NONE] = array();
+    // Set variable to check if taxonomy array was emptied.
+    // Prevents emptying it again when we process tags after categories.
+    if (!$row->taxonomy_initiated) {
+      $row->taxonomy_initiated = TRUE;
+      $node->og_vocabulary[LANGUAGE_NONE] = array();
+    }
 
     if (!empty($row->{$source_field})) {
       $vocabulary_type = ($source_field == 'tags') ? 'c4m_vocab_tag' : 'c4m_vocab_category';
@@ -280,44 +285,6 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
    */
   public function hasTags() {
     return $this->hasTags;
-  }
-
-  /**
-   * Retrieve the Categories & Tags mapping array.
-   */
-  public function getMappingCategoriesAndTags() {
-    if (is_null($this->mappingCategoriesAndTags)) {
-      $mapping = c4d_migrate_categories_tags_csv_converter_get_mapping_array();
-      $this->mappingCategoriesAndTags = $mapping;
-    }
-
-    if (empty($this->mappingCategoriesAndTags)) {
-      $this->mappingCategoriesAndTags = array();
-    }
-
-    return $this->mappingCategoriesAndTags;
-  }
-
-  /**
-   * Retrieves the entry in the Categories & Tags mapping array
-   * with the given term name.
-   *
-   * @param string $termName
-   *   The term name to search for.
-   *
-   * @return bool|array
-   *   Returns the value of the mapping item with the given term name or
-   *   FALSE if none is found.
-   */
-  public function mappingCategoriesAndTagsContainsTermName($termName) {
-    $termName = htmlspecialchars_decode($termName);
-    $mapping = $this->getMappingCategoriesAndTags();
-
-    if (isset($mapping[$termName]) && !empty($mapping[$termName])) {
-      return $mapping[$termName];
-    }
-
-    return FALSE;
   }
 
   /**

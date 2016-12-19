@@ -83,7 +83,7 @@ class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
       'ec_survey' => NULL,
       'ec_emeeting' => NULL,
       'ec_projects' => NULL,
-      'ec_photoalbum' => NULL,
+      'ec_photoalbum' => 'c4m_features_og_media',
     );
 
     // Set up default features.
@@ -93,6 +93,8 @@ class C4dMigrateImportOGFeatures extends C4dMigrateImportBase {
       'c4m_features_og_documents' => 'c4m_features_og_documents',
       'c4m_features_og_events' => 'c4m_features_og_events',
       'c4m_features_og_members' => 'c4m_features_og_members',
+      'c4m_features_og_media' => 'c4m_features_og_media',
+      'c4m_features_og_news' => 'c4m_features_og_news',
     );
   }
 

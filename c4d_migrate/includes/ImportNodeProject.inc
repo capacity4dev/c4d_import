@@ -48,7 +48,7 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
     $this->addFieldMapping('c4m_body:summary', 'og_description');
 
     $this->addFieldMapping('c4m_related_group', 'field_ref_related_user_groups')

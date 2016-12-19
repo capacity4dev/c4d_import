@@ -32,7 +32,7 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_node_gallery_image');

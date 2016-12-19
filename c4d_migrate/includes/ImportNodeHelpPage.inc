@@ -66,7 +66,7 @@ class C4dMigrateImportNodeHelpPage extends C4dMigrateImportBaseNode {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
   }
 
   /**

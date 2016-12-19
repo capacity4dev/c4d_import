@@ -31,7 +31,7 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     $this->addFieldMapping('group_access', 'og_private');
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'field_group_description')
-         ->arguments(array('format' => 'full_html'));
+         ->arguments(array('format' => 'filtered_html'));
     $this->addFieldMapping('c4m_body:summary', 'og_description');
   }
 
