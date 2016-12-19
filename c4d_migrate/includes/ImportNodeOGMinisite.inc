@@ -75,7 +75,7 @@ class C4dMigrateImportNodeOGMinisite extends C4dMigrateImportBaseNodeOG {
       // No parent: this is a direct child of the master page.
       if (!$update) {
         // Retrieve bid and parent mlid of the minisite master page.
-        module_load_include('module', 'c4m_content_wiki');
+        module_load_include('module', 'c4m_content_wiki_page');
         $parent = node_load($og_id);
 
         $book           = $parent->book;

@@ -39,6 +39,11 @@ abstract class C4dMigrateImportBaseNodeOG extends C4dMigrateImportBaseNode {
   private $hasTags = FALSE;
 
   /**
+   * @var bool
+   */
+  private $taxonomy_initiated = FALSE;
+
+  /**
    * Configure the migration class during creation.
    */
   public function __construct() {
