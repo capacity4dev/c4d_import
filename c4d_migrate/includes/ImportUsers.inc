@@ -17,6 +17,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
    */
   public $dependencies = array(
     'C4dMigrateImportRoles',
+    'C4dMigrateCreateCSVTermTopic',
   );
 
   /**
@@ -130,6 +131,7 @@ class C4dMigrateImportUsers extends C4dMigrateImportBase {
     $row->field_ref_topic = $topics;
 
     $topic_nids = unserialize($row->field_ref_topic_expertise);
+
     $topics = array();
 
     foreach ($topic_nids as $nid) {
