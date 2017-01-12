@@ -404,8 +404,29 @@ abstract class C4dMigrateImportBase extends Migration {
                 $tids[] = $tid;
               }
             }
+            else {
+              // Retrieve the mapping via CSV.
+              $mapped_terms = $this->mappingCategoriesAndTagsContainsTermName($term_name);
+
+              if (!empty($mapped_terms)) {
+                $mapped_term_tids = array();
+                foreach ($mapped_terms['terms'] as $term_name) {
+                  $term = taxonomy_get_term_by_name(
+                    $term_name,
+                    $vocabname
+                  );
+                  if (!empty($term)) {
+                    reset($term);
+                    $tid = key($term);
+                    $tids[] = $tid;
+                  }
+                }
+              }
+            }
           }
         }
+
+        $tids = array_values(array_unique($tids));
 
         return $tids;
       }
