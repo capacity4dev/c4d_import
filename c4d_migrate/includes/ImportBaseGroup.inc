@@ -4,8 +4,6 @@
  * Base class to import group type data into nodes.
  */
 
-module_load_include('inc', 'c4d_migrate', 'c4d_migrate.converter');
-
 /**
  * Base class to import group type data into nodes.
  */
@@ -27,9 +25,6 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
    */
   public function addDefaultFieldMapping() {
     parent::addDefaultFieldMapping();
-
-    // Initialize the Categories & Tags mapping array.
-    $this->getMappingCategoriesAndTags();
 
     $this->addFieldMapping('purl', 'purl');
 
