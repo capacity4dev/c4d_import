@@ -526,7 +526,7 @@ abstract class C4dMigrateImportBase extends Migration {
    *   FALSE if none is found.
    */
   public function mappingCategoriesAndTagsContainsTermName($termName) {
-    $termName = htmlspecialchars_decode($termName);
+    $termName = htmlentities($termName);
     $mapping = $this->getMappingCategoriesAndTags();
 
     if (isset($mapping[$termName]) && !empty($mapping[$termName])) {
