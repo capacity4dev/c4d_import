@@ -73,24 +73,24 @@ chile;Latin America & Caribbean;Southern America;Chile
 China;Asia;Eastern Asia;China
 china;Asia;Eastern Asia;China
 Colombia;Latin America & Caribbean;Southern America;Colombia
-Comores;Africa;Southern Africa;Comoros
-Comoros;Africa;Southern Africa;Comoros
+Comores;Africa;Eastern Africa;Comoros
+Comoros;Africa;Eastern Africa;Comoros
 Congo ;Africa;Western Africa;Congo
 Republic of Congo;Africa;Western Africa;Congo
 Congo;Africa;Western Africa;Congo
 Cook Islands;Oceania & Pacific;Pacific;Cook Islands
 Costa Rica;Latin America & Caribbean;Central America;Costa Rica
 Ivory Coast;Africa;Western Africa;Cote d'Ivoire
-Côte d’Ivoire;Africa;Western Africa;Cote d'Ivoire
+Cï¿½te dï¿½Ivoire;Africa;Western Africa;Cote d'Ivoire
 Cote D'Ivoire;Africa;Western Africa;Cote d'Ivoire
 Cote d'Ivoire;Africa;Western Africa;Cote d'Ivoire
-Côte d’Ivoire ;Africa;Western Africa;Cote d'Ivoire
-Côte d'Ivoire ;Africa;Western Africa;Cote d'Ivoire
-Côte d'Ivoire;Africa;Western Africa;Cote d'Ivoire
+Cï¿½te dï¿½Ivoire ;Africa;Western Africa;Cote d'Ivoire
+Cï¿½te d'Ivoire ;Africa;Western Africa;Cote d'Ivoire
+Cï¿½te d'Ivoire;Africa;Western Africa;Cote d'Ivoire
 croatia;Europe & Russia;EU Member States;Croatia
 Cuba;Latin America & Caribbean;Caribbean;Cuba
 cuba;Latin America & Caribbean;Caribbean;Cuba
-;Latin America & Caribbean;Caribbean;Curaçao
+;Latin America & Caribbean;Caribbean;Curaï¿½ao
 Cyprus;Europe & Russia;EU Member States;Cyprus
 Czech Republic;Europe & Russia;EU Member States;Czech Republic
 Congo (Democratic Rep);Africa;Western Africa;Democratic Republic of Congo
@@ -105,7 +105,7 @@ DRCongo;Africa;Western Africa;Democratic Republic of Congo
 DR Congo;Africa;Western Africa;Democratic Republic of Congo
 Democratic Republic of Congo ;Africa;Western Africa;Democratic Republic of Congo
 Denmark;Europe & Russia;EU Member States;Denmark
-Djibouti;Africa;Southern Africa;Djibouti
+Djibouti;Africa;Eastern Africa;Djibouti
 Commonwealth of Dominica;Latin America & Caribbean;Caribbean;Dominica
 Dominica;Latin America & Caribbean;Caribbean;Dominica
 Dominican Republic;Latin America & Caribbean;Caribbean;Dominican Republic
@@ -117,13 +117,13 @@ EGYPT;Africa;Northern Africa;Egypt
 Geo - Egypt;Africa;Northern Africa;Egypt
 El Salvador;Latin America & Caribbean;Central America;El Salvador
 Equatorial Guinea;Africa;Central Africa;Equatorial Guinea
-Erithrea;Africa;Southern Africa;Eritrea
-Eritrea;Africa;Southern Africa;Eritrea
+Erithrea;Africa;Eastern Africa;Eritrea
+Eritrea;Africa;Eastern Africa;Eritrea
 Estonia;Europe & Russia;EU Member States;Estonia
-Ethiopia;Africa;Southern Africa;Ethiopia
-ethiopia;Africa;Southern Africa;Ethiopia
-ETHIOPIA;Africa;Southern Africa;Ethiopia
-Ethiopia.;Africa;Southern Africa;Ethiopia
+Ethiopia;Africa;Eastern Africa;Ethiopia
+ethiopia;Africa;Eastern Africa;Ethiopia
+ETHIOPIA;Africa;Eastern Africa;Ethiopia
+Ethiopia.;Africa;Eastern Africa;Ethiopia
 ;Latin America & Caribbean;Southern America;Falkland Islands (Malvinas)
 fiji;Oceania & Pacific;Pacific;Fiji
 Fiji;Oceania & Pacific;Pacific;Fiji
@@ -155,7 +155,7 @@ Guinea-Bissao;Africa;Western Africa;Guinea-Bissau
 Guinea-Bissau;Africa;Western Africa;Guinea-Bissau
 Guyana;Latin America & Caribbean;Southern America;Guyana
 Haiti;Latin America & Caribbean;Caribbean;Haiti
-Haïti;Latin America & Caribbean;Caribbean;Haiti
+Haï¿½ti;Latin America & Caribbean;Caribbean;Haiti
 Honduras;Latin America & Caribbean;Central America;Honduras
 Hungary;Europe & Russia;EU Member States;Hungary
 Iceland;Europe & Russia;EU candidate & potential candidate countries;Iceland
@@ -171,9 +171,9 @@ Japan;Asia;Eastern Asia;Japan
 Geo - Jordan;Asia;Western Asia;Jordan
 Jordan;Asia;Western Asia;Jordan
 Kazakhstan;Asia;Central Asia;Kazakhstan
-Kenya;Africa;Southern Africa;Kenya
-KENYA;Africa;Southern Africa;Kenya
-kenya;Africa;Southern Africa;Kenya
+Kenya;Africa;Eastern Africa;Kenya
+KENYA;Africa;Eastern Africa;Kenya
+kenya;Africa;Eastern Africa;Kenya
 Kiribati;Oceania & Pacific;Pacific;Kiribati
 kiribati;Oceania & Pacific;Pacific;Kiribati
 Korea, Democratic People's Republic of,;Asia;Eastern Asia;Korea (North)
@@ -214,8 +214,8 @@ Mauritania;Africa;Western Africa;Mauritania
 MAURITANIA;Africa;Western Africa;Mauritania
 Mauritius;Africa;Eastern Africa;Mauritius
 Mexico;Latin America & Caribbean;Central America;Mexico
-Federal States of Micronesia;Oceania & Pacific;Pacific;Micronesia 
-Micronesia;Oceania & Pacific;Pacific;Micronesia 
+Federal States of Micronesia;Oceania & Pacific;Pacific;Micronesia
+Micronesia;Oceania & Pacific;Pacific;Micronesia
 Moldova;Europe & Russia;Other European countries & Russia;Moldova
 MOLDOVA;Europe & Russia;Other European countries & Russia;Moldova
 ;Europe & Russia;Other European countries & Russia;Monaco
@@ -232,8 +232,8 @@ myanmar;Asia;South-Eastern Asia;Myanmar
 Myanmar, Burma;Asia;South-Eastern Asia;Myanmar
 Myanmar/Burma;Asia;South-Eastern Asia;Myanmar
 Burma;Asia;South-Eastern Asia;Myanmar
-namibia;Africa;Central Africa;Namibia
-Namibia;Africa;Central Africa;Namibia
+namibia;Africa;Southern Africa;Namibia
+Namibia;Africa;Southern Africa;Namibia
 Nauru;Oceania & Pacific;Pacific;Nauru
 Nepal;Asia;Southern Asia;Nepal
 Netherlands;Europe & Russia;EU Member States;Netherlands
@@ -283,11 +283,11 @@ St Lucia;Latin America & Caribbean;Caribbean;Saint Lucia
 Saint Vincent & Grenadines;Latin America & Caribbean;Caribbean;Saint Vincent and the Grenadines
 St Vincent and the Grenadines;Latin America & Caribbean;Caribbean;Saint Vincent and the Grenadines
 Saint-Vincent and the Grenadines;Latin America & Caribbean;Caribbean;Saint Vincent and the Grenadines
-;Latin America & Caribbean;Caribbean;Saint-Barthélemy
+;Latin America & Caribbean;Caribbean;Saint-Barthï¿½lemy
 Samoa;Oceania & Pacific;Pacific;Samoa
 ;Europe & Russia;Other European countries & Russia;San Marino
-São Tome & Principe;Africa;Central Africa;Sao Tome and Principe
-São Tomé & Príncipe;Africa;Central Africa;Sao Tome and Principe
+Sï¿½o Tome & Principe;Africa;Central Africa;Sao Tome and Principe
+Sï¿½o Tomï¿½ & Prï¿½ncipe;Africa;Central Africa;Sao Tome and Principe
 Sao Tome and Principe;Africa;Central Africa;Sao Tome and Principe
 Sao Tome e Principe;Africa;Central Africa;Sao Tome and Principe
 Geo - Saudi Arabia;Asia;Western Asia;Saudi Arabia
@@ -315,7 +315,7 @@ South Sudan Republic;Africa;Eastern Africa;South Sudan
 South Sudan ;Africa;Eastern Africa;South Sudan
 Spain;Europe & Russia;EU Member States;Spain
 spain;Europe & Russia;EU Member States;Spain
-España;Europe & Russia;EU Member States;Spain
+Espaï¿½a;Europe & Russia;EU Member States;Spain
 Sri Lanka;Asia;Southern Asia;Sri Lanka
 sri lanka;Asia;Southern Asia;Sri Lanka
 SUDAN;Africa;Eastern Africa;Sudan
@@ -414,8 +414,8 @@ EAST AFRICA, REGIONAL;Africa;Eastern Africa;
 Eastern Africa;Africa;Eastern Africa;
 3.Latin America & Caribbean;Latin America & Caribbean;;
 3. Latin America & Caribbean;Latin America & Caribbean;;
-América Latina y Caribe;Latin America & Caribbean;;
-América LAtina y el Caribe;Latin America & Caribbean;;
+Amï¿½rica Latina y Caribe;Latin America & Caribbean;;
+Amï¿½rica LAtina y el Caribe;Latin America & Caribbean;;
 Latin America & Caribbean;Latin America & Caribbean;;
 Latin America and Caribbe;Latin America & Caribbean;;
 Latin America and Caribbean;Latin America & Caribbean;;
