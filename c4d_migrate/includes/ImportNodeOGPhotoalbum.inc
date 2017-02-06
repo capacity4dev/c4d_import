@@ -48,4 +48,11 @@ class C4dMigrateImportNodeOGPhotoalbum extends C4dMigrateImportBaseNodeOG {
     return TRUE;
   }
 
+  /**
+   * Calls parent complete function.
+   */
+  public function complete($entity, $row) {
+    return parent::complete($entity, $row);
+  }
+
 }

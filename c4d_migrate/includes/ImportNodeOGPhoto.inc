@@ -68,8 +68,6 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
    *   The data row we are importing.
    */
   public function complete($node, $row) {
-    parent::complete($node, $row);
-
     module_load_include('module', 'node_gallery_api');
 
     $items = field_get_items('node', $node, 'node_gallery_ref_1');
@@ -89,6 +87,8 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
     if ($row->is_cover == 1) {
       node_gallery_api_set_gallery_cover_item($node->nid, $gallery_id);
     }
+
+    parent::complete($node, $row);
   }
 
 }
