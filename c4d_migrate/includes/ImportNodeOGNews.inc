@@ -30,6 +30,7 @@ class C4dMigrateImportNodeOGNews extends C4dMigrateImportBaseNodeOG {
 
   /**
    * {@inheritdoc}
+   *
    */
   public function addCustomFieldMapping() {
     // Map the custom fields.
