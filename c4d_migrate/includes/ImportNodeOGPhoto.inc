@@ -32,13 +32,16 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'filtered_html'));
+      ->arguments(array('format' => 'filtered_html'));
 
     // Map the picture field.
     $this->addFileFieldMapping('c4m_media', 'field_node_gallery_image');
 
     $this->addFieldMapping('node_gallery_ref_1', 'gid')
       ->sourceMigration('C4dMigrateImportNodeOGPhotoAlbum');
+
+    $this->removeFieldMapping('comment');
+    $this->addFieldMapping('comment')->defaultValue(COMMENT_NODE_CLOSED);
   }
 
   /**
@@ -74,7 +77,10 @@ class C4dMigrateImportNodeOGPhoto extends C4dMigrateImportBaseNodeOG {
 
     $gallery_id = $items[0]['target_id'];
 
-    $relationships = node_gallery_api_get_relationships($gallery_id, $node->nid);
+    $relationships = node_gallery_api_get_relationships(
+      $gallery_id,
+      $node->nid
+    );
 
     foreach ($relationships as $relationship) {
       if ($row->weight != $relationship->weight) {

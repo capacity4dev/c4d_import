@@ -31,6 +31,9 @@ class C4dMigrateImportNodeOGPhotoalbum extends C4dMigrateImportBaseNodeOG {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
          ->arguments(array('format' => 'filtered_html'));
+
+    $this->removeFieldMapping('comment');
+    $this->addFieldMapping('comment')->defaultValue(COMMENT_NODE_CLOSED);
   }
 
   /**
