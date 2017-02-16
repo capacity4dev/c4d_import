@@ -12,10 +12,15 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
    * {@inheritdoc}
    */
   public function getReplacement() {
-    $tag  = $this->getTag();
+    $tag = $this->getTag();
     $file = $this->getFile();
 
-    $url = $this->fileCreateUrl($file->uri);
+    $image_style = image_style_load($tag['preset']);
+
+    $url = ($image_style) ? image_style_url(
+      $image_style['name'],
+      $file->uri
+    ) : image_style_url('medium', $file->uri);
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
