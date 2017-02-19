@@ -1,15 +1,15 @@
 <?php
 /**
  * @file
- * Migrate class to import the Blog group nodes as Discussions.
+ * Migrate class to import the Media group nodes.
  */
 
 /**
- * Class to import the Blog group nodes from the Drupal 6 platform.
+ * Class to import the Media group nodes from the Drupal 6 platform.
  *
- * Import Blog group nodes as Discussion nodes.
+ * Media refers to documents which are actually photos.
  */
-class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
+class C4dMigrateImportNodeOGNews extends C4dMigrateImportBaseNodeOG {
   /**
    * Configure the object during creation.
    *
@@ -17,9 +17,9 @@ class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
    *   The migrate Group object.
    */
   public function __construct($group = NULL) {
-    $this->description = t('Import Discussion group nodes.');
+    $this->description = t('Import News project nodes.');
     $this->setSourceTable('c4d_export_node_blog');
-    $this->setTargetBundle('discussion');
+    $this->setTargetBundle('news');
 
     $this->dependencies[] = 'C4dMigrateImportNodeOGDocument';
 
@@ -30,14 +30,15 @@ class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
 
   /**
    * {@inheritdoc}
+   *
    */
   public function addCustomFieldMapping() {
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'body')
-         ->arguments(array('format' => 'filtered_html'));
+      ->arguments(array('format' => 'filtered_html'));
 
     $this->addFieldMapping('c4m_related_document', 'documents')
-         ->sourceMigration('C4dMigrateImportNodeOGDocument');
+      ->sourceMigration('C4dMigrateImportNodeOGDocument');
   }
 
   /**
@@ -53,8 +54,8 @@ class C4dMigrateImportNodeOGDiscussion extends C4dMigrateImportBaseNodeOG {
     $groups = unserialize($row->og_groups);
 
     foreach ($groups as $gid => $group_type) {
-      if ($group_type == 'project') {
-        // No discussions in projects.
+      if ($group_type == 'group') {
+        // No news in groups.
         return FALSE;
       }
     }

@@ -31,7 +31,8 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
     $this->addFieldMapping('group_access', 'og_private');
     // Map the custom fields.
     $this->addFieldMapping('c4m_body', 'field_group_description')
-         ->arguments(array('format' => 'filtered_html'));
+      ->defaultValue('')
+      ->arguments(array('format' => 'filtered_html'));
     $this->addFieldMapping('c4m_body:summary', 'og_description');
   }
 
@@ -55,7 +56,13 @@ class C4dMigrateImportNodeGroup extends C4dMigrateImportBaseGroup {
    */
   public function prepareRow($row) {
     parent::prepareRow($row);
-    $row->body = $this->prepareHtml($row->body);
+    $row->field_group_description = $this->prepareHtml($row->field_group_description);
+
+    if (empty($row->field_group_description)) {
+      // No input filter is available when NULL is entered.
+      // Even the defaultValue() is ignored on NULL.
+      $row->field_group_description = '';
+    }
 
     return TRUE;
   }
