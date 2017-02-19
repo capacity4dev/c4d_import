@@ -29,7 +29,7 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
     $table_name = 'og_users_roles';
 
     parent::__construct(
-          MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
+      MigrateGroup::getInstance(C4D_MIGRATE_MIGRATION_GROUP)
     );
 
     $this->description = t('Update the group ID in user roles.');
@@ -43,26 +43,30 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
 
     $key = array(
       'uid' => array(
-        'type'     => 'int',
+        'type' => 'int',
         'not null' => TRUE,
       ),
       'rid' => array(
-        'type'     => 'int',
+        'type' => 'int',
         'not null' => TRUE,
       ),
       'gid' => array(
-        'type'     => 'int',
+        'type' => 'int',
         'not null' => TRUE,
       ),
     );
 
-    $this->map         = new MigrateSQLMap($this->machineName, $key, MigrateDestinationTable::getKeySchema($table_name));
-    $this->source      = new MigrateSourceSQL($query);
+    $this->map = new MigrateSQLMap(
+      $this->machineName,
+      $key,
+      MigrateDestinationTable::getKeySchema($table_name)
+    );
+    $this->source = new MigrateSourceSQL($query);
     $this->destination = new MigrateDestinationTable($table_name);
 
     $this->addFieldMapping('uid', 'uid');
     $this->addFieldMapping('rid')
-         ->sourceMigration('C4dMigrateImportRoles');
+      ->sourceMigration('C4dMigrateImportRoles');
     $this->addFieldMapping('gid');
   }
 
@@ -82,26 +86,31 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
    */
   public function prepare($entity, $row) {
     $group_type = 'node';
-    $gid        = $row->gid;
+    $gid = $row->gid;
 
     if (!$group = entity_load_single($group_type, $gid)) {
       // Some installations might have missing entities, so we don't assume
       // they exist.
       return;
     }
+
     // Get the bundle from the entity.
     list(, , $bundle) = entity_extract_ids($group_type, $group);
 
     // Get the per-bundle roles, and replace the role ID, with the
     // per-bundle role ID.
     $og_roles = og_roles($group_type, $bundle, $gid);
-    if (!empty($this->defaultRoles[$row->rid]) && $rid = array_search($this->defaultRoles[$row->rid], $og_roles)) {
+    if (!empty($this->defaultRoles[$row->rid]) && $rid = array_search(
+        $this->defaultRoles[$row->rid],
+        $og_roles
+      )
+    ) {
       // Assign the new role ID.
       $entity->rid = $rid;
     }
 
     $entity->group_type = $group_type;
-    $entity->gid        = $row->gid;
+    $entity->gid = $row->gid;
   }
 
   /**
@@ -128,35 +137,49 @@ class C4dMigrateImportOGUserRoles extends C4dMigrateImportBase {
   public function prepareRow($row) {
     $row->state = !empty($row->state) ? OG_STATE_ACTIVE : OG_STATE_PENDING;
 
-    $q    = $this->createSelect('node', 'n');
+    $q = $this->createSelect('node', 'n');
     $type = $q->fields('n', array('type'))->condition('nid', $row->gid, '=')
-              ->execute()->fetchField();
+      ->execute()->fetchField();
 
     switch ($type) {
       case 'project_group':
         $row->gid = $this->handleSourceMigration(
-                         'C4dMigrateImportNodeProject',
-                           $row->gid,
-                           NULL,
-                           $this);
+          'C4dMigrateImportNodeProject',
+          $row->gid,
+          NULL,
+          $this
+        );
         break;
 
       case 'group':
         $row->gid = $this->handleSourceMigration(
-                         'C4dMigrateImportNodeGroup',
-                           $row->gid,
-                           NULL,
-                           $this);
+          'C4dMigrateImportNodeGroup',
+          $row->gid,
+          NULL,
+          $this
+        );
         break;
     }
 
     $row->uid = $this->handleSourceMigration(
-                     'C4dMigrateImportUsers',
-                       $row->uid,
-                       NULL,
-                       $this);
+      'C4dMigrateImportUsers',
+      $row->uid,
+      NULL,
+      $this
+    );
 
-    parent::prepareRow($row);
+    if (!$group = entity_load_single('node', $row->gid)) {
+      // Some installations might have missing entities, so we don't assume
+      // they exist.
+      return FALSE;
+    }
+
+    // If user is the group owner, don't add role.
+    if ($row->uid == $group->uid) {
+      return FALSE;
+    }
+
+    return parent::prepareRow($row);
   }
 
 }
