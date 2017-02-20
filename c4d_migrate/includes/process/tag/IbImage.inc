@@ -38,7 +38,7 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
       '<img src="%s" class="img__fid__%d media-image" alt="%s" title="%s" />',
-      file_create_url($file->uri),
+      image_style_url('medium', $file->uri),
       $file->fid,
       $tag['caption'],
       $tag['caption']

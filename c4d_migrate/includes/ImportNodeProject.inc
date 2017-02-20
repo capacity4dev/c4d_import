@@ -56,10 +56,10 @@ class C4dMigrateImportNodeProject extends C4dMigrateImportBaseGroup {
     $this->addFieldMapping('c4m_related_projects', 'field_ref_related_projects')
          ->sourceMigration('C4dMigrateImportNodeProject');
 
-    $this->addFieldMapping('c4m_partner', 'field_project_group_stakeholders');
+    $this->addFieldMapping('c4m_project_stakeholders', 'field_project_group_stakeholders');
     $this->addFieldMapping('c4m_source_of_funding', 'field_project_group_funding');
     $this->addFieldMapping('c4m_cris_decision_number', 'field_project_group_cris_dec');
-    $this->addFieldMapping('c4m_cris_contract_number', 'field_project_group_cris_contract');
+    $this->addFieldMapping('c4m_cris_contract_number', 'field_project_group_contract');
 
     $this->addFieldMapping('field_project_group_budget_amount', 'field_project_group_budget_amount');
     $this->addFieldMapping('field_project_group_budget_currency', 'field_project_group_budget_currency');
