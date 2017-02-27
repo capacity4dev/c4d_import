@@ -529,6 +529,12 @@ abstract class C4dMigrateImportBaseNode extends C4dMigrateImportBase {
       return;
     }
 
+    // Check if we should create an update message.
+    $threshold = variable_get('c4m_message_join_messages', '36000');
+    if (($row->changed - $row->created) <= $threshold) {
+      return;
+    }
+
     // Retrieve the mapped changed_user.
     $old_user_id = $row->changed_uid;
 
