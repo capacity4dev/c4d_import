@@ -56,6 +56,18 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
    *   FALSE if the file could not be copied.
    */
   protected function copyFile($source, $target_folder) {
+    // Check if we try to copy a imagecache.
+    if (strpos($source, 'imagecache') > 0) {
+      // Try to get the original path by eliminating the /imagecache/<preset>.
+      $source_name = drupal_basename($source);
+
+      $source = $this->createSelect('c4d_export_other_files', 'f')
+        ->fields('f', array('filepath'))
+        ->condition('filename', $source_name)
+        ->execute()
+        ->fetchField();
+    }
+
     // First check if we didn't already copyied the source file.
     $existing = $this->loadFileFromMigrateMapping($source);
     if ($existing) {
@@ -64,7 +76,6 @@ abstract class C4dMigrateProcessTagAbstractFile extends C4dMigrateProcessTagAbst
 
     // Construct the full file path to the source file.
     $source_path = $this->getConfigValue('files_root')
-      . '/'
       . $source;
     $source_name = drupal_basename($source_path);
 
