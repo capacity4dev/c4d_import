@@ -17,10 +17,10 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
 
     $image_style = image_style_load($tag['preset']);
 
-    $url = ($image_style) ? image_style_url(
+    $url = ($image_style) ? image_style_path(
       $image_style['name'],
       $file->uri
-    ) : image_style_url('medium', $file->uri);
+    ) : image_style_path('medium', $file->uri);
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
@@ -32,7 +32,7 @@ class C4dMigrateProcessTagIbImageImage extends C4dMigrateProcessTagIbImage {
       </div>',
       $tag['style'],
       $tag['preset'],
-      $url,
+      $this->fileCreateUrl($url),
       $file->fid,
       $tag['caption'],
       $tag['caption']
