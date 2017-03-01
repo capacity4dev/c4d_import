@@ -37,10 +37,12 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
 
     $image_style = image_style_load($tag['preset']);
 
-    $url = ($image_style) ? image_style_path(
+    $image_style = ($image_style) ? $image_style : image_style_load('medium');
+
+    $url = image_style_path(
       $image_style['name'],
       $file->uri
-    ) : image_style_path('medium', $file->uri);
+    );
 
     $file_exists = file_exists($url);
 
