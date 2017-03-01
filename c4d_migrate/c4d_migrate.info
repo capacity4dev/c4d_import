@@ -87,6 +87,7 @@ files[] = includes/parser/Abstract.inc
 files[] = includes/parser/C4dImage.inc
 files[] = includes/parser/IbImage.inc
 files[] = includes/parser/EcMedia.inc
+files[] = includes/parser/SrcImage.inc
 files[] = includes/parser/Video.inc
 
 ; Processors.
@@ -105,6 +106,7 @@ files[] = includes/process/tag/IbImagePopup.inc
 files[] = includes/process/tag/IbImagePhotoalbum.inc
 files[] = includes/process/tag/IbImageSlideshow.inc
 files[] = includes/process/tag/EcMedia.inc
+files[] = includes/process/tag/SrcImage.inc
 files[] = includes/process/tag/Video.inc
 
 ; Body processors

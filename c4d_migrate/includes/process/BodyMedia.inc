@@ -16,6 +16,7 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
   protected $parsers = array(
     'C4dMigrateParserC4dImage',
     'C4dMigrateParserIbImage',
+    'C4dMigrateParserSrcImage',
     'C4dMigrateParserVideo',
     'C4dMigrateParserEcMedia',
   );
@@ -33,6 +34,7 @@ class C4dMigrateProcessBodyMedia extends C4dMigrateProcessAbstract {
     'ibimage:popup'      => 'C4DMigrateProcessTagIbImagePopup',
     'ibimage:photoalbum' => 'C4DMigrateProcessTagIbImagePhotoalbum',
     'ibimage:slideshow'  => 'C4DMigrateProcessTagIbImageSlideshow',
+    'image'              => 'C4DMigrateProcessTagSrcImage',
     'video'              => 'C4DMigrateProcessTagVideo',
     'ec_media'           => 'C4DMigrateProcessTagEcMedia',
   );
