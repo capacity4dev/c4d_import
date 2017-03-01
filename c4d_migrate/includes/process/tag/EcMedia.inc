@@ -24,6 +24,10 @@ class C4dMigrateProcessTagEcMedia extends C4dMigrateProcessTagAbstractEmbed {
       $tag['height']
     );
 
+    if ($tag['align']) {
+      $replacement = '<div class="align-' . $tag['align'] . '">' . $replacement . '</div>';
+    }
+
     return $replacement;
   }
 
