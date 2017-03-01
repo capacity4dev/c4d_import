@@ -17,7 +17,7 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
     $tag = $this->getTag();
 
     $source = $this->getSource($tag['fid']);
-    $file   = $this->copyFile($source, 'public://media');
+    $file = $this->copyFile($source, 'public://media');
 
     if (!$file) {
       return FALSE;
@@ -32,13 +32,32 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
    * {@inheritdoc}
    */
   public function getReplacement() {
-    $tag  = $this->getTag();
+    $tag = $this->getTag();
     $file = $this->getFile();
+
+    $image_style = image_style_load($tag['preset']);
+
+    $url = ($image_style) ? image_style_path(
+      $image_style['name'],
+      $file->uri
+    ) : image_style_path('medium', $file->uri);
+
+    $file_exists = file_exists($url);
+
+    if (!$file_exists) {
+      image_style_create_derivative(
+        $image_style,
+        $file->uri,
+        $url
+      );
+    }
+
+    $new_image_url = file_create_url($url);
 
     // @TODO: Need to work on the output. Classes etc...
     $replacement = sprintf(
       '<img src="%s" class="img__fid__%d media-image" alt="%s" title="%s" />',
-      image_style_url('medium', $file->uri),
+      $this->fileCreateUrl($new_image_url),
       $file->fid,
       $tag['caption'],
       $tag['caption']
@@ -86,7 +105,7 @@ abstract class C4dMigrateProcessTagIbImage extends C4dMigrateProcessTagAbstractF
    *   File object.
    */
   public function getSource($fid) {
-    $img          = $this->getImageFile($fid);
+    $img = $this->getImageFile($fid);
     $this->source = $img->filepath;
 
     return $this->source;
