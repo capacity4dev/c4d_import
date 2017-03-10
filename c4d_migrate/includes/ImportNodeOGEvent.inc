@@ -94,8 +94,18 @@ class C4dMigrateImportNodeOGEvent extends C4dMigrateImportBaseNodeOG {
     $row->field_event_organiser = unserialize($row->field_event_organiser);
 
     $row->body = $this->prepareHtml($row->body);
+
     $row->field_event_full_description = $this->prepareHtml(
       $row->field_event_full_description
+    );
+
+    if (strlen($row->field_event_full_description) <= 0) {
+      $row->field_event_full_description = $row->body;
+    }
+
+    // Will map to the summary, which is plain text.
+    $row->body = drupal_html_to_text(
+      $row->body
     );
 
     if (!$row->field_event_location == '' && !empty($row->field_event_location)) {

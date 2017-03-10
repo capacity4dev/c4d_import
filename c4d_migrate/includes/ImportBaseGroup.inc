@@ -210,6 +210,10 @@ abstract class C4dMigrateImportBaseGroup extends C4dMigrateImportBaseNode {
       NODE_PUBLISHED     => 'published',
     );
     $row->_c4m_og_status = $status_map[$row->status];
+
+    // The c4m_og_status field is taking care of everything, leaving a group
+    // unpublished causes weird side-effects (like no home link in the menu).
+    $row->status = 1;
   }
 
   /**
